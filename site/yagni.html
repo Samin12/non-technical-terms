@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YAGNI — Claude Club</title>
+  <meta name="description" content="YAGNI, explained in plain English: don't build what you don't need yet. With an interactive feature creep game." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="yagni" data-related="kiss,dry,technical-debt,vibe-coding">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>YAGNI</h1>
+        <p class="tldr"><b>TLDR</b>Don't build what you don't need yet.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: feature creep game ============ -->
+      <section class="widget" aria-label="Feature creep game">
+        <div class="widget-bar"><span class="dot"></span> Try it — the feature creep game</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            You're shipping a simple todo app. Five tempting feature ideas are on their way.
+            Every <b>Accept</b> pushes the ship date out three weeks — and the feature is yours to maintain forever.
+          </p>
+
+          <div style="font-family:var(--sans); font-size:0.8rem; font-weight:600; color:var(--ink-soft); display:flex; justify-content:space-between; margin-bottom:0.35rem;">
+            <span>🚀 Ship date:</span>
+            <b id="yg-date">2 weeks away</b>
+          </div>
+          <div class="wmeter" id="yg-meterbox" style="margin-bottom:0.9rem;"><i id="yg-meter" style="width:12%;"></i></div>
+
+          <div id="yg-offer" style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.9rem 1rem; margin-bottom:0.8rem; min-height:96px; transition:transform .25s ease, opacity .25s ease;">
+            <div style="font-size:0.95rem; font-weight:700; margin-bottom:0.2rem;" id="yg-offer-title">Ready to build?</div>
+            <div style="font-size:0.85rem; color:var(--muted); margin-bottom:0.6rem;" id="yg-offer-pitch">Press start. The first “great idea” will arrive shortly.</div>
+            <div class="wrow">
+              <button class="wbtn primary" id="yg-start">▶ Start building</button>
+              <button class="wbtn" id="yg-accept" style="display:none;">😍 Accept (+3 weeks)</button>
+              <button class="wbtn" id="yg-skip" style="display:none;">🙅 Skip (ship on time)</button>
+            </div>
+          </div>
+
+          <div style="font-family:var(--sans); font-size:0.8rem; font-weight:600; color:var(--ink-soft); margin-bottom:0.35rem;">🎒 Maintenance you now own forever:</div>
+          <div id="yg-chips" style="display:flex; flex-wrap:wrap; gap:6px; min-height:34px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:8px; margin-bottom:0.8rem;">
+            <span id="yg-none" style="font-family:var(--sans); font-size:0.78rem; color:var(--muted);">nothing yet — beautiful</span>
+          </div>
+
+          <div class="wlog" id="yg-log"><span class="dim">A todo app. Two weeks out. What could go wrong…</span></div>
+        </div>
+        <p class="widget-hint">Play it twice: once saying yes to everything, once saying no. Watch what happens to the ship date — and to the users.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>You're packing for a weekend trip. Two nights. But what if it snows? What if you get invited to a gala? What if you take up scuba diving mid-trip? Pack for every possibility and you'll need four suitcases — and you'll miss the flight.</p>
+
+        <p>That's the game you just played. Every feature offer sounded reasonable in the moment. Each one cost three weeks. Accept enough of them and the ship date stops being a date.</p>
+
+        <p><strong>YAGNI — "You Aren't Gonna Need It" — means don't build features for an imagined future. Build what's needed now, ship it, and let reality tell you what's next.</strong></p>
+
+        <h2>You're terrible at predicting the future. So is everyone.</h2>
+
+        <p>The features you accepted weren't dumb. Dark mode is nice. Team mode could be big someday. That's exactly what makes feature creep dangerous — it never feels like creep. It feels like vision.</p>
+
+        <p>But the track record is brutal: study after study of real products finds that a large share of built features go rarely or never used. Builders guess wrong constantly — not because they're bad at their jobs, but because guessing is the wrong tool. The only reliable source of "what to build next" is users actually using the thing. And users can't use a thing that hasn't shipped.</p>
+
+        <p>The game's best ending says it plainly: ship the small version, and your users come back asking for exactly one feature. Now you're not guessing. You know.</p>
+
+        <h2>Unused features aren't free — they're tenants</h2>
+
+        <p>Those maintenance chips you collected are the hidden half of the lesson. A feature isn't a one-time cost. From the day it ships, it has to be tested, secured, debugged, and kept compatible with everything around it — forever. The blockchain sync nobody uses still breaks when you upgrade something else, and you still have to fix it.</p>
+
+        <p>Speculative features are also the fastest on-ramp to <a href="technical-debt.html">technical debt</a>: you take on all the ongoing cost without ever collecting the value. Every "what if" you skip is code that can never break, confuse Claude, or slow down the next change.</p>
+
+        <h2>AI made building cheap. That moves the discipline.</h2>
+
+        <p>Here's the modern twist. With Claude, adding dark mode might genuinely take twenty minutes. So why not accept everything?</p>
+
+        <p>Because building was never the expensive part — owning is. Everything your AI adds is something you maintain, explain, and debug for the life of the product. When building gets cheap, the bottleneck moves to <em>choosing</em>. The scarce skill in the <a href="vibe-coding.html">vibe coding</a> era isn't "can you make it?" It's "should this exist yet?"</p>
+
+        <div class="callout">
+          The YAGNI prompt, word for word: end your build requests to Claude with
+          <em>"Build ONLY this. Nothing speculative — no extra settings, no just-in-case options,
+          no features I didn't ask for."</em> The output gets faster, smaller, and easier to check.
+          It pairs perfectly with <a href="kiss.html">KISS</a>: the simple version, of only the needed thing.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Shipping in weeks instead of quarters — momentum is a feature</li>
+          <li>Letting real users vote on feature #2 with their behavior, not your hunch</li>
+          <li>Less code overall, which means fewer bugs, less debt, cheaper changes</li>
+          <li>A polite, confident "not yet" for every shiny idea — including your own</li>
+        </ul>
+
+        <p>To be clear, YAGNI isn't anti-ambition. It's a sequencing rule. The 17 languages can absolutely happen — the day someone in Reykjavik actually signs up. Until then, the suitcase stays light and the flight gets caught.</p>
+
+        <p><strong>The cheapest feature to maintain is the one you didn't build yet.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You're two weeks from shipping a todo app. Claude suggests adding multi-language support "while we're in here." What does YAGNI say?</p>
+            <div class="opts">
+              <button class="opt">Accept — it's cheaper to add now than later</button>
+              <button class="opt" data-correct>Skip it — no user has asked, and it delays the thing they did ask for</button>
+              <button class="opt">Accept, but hide it behind a settings toggle</button>
+            </div>
+            <div class="why">Every accept in the game pushed the date three weeks. Speculative features delay the only thing that generates real answers: shipping.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Why is a feature nobody uses still expensive?</p>
+            <div class="opts">
+              <button class="opt">It isn't — unused code just sits there costing nothing</button>
+              <button class="opt" data-correct>It still has to be tested, secured, and kept from breaking everything around it — forever</button>
+              <button class="opt">Only because of the electricity it consumes</button>
+            </div>
+            <div class="why">That's the maintenance chip: yours forever. Unused features break during upgrades, confuse future changes, and pile up as debt.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. AI can now build features in minutes. According to YAGNI, where does the discipline move?</p>
+            <div class="opts">
+              <button class="opt">Typing prompts faster</button>
+              <button class="opt" data-correct>Choosing — deciding what NOT to build so you ship sooner and learn from real users</button>
+              <button class="opt">Buying more server capacity for all the new features</button>
+            </div>
+            <div class="why">When building is cheap, owning is the cost that's left. Ship small, watch what users ask for, then build exactly that.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* the feature creep game */
+    (function () {
+      var OFFERS = [
+        { e: "🌙", n: "Dark mode", pitch: "Every app has it. Ours should too, right?" },
+        { e: "🤖", n: "AI suggestions", pitch: "It could suggest todos before you even think of them." },
+        { e: "⛓️", n: "Blockchain sync", pitch: "Todos, on the chain. The investor deck will look amazing." },
+        { e: "🌍", n: "17 languages", pitch: "What if someone in Reykjavik signs up someday?" },
+        { e: "👥", n: "Team mode", pitch: "It's basically Slack, but for todos. Trust me." }
+      ];
+      var MAXW = 17;
+      var idx = -1, weeks = 2, accepted = 0, playing = false, animating = false;
+
+      var dateEl = document.getElementById("yg-date");
+      var meterEl = document.getElementById("yg-meter");
+      var offerBox = document.getElementById("yg-offer");
+      var titleEl = document.getElementById("yg-offer-title");
+      var pitchEl = document.getElementById("yg-offer-pitch");
+      var startBtn = document.getElementById("yg-start");
+      var acceptBtn = document.getElementById("yg-accept");
+      var skipBtn = document.getElementById("yg-skip");
+      var chipsEl = document.getElementById("yg-chips");
+      var noneEl = document.getElementById("yg-none");
+      var log = document.getElementById("yg-log");
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function clearIfFirst() {
+        if (!log.dataset.started) { log.innerHTML = ""; }
+      }
+
+      function render() {
+        dateEl.textContent = weeks + " weeks away";
+        dateEl.style.color = weeks > 10 ? "var(--bad)" : weeks > 5 ? "var(--accent)" : "var(--good)";
+        meterEl.style.width = Math.min(100, Math.round((weeks / MAXW) * 100)) + "%";
+      }
+
+      function pop() {
+        offerBox.style.opacity = "0";
+        offerBox.style.transform = "scale(0.96)";
+        setTimeout(function () {
+          offerBox.style.opacity = "1";
+          offerBox.style.transform = "scale(1)";
+        }, 220);
+      }
+
+      function showOffer() {
+        idx++;
+        if (idx >= OFFERS.length) { finish(); return; }
+        var o = OFFERS[idx];
+        pop();
+        setTimeout(function () {
+          titleEl.textContent = o.e + " " + o.n + "!";
+          pitchEl.textContent = "“" + o.pitch + "”  (offer " + (idx + 1) + " of " + OFFERS.length + ")";
+        }, 220);
+      }
+
+      function finish() {
+        playing = false;
+        acceptBtn.style.display = "none";
+        skipBtn.style.display = "none";
+        startBtn.style.display = "inline-flex";
+        startBtn.textContent = "↺ Replay";
+        pop();
+        var verdict;
+        if (accepted === 0) {
+          verdict = "🚀 SHIPPED in 2 weeks. Real users are in — and they're asking for exactly ONE feature. Now you know which one to build. (It was not blockchain sync.)";
+        } else if (accepted === 1) {
+          verdict = "🚀 SHIPPED in 5 weeks. Close call. Users immediately asked for something that was never on your list — good thing you saved the other nine weeks.";
+        } else if (accepted <= 3) {
+          verdict = "😮‍💨 Shipped in " + weeks + " weeks. Users trickled in, shrugged at half the features, and asked for one you don't have. The unused ones still page you at 3 a.m.";
+        } else if (accepted === 4) {
+          verdict = "🫠 " + weeks + " weeks. Your beta list's enthusiasm did not survive the wait. The 17 languages currently serve zero users in 17 languages.";
+        } else {
+          verdict = "♾️ Ship date: ∞ (still building). Users: 0. The todo app does everything except exist.";
+          dateEl.textContent = "∞ (still building)";
+          dateEl.style.color = "var(--bad)";
+          meterEl.style.width = "100%";
+        }
+        setTimeout(function () {
+          titleEl.textContent = accepted === 5 ? "♾️ Still building…" : "🏁 Run over";
+          pitchEl.textContent = "Accepted " + accepted + " of 5 offers. Hit replay and try the other extreme.";
+        }, 220);
+        add('<span class="acc">' + verdict + "</span>");
+      }
+
+      function addChip(o) {
+        if (noneEl) { noneEl.style.display = "none"; }
+        var c = document.createElement("span");
+        c.style.cssText = "font-family:var(--sans); font-size:0.74rem; font-weight:600; background:var(--bad-soft); border:1px solid var(--bad); color:var(--bad); border-radius:7px; padding:3px 8px;";
+        c.textContent = o.e + " " + o.n + " — maintain forever";
+        chipsEl.appendChild(c);
+      }
+
+      startBtn.addEventListener("click", function () {
+        if (playing) return;
+        playing = true;
+        idx = -1; weeks = 2; accepted = 0;
+        chipsEl.innerHTML = "";
+        noneEl = null;
+        var ph = document.createElement("span");
+        ph.id = "yg-none";
+        ph.style.cssText = "font-family:var(--sans); font-size:0.78rem; color:var(--muted);";
+        ph.textContent = "nothing yet — beautiful";
+        chipsEl.appendChild(ph);
+        noneEl = ph;
+        log.innerHTML = "";
+        delete log.dataset.started;
+        add('<span class="dim">▶ Building the todo app. Ship date: 2 weeks. Incoming “ideas”…</span>');
+        render();
+        startBtn.style.display = "none";
+        acceptBtn.style.display = "inline-flex";
+        skipBtn.style.display = "inline-flex";
+        showOffer();
+      });
+
+      acceptBtn.addEventListener("click", function () {
+        if (!playing || animating || idx < 0 || idx >= OFFERS.length) return;
+        var o = OFFERS[idx];
+        accepted++;
+        addChip(o);
+        add('<span class="err">😍 accepted ' + o.e + " " + o.n + ".</span> Ship date +3 weeks. It's yours now. Forever.");
+        animating = true;
+        var target = weeks + 3;
+        var t = setInterval(function () {
+          weeks++;
+          render();
+          if (weeks >= target) {
+            clearInterval(t);
+            animating = false;
+            setTimeout(showOffer, 320);
+          }
+        }, 170);
+      });
+
+      skipBtn.addEventListener("click", function () {
+        if (!playing || animating || idx < 0 || idx >= OFFERS.length) return;
+        var o = OFFERS[idx];
+        add('<span class="ok">🙅 skipped ' + o.e + " " + o.n + ".</span> Ship date holds at " + weeks + " weeks. 🎯");
+        setTimeout(showOffer, 320);
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

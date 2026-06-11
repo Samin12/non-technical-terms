@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deploy — Claude Club</title>
+  <meta name="description" content="Deploy, explained in plain English: push your work live for the world to use. With an interactive ship-it pipeline." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="deploy" data-related="localhost,server,git-version-control,env-file">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Deploy</h1>
+        <p class="tldr"><b>TLDR</b>Push your work live for the world to use.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: ship-it pipeline ============ -->
+      <section class="widget" aria-label="Deploy ship-it pipeline">
+        <div class="widget-bar"><span class="dot"></span> Try it — the ship-it pipeline</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Your site works on localhost. Nobody else can see it. Ship it — then change it,
+            ship again, and roll back like nothing happened.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.85rem;">
+            <button class="wbtn primary" id="dp-deploy">🚀 Deploy</button>
+            <button class="wbtn" id="dp-change" disabled>✏️ Make a change &amp; deploy v2</button>
+            <button class="wbtn danger" id="dp-rollback" disabled>↩️ Rollback to v1</button>
+          </div>
+
+          <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-bottom:0.6rem;">
+            <span id="dp-st-build" style="font-family:var(--sans); font-size:0.78rem; font-weight:600; border:1px solid var(--border); background:var(--card); color:var(--muted); border-radius:999px; padding:0.25rem 0.65rem; transition:all .3s ease;">⚙️ build</span>
+            <span style="color:var(--muted); font-size:0.8rem;">→</span>
+            <span id="dp-st-test" style="font-family:var(--sans); font-size:0.78rem; font-weight:600; border:1px solid var(--border); background:var(--card); color:var(--muted); border-radius:999px; padding:0.25rem 0.65rem; transition:all .3s ease;">🧪 test</span>
+            <span style="color:var(--muted); font-size:0.8rem;">→</span>
+            <span id="dp-st-upload" style="font-family:var(--sans); font-size:0.78rem; font-weight:600; border:1px solid var(--border); background:var(--card); color:var(--muted); border-radius:999px; padding:0.25rem 0.65rem; transition:all .3s ease;">📤 upload</span>
+            <span style="color:var(--muted); font-size:0.8rem;">→</span>
+            <span id="dp-st-live" style="font-family:var(--sans); font-size:0.78rem; font-weight:600; border:1px solid var(--border); background:var(--card); color:var(--muted); border-radius:999px; padding:0.25rem 0.65rem; transition:all .3s ease;">🟢 live</span>
+          </div>
+
+          <div class="wmeter" id="dp-meter" style="margin-bottom:0.9rem;"><i></i></div>
+
+          <div class="wlog" id="dp-log" style="margin-bottom:0.9rem;"><span class="dim">Your site runs on localhost. Only you can see it. Ready to ship?</span></div>
+
+          <div id="dp-browser" style="display:none; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--card); opacity:0; transform:translateY(8px); transition:all .45s ease;">
+            <div style="display:flex; align-items:center; gap:0.5rem; padding:0.45rem 0.7rem; background:var(--bg-deep); border-bottom:1px solid var(--border-soft); font-size:0.8rem;">
+              <span style="display:flex; gap:4px;"><i style="width:8px; height:8px; border-radius:50%; background:var(--bad); display:inline-block;"></i><i style="width:8px; height:8px; border-radius:50%; background:#d9b357; display:inline-block;"></i><i style="width:8px; height:8px; border-radius:50%; background:var(--good); display:inline-block;"></i></span>
+              <span style="flex:1; background:var(--card-raise); border:1px solid var(--border-soft); border-radius:6px; padding:0.15rem 0.6rem; font-weight:600;">🔒 yoursite.com</span>
+              <span id="dp-version" style="font-family:var(--sans); font-size:0.7rem; font-weight:700; background:var(--accent-bright); color:#fff; border-radius:999px; padding:0.12rem 0.55rem; transition:background .3s ease;">v1</span>
+            </div>
+            <div style="padding:0.9rem 1rem;">
+              <div id="dp-sitebody" style="font-weight:700; font-size:1rem; margin-bottom:0.35rem;">Welcome to my site 👋</div>
+              <div style="font-size:0.8rem; color:var(--muted);">👀 visitors on the site right now: <b id="dp-visitors" style="color:var(--accent);">1</b></div>
+            </div>
+          </div>
+        </div>
+        <p class="widget-hint">Ship v1, change the headline, ship v2 — then roll back. One click back to safety. Deploys are doors, not cliffs.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Picture a restaurant kitchen during dinner service. The chef finishes a dish, wipes the
+          rim, and slides the plate up onto the pass — that steel counter where the kitchen ends
+          and the dining room begins. Until that slide, the dish is private: taste it, fix it,
+          burn it and start over, nobody will ever know. The second it hits the pass, it's real.
+          A customer is about to eat it.
+        </p>
+
+        <p>Building software works exactly like this. The pass even has a name.</p>
+
+        <p><strong>Deploying is sliding your work up onto the pass — copying your project from your computer onto a server so real people can actually use it.</strong></p>
+
+        <p>
+          Everything you build starts on <a href="localhost.html">localhost</a>, your private
+          kitchen. The site runs, the buttons click — but only on your machine. Text the link
+          to a friend and it dies, because there's nothing at their end to reach. Deploying puts
+          a copy of your project on a <a href="server.html">server</a> — a computer that never
+          closes — and that's the exact moment a project becomes a product.
+        </p>
+
+        <h2>What actually happened when you hit 🚀</h2>
+
+        <p>The pipeline you just ran is the real sequence, minus a thousand details you don't need yet:</p>
+
+        <ul>
+          <li><strong>Build</strong> — your files get bundled and squashed into a tidy package that servers can hand out fast.</li>
+          <li><strong>Test</strong> — automatic checks run first. If one fails, the pipeline stops cold, and the broken version never reaches a single visitor.</li>
+          <li><strong>Upload</strong> — the package is copied onto the server.</li>
+          <li><strong>Live</strong> — the server starts serving the new version to anyone on Earth. That's it. You shipped.</li>
+        </ul>
+
+        <p>
+          If you've ever asked Claude to build you a landing page and thought "okay, but how does
+          this get on the internet?" — this is the answer. Modern platforms run that whole chain
+          for you in about a minute. You click deploy, you're live. The hard part isn't the
+          mechanics anymore. It's the nerve.
+        </p>
+
+        <h2>The part nobody tells beginners: it's reversible</h2>
+
+        <p>
+          Deploy sounds permanent, which is why it feels scary. It isn't. You proved that
+          yourself: you shipped v1, shipped v2, then rolled back to v1 in one click. The server
+          kept v1's files the whole time, so "rollback" just means "point everyone at the old
+          version again." Instant. No drama.
+        </p>
+
+        <p>
+          This is the same save-point superpower you get from
+          <a href="git-version-control.html">Git</a>: every deploy is a version you can return
+          to. Once rollback clicks in your head, deploying stops feeling like jumping off a
+          cliff and starts feeling like walking through a doorway you can step back through.
+        </p>
+
+        <div class="callout">
+          One warning before you ship anything: your code travels when you deploy, and secrets
+          must not travel with it. API keys belong in a hidden <a href="env-file.html">env file</a>
+          that stays out of the package — never pasted into the code itself. Bots scan fresh
+          deploys and public code for leaked keys around the clock.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Take the page Claude built you this morning and put it on a real URL by lunch</li>
+          <li>Fix a typo on your live site and ship the fix in under a minute</li>
+          <li>Ship on a Friday evening without sweating, because rollback exists</li>
+          <li>Stop emailing screenshots of localhost and start sending actual links</li>
+        </ul>
+
+        <p>
+          Your project on localhost is a rehearsal. Deploying is opening night — except in this
+          theater, if the show goes badly, one button puts last night's performance back on
+          stage while you fix things calmly backstage.
+        </p>
+
+        <p><strong>Don't polish forever in the kitchen. The pass is right there — ship the plate.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You built a booking page with Claude and it looks perfect at localhost:3000. You text the link to a client — "it doesn't load." What happened?</p>
+            <div class="opts">
+              <button class="opt">The client's wifi is blocking your site</button>
+              <button class="opt" data-correct>The site only exists on your computer — it was never deployed</button>
+              <button class="opt">The server crashed overnight</button>
+            </div>
+            <div class="why">Localhost is your private kitchen. Until you deploy, there is no public copy anywhere for anyone else to load.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You deploy v2 and the homepage comes up blank — with 200 visitors on the site. Best first move?</p>
+            <div class="opts">
+              <button class="opt">Start fixing the bug live, line by line, under pressure</button>
+              <button class="opt" data-correct>Roll back to v1, then fix v2 calmly on localhost</button>
+              <button class="opt">Delete the project and rebuild it from scratch</button>
+            </div>
+            <div class="why">Rollback is instant because the server kept the old version's files. Visitors get working v1 back in seconds while you debug with zero pressure.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Mid-deploy, the test stage fails: 1 of 3 checks broken, pipeline stops. What did that just do for you?</p>
+            <div class="opts">
+              <button class="opt">Wasted your time — tests are optional anyway</button>
+              <button class="opt">Deleted the broken code permanently</button>
+              <button class="opt" data-correct>Stopped a broken version before any visitor could ever see it</button>
+            </div>
+            <div class="why">The pipeline halts on a failed test, and the live site keeps serving the last good version. Broken code never makes it to the pass.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* ship-it pipeline */
+    (function () {
+      var deployBtn = document.getElementById("dp-deploy");
+      var changeBtn = document.getElementById("dp-change");
+      var rollbackBtn = document.getElementById("dp-rollback");
+      var log = document.getElementById("dp-log");
+      var meter = document.querySelector("#dp-meter > i");
+      var browser = document.getElementById("dp-browser");
+      var verBadge = document.getElementById("dp-version");
+      var siteBody = document.getElementById("dp-sitebody");
+      var visEl = document.getElementById("dp-visitors");
+      var stEls = {
+        build: document.getElementById("dp-st-build"),
+        test: document.getElementById("dp-st-test"),
+        upload: document.getElementById("dp-st-upload"),
+        live: document.getElementById("dp-st-live")
+      };
+      var HEADLINES = {
+        1: "Welcome to my site 👋",
+        2: "Welcome to my site 👋 — now 200% shinier ✨"
+      };
+      var visitors = 0, visTimer = null, started = false, liveV = 0;
+
+      function add(html) {
+        if (!started) { log.innerHTML = ""; started = true; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function paintStage(el, state) {
+        if (state === "doing") {
+          el.style.background = "var(--accent-faint)";
+          el.style.borderColor = "var(--accent-bright)";
+          el.style.color = "var(--accent)";
+        } else if (state === "done") {
+          el.style.background = "var(--good-soft)";
+          el.style.borderColor = "var(--good)";
+          el.style.color = "var(--ink)";
+        } else {
+          el.style.background = "var(--card)";
+          el.style.borderColor = "var(--border)";
+          el.style.color = "var(--muted)";
+        }
+      }
+
+      function resetStages() {
+        for (var k in stEls) { paintStage(stEls[k], "idle"); }
+      }
+
+      function goLive(v) {
+        liveV = v;
+        verBadge.textContent = "v" + v;
+        verBadge.style.background = v === 2 ? "var(--good)" : "var(--accent-bright)";
+        siteBody.textContent = HEADLINES[v];
+        if (browser.style.display === "none") {
+          browser.style.display = "block";
+          requestAnimationFrame(function () {
+            browser.style.opacity = "1";
+            browser.style.transform = "translateY(0)";
+          });
+          visitors = 1;
+          visEl.textContent = visitors;
+          visTimer = setInterval(function () {
+            visitors += Math.floor(Math.random() * 3) + 1;
+            visEl.textContent = visitors;
+          }, 1100);
+        }
+      }
+
+      function runPipeline(v, done) {
+        deployBtn.disabled = true;
+        changeBtn.disabled = true;
+        rollbackBtn.disabled = true;
+        resetStages();
+        meter.style.width = "0%";
+        add('<span class="acc">$ ship v' + v + "</span>");
+        var steps = [
+          { key: "build", pct: 28, wait: 450, line: '<span class="dim">⚙️ build — bundling files, squashing them small…</span>' },
+          { key: "test", pct: 60, wait: 1150, line: '<span class="ok">🧪 test — 3/3 passing ✓</span> <span class="dim">nothing broken gets through</span>' },
+          { key: "upload", pct: 85, wait: 1150, line: '<span class="dim">📤 upload — copying the bundle to the server…</span>' },
+          { key: "live", pct: 100, wait: 1000, line: '<span class="ok">🟢 LIVE — v' + v + " is on the internet. Anyone, anywhere, right now.</span>" }
+        ];
+        var t = 0;
+        steps.forEach(function (s, i) {
+          t += s.wait;
+          setTimeout(function () {
+            if (i > 0) { paintStage(stEls[steps[i - 1].key], "done"); }
+            paintStage(stEls[s.key], "doing");
+            meter.style.width = s.pct + "%";
+            add(s.line);
+            if (i === steps.length - 1) {
+              setTimeout(function () {
+                paintStage(stEls[s.key], "done");
+                done();
+              }, 550);
+            }
+          }, t);
+        });
+      }
+
+      deployBtn.addEventListener("click", function () {
+        runPipeline(1, function () {
+          goLive(1);
+          deployBtn.innerHTML = "🚀 v1 deployed ✓";
+          changeBtn.disabled = false;
+          add('<span class="dim">(localhost still has your working copy — the internet got its own)</span>');
+        });
+      });
+
+      changeBtn.addEventListener("click", function () {
+        add('<span class="acc">✏️ headline edited.</span> <span class="dim">deploying v2 — v1 keeps serving visitors while v2 builds…</span>');
+        runPipeline(2, function () {
+          goLive(2);
+          changeBtn.disabled = true;
+          rollbackBtn.disabled = false;
+          add('<span class="dim">v2 swapped in mid-scroll. zero downtime, nobody noticed a thing.</span>');
+        });
+      });
+
+      rollbackBtn.addEventListener("click", function () {
+        if (liveV !== 2) { return; }
+        goLive(1);
+        add('<span class="err">↩️ ROLLBACK</span> — v1 is back. <b>Instantly.</b> <span class="dim">The server kept v1\'s files, so going back is one click, not a rebuild.</span>');
+        rollbackBtn.disabled = true;
+        changeBtn.disabled = false;
+        changeBtn.innerHTML = "✏️ Re-deploy v2";
+      });
+    })();
+  </script>
+</body>
+</html>

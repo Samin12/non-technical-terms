@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GitHub — Claude Club</title>
+  <meta name="description" content="GitHub, explained in plain English: where your code lives and gets shared. With an interactive push &amp; pull demo." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="github" data-related="git-version-control,commit,pull-request,open-source,env-file">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>GitHub</h1>
+        <p class="tldr"><b>TLDR</b>Where your code lives and gets shared.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: push & pull demo ============ -->
+      <section class="widget" aria-label="GitHub push and pull demo">
+        <div class="widget-bar"><span class="dot"></span> Try it — push &amp; pull</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Three copies of one project: your laptop, GitHub (the shared copy), and a teammate's
+            laptop. Commits only travel when someone pushes or pulls. Get everyone in sync.
+          </p>
+
+          <div style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px; margin-bottom:0.9rem;">
+            <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.6rem;">
+              <div style="font-family:var(--sans); font-weight:700; font-size:0.8rem;">💻 You</div>
+              <div id="gh-badge-you" style="font-family:var(--sans); font-size:0.68rem; font-weight:700; margin:2px 0 6px; color:var(--muted);">—</div>
+              <div id="gh-chips-you" style="display:flex; flex-wrap:wrap; gap:4px; min-height:56px; align-content:flex-start;"></div>
+              <div id="gh-n-you" style="font-family:var(--sans); font-size:0.7rem; color:var(--muted); margin-top:6px;">0 commits</div>
+            </div>
+            <div style="background:var(--bg-deep); border:1px solid var(--border); border-radius:10px; padding:0.6rem;">
+              <div style="font-family:var(--sans); font-weight:700; font-size:0.8rem;">☁️ GitHub</div>
+              <div id="gh-badge-hub" style="font-family:var(--sans); font-size:0.68rem; font-weight:600; margin:2px 0 6px; color:var(--muted);">the shared copy</div>
+              <div id="gh-chips-hub" style="display:flex; flex-wrap:wrap; gap:4px; min-height:56px; align-content:flex-start;"></div>
+              <div id="gh-n-hub" style="font-family:var(--sans); font-size:0.7rem; color:var(--muted); margin-top:6px;">0 commits</div>
+            </div>
+            <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.6rem;">
+              <div style="font-family:var(--sans); font-weight:700; font-size:0.8rem;">💻 Teammate</div>
+              <div id="gh-badge-mate" style="font-family:var(--sans); font-size:0.68rem; font-weight:700; margin:2px 0 6px; color:var(--muted);">—</div>
+              <div id="gh-chips-mate" style="display:flex; flex-wrap:wrap; gap:4px; min-height:56px; align-content:flex-start;"></div>
+              <div id="gh-n-mate" style="font-family:var(--sans); font-size:0.7rem; color:var(--muted); margin-top:6px;">0 commits</div>
+            </div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.5rem;">
+            <span style="font-family:var(--sans); font-size:0.74rem; font-weight:700; color:var(--muted); width:88px; flex:none;">Your laptop</span>
+            <button class="wbtn" id="gh-you-commit">📸 Commit</button>
+            <button class="wbtn primary" id="gh-you-push">⬆️ Push</button>
+            <button class="wbtn" id="gh-you-pull">⬇️ Pull</button>
+          </div>
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <span style="font-family:var(--sans); font-size:0.74rem; font-weight:700; color:var(--muted); width:88px; flex:none;">Teammate</span>
+            <button class="wbtn" id="gh-mate-commit">📸 Commit</button>
+            <button class="wbtn primary" id="gh-mate-push">⬆️ Push</button>
+            <button class="wbtn" id="gh-mate-pull">⬇️ Pull</button>
+          </div>
+
+          <div id="gh-status" style="font-family:var(--sans); font-size:0.85rem; color:var(--ink-soft); min-height:1.3em;">Quiet repo. Make a commit on your laptop to start.</div>
+        </div>
+        <p class="widget-hint">Full loop: you commit → push → teammate pulls. Then have the teammate commit and push — and pull it back to your side.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Think of a shared Google Drive for code. You drop your work in, your teammate sees it,
+          everyone always has the latest version. Now make it better: nothing is ever
+          overwritten. Every version of every file, forever, with a record of who changed what
+          and why.
+        </p>
+
+        <p>
+          That's GitHub. And the first thing to untangle is the name: Git and GitHub are not
+          the same thing. <a href="git-version-control.html">Git</a> is the save system running
+          on your machine — the camera. GitHub is the website where projects' save histories
+          live online — the shared album everyone can open.
+        </p>
+
+        <p><strong>GitHub is the home on the internet where your project's history lives, gets backed up, and gets shared.</strong></p>
+
+        <h2>Push and pull — you just did it</h2>
+
+        <p>
+          When you made a <a href="commit.html">commit</a> in the widget, it landed on your
+          laptop only. GitHub was behind, and your teammate had no idea your work existed.
+          <strong>Push</strong> sent your commits up to the shared copy.
+          <strong>Pull</strong> brought GitHub's news down to whoever asked for it. That's the
+          entire rhythm of collaborative building: commit → push → everyone else pulls. No
+          emailing zip files, no "final-v7-SARA-EDITS", no overwriting each other — Git knows
+          how the histories fit together.
+        </p>
+
+        <h2>It's more than storage</h2>
+
+        <p>
+          GitHub is also where the world's <a href="open-source.html">open source</a> code
+          lives — millions of free projects you can read, copy, and learn from. It's where
+          <a href="pull-request.html">pull requests</a> happen, so strangers and teammates can
+          propose changes safely. It's a public portfolio: people check a GitHub profile the
+          way they check a designer's portfolio site. And it's where your AI plugs in — Claude
+          can read a repo to understand a project, and even open pull requests there for you.
+        </p>
+
+        <div class="callout">
+          One warning before you push anything public: bots scan GitHub around the clock
+          hunting for leaked API keys. Push a key by accident and it can be found in minutes —
+          even if you delete it afterward, because the history keeps everything. Keys belong in
+          a hidden <a href="env-file.html">env file</a> that never gets pushed. If a key ever
+          slips out: revoke it immediately and get a new one.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li><strong>A backup that survives anything</strong> — your laptop is mortal; your pushed history isn't</li>
+          <li><strong>Working with anyone</strong> — humans and AI agents sharing one project without stepping on each other</li>
+          <li><strong>The world's code library</strong> — almost every tool you'll ever install starts life as a GitHub repo</li>
+          <li><strong>A public track record</strong> — your commits and contributions become receipts of what you can build</li>
+          <li><strong>A launchpad</strong> — most hosting services deploy your site straight from your GitHub repo</li>
+        </ul>
+
+        <p>
+          Git gives you save points. GitHub puts the album somewhere safe, shared, and public
+          enough to matter.
+        </p>
+
+        <p><strong>Your laptop is mortal. GitHub isn't.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You committed a fix on your laptop, but your teammate says they don't see it. Why?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Commits are local until you push them to GitHub — and your teammate pulls</button>
+              <button class="opt">Commits stay private for 24 hours before appearing</button>
+              <button class="opt">Your teammate needs to restart their computer</button>
+            </div>
+            <div class="why">Exactly what the widget showed: a commit lives on your machine until you push it up, and others don't have it until they pull it down.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You're on a plane with no wifi. Can you keep working with Git?</p>
+            <div class="opts">
+              <button class="opt">No — Git stops working without GitHub</button>
+              <button class="opt" data-correct>Yes — commits are local; you push them when you land</button>
+              <button class="opt">Only if you downloaded GitHub's offline mode first</button>
+            </div>
+            <div class="why">Git is the save system on your machine; GitHub is the shared copy online. You can commit all flight long and sync up later.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You accidentally pushed an API key to a public repo, then deleted it in the next commit. Are you safe?</p>
+            <div class="opts">
+              <button class="opt">Yes — deleted means gone</button>
+              <button class="opt">Yes, as long as the repo doesn't have many visitors</button>
+              <button class="opt" data-correct>No — the history keeps it, and bots scan public pushes within minutes. Revoke the key now</button>
+            </div>
+            <div class="why">GitHub keeps every version ever, and automated scanners watch public code constantly. Treat a pushed key as compromised and replace it.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* push & pull demo */
+    (function () {
+      function g(id) { return document.getElementById(id); }
+
+      var cols = {
+        you: { chips: g("gh-chips-you"), badge: g("gh-badge-you"), n: g("gh-n-you") },
+        hub: { chips: g("gh-chips-hub"), badge: g("gh-badge-hub"), n: g("gh-n-hub") },
+        mate: { chips: g("gh-chips-mate"), badge: g("gh-badge-mate"), n: g("gh-n-mate") }
+      };
+      var statusEl = g("gh-status");
+      var sets = { you: [], hub: [], mate: [] };
+      var els = {};
+      var nextId = 1;
+      var busy = false;
+
+      function has(place, id) {
+        return sets[place].some(function (c) { return c.id === id; });
+      }
+      function name(p) { return p === "you" ? "you" : "the teammate"; }
+
+      function chipEl(item) {
+        var youish = item.by === "you";
+        var s = document.createElement("span");
+        s.textContent = "c" + item.id;
+        s.title = "commit c" + item.id + " by " + (youish ? "you" : "teammate");
+        s.style.cssText = "font-family:var(--mono);font-size:0.66rem;font-weight:700;padding:2px 6px;border-radius:6px;border:1px solid " + (youish ? "var(--accent-bright)" : "var(--good)") + ";background:" + (youish ? "var(--accent-faint)" : "var(--good-soft)") + ";opacity:0;transform:scale(.5);transition:all .3s ease;";
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            s.style.opacity = "1";
+            s.style.transform = "scale(1)";
+          });
+        });
+        return s;
+      }
+      function addChip(place, item) {
+        var el = chipEl(item);
+        els[place + ":" + item.id] = el;
+        cols[place].chips.appendChild(el);
+        sets[place].push(item);
+      }
+      function fly(fromEl, toPlace, item, done) {
+        var a = fromEl.getBoundingClientRect();
+        var b = cols[toPlace].chips.getBoundingClientRect();
+        var youish = item.by === "you";
+        var f = document.createElement("span");
+        f.textContent = "c" + item.id;
+        f.style.cssText = "position:fixed;z-index:99;pointer-events:none;font-family:var(--mono);font-size:0.66rem;font-weight:700;padding:2px 6px;border-radius:6px;border:1px solid " + (youish ? "var(--accent-bright)" : "var(--good)") + ";background:" + (youish ? "var(--accent-faint)" : "var(--good-soft)") + ";left:" + a.left + "px;top:" + a.top + "px;transition:left .5s cubic-bezier(.4,.1,.3,1), top .5s cubic-bezier(.4,.1,.3,1);";
+        document.body.appendChild(f);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            f.style.left = (b.left + 6) + "px";
+            f.style.top = (b.top + 6) + "px";
+          });
+        });
+        setTimeout(function () { f.remove(); done(); }, 520);
+      }
+
+      function refresh() {
+        ["you", "mate"].forEach(function (p) {
+          var ahead = sets[p].filter(function (c) { return !has("hub", c.id); }).length;
+          var behind = sets.hub.filter(function (c) { return !has(p, c.id); }).length;
+          var b = cols[p].badge;
+          if (!ahead && !behind) { b.textContent = "✓ in sync"; b.style.color = "var(--good)"; }
+          else if (ahead && behind) { b.textContent = "⬆ " + ahead + " ahead · ⬇ " + behind + " behind"; b.style.color = "var(--bad)"; }
+          else if (ahead) { b.textContent = "⬆ " + ahead + " ahead (unpushed)"; b.style.color = "var(--accent)"; }
+          else { b.textContent = "⬇ " + behind + " behind!"; b.style.color = "var(--bad)"; }
+        });
+        ["you", "hub", "mate"].forEach(function (p) {
+          cols[p].n.textContent = sets[p].length + (sets[p].length === 1 ? " commit" : " commits");
+        });
+      }
+      function synced() {
+        return sets.hub.length > 0 &&
+          sets.you.length === sets.hub.length &&
+          sets.mate.length === sets.hub.length &&
+          sets.hub.every(function (c) { return has("you", c.id) && has("mate", c.id); });
+      }
+      function say(html) { statusEl.innerHTML = html; }
+      function maybeSynced(fallback) {
+        if (synced()) {
+          say('<span style="color:var(--good);font-weight:700;">everyone in sync ✓</span> — all three copies hold the same ' + sets.hub.length + (sets.hub.length === 1 ? " commit." : " commits."));
+        } else {
+          say(fallback);
+        }
+      }
+
+      function commit(p) {
+        if (busy) return;
+        var item = { id: nextId++, by: p };
+        addChip(p, item);
+        refresh();
+        say("📸 c" + item.id + " committed on " + (p === "you" ? "your laptop" : "the teammate's laptop") + " — nobody else can see it yet. GitHub is behind until someone pushes.");
+      }
+      function push(p) {
+        if (busy) return;
+        var missing = sets[p].filter(function (c) { return !has("hub", c.id); });
+        if (!missing.length) {
+          say("⬆️ Nothing to push — GitHub already has every commit from " + name(p) + ".");
+          return;
+        }
+        busy = true;
+        var i = 0;
+        (function next() {
+          if (i >= missing.length) {
+            busy = false;
+            refresh();
+            say("⬆️ Pushed " + missing.length + " commit" + (missing.length > 1 ? "s" : "") + " to GitHub. " + (p === "you" ? "Your teammate is behind now — time for them to ⬇️ pull." : "You're behind now — ⬇️ pull to catch up."));
+            return;
+          }
+          var c = missing[i++];
+          fly(els[p + ":" + c.id], "hub", c, function () {
+            addChip("hub", c);
+            refresh();
+            next();
+          });
+        })();
+      }
+      function pull(p) {
+        if (busy) return;
+        var missing = sets.hub.filter(function (c) { return !has(p, c.id); });
+        if (!missing.length) {
+          say("⬇️ Already up to date — GitHub has nothing new for " + name(p) + ".");
+          return;
+        }
+        busy = true;
+        var i = 0;
+        (function next() {
+          if (i >= missing.length) {
+            busy = false;
+            refresh();
+            maybeSynced("⬇️ Pulled " + missing.length + " commit" + (missing.length > 1 ? "s" : "") + " down to " + name(p) + "'s laptop.");
+            return;
+          }
+          var c = missing[i++];
+          fly(els["hub:" + c.id], p, c, function () {
+            addChip(p, c);
+            refresh();
+            next();
+          });
+        })();
+      }
+
+      g("gh-you-commit").addEventListener("click", function () { commit("you"); });
+      g("gh-you-push").addEventListener("click", function () { push("you"); });
+      g("gh-you-pull").addEventListener("click", function () { pull("you"); });
+      g("gh-mate-commit").addEventListener("click", function () { commit("mate"); });
+      g("gh-mate-push").addEventListener("click", function () { push("mate"); });
+      g("gh-mate-pull").addEventListener("click", function () { pull("mate"); });
+
+      refresh();
+    })();
+  </script>
+</body>
+</html>

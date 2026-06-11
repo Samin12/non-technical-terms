@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Headless — Claude Club</title>
+  <meta name="description" content="Headless, explained in plain English: running with no screen, nobody watching. With an interactive 'screen off, work on' demo." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="headless" data-related="computer-use,server,daemon,cron-job">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Headless</h1>
+        <p class="tldr"><b>TLDR</b>Running with no screen, nobody watching.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: screen off, work on ============ -->
+      <section class="widget" aria-label="Headless browser demo">
+        <div class="widget-bar"><span class="dot"></span> Try it — screen off, work on</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            A robot browser is about to do a 5-step job. Run it once with the monitor on.
+            Then run it again — and pull the plug halfway through.
+          </p>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="hl-run">▶ Run the task</button>
+            <button class="wbtn" id="hl-monitor">🔌 Monitor: <b>ON</b></button>
+            <span id="hl-time" style="font-family:var(--sans); font-size:0.8rem; font-weight:600; color:var(--muted); margin-left:auto;"></span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px;">
+            <div style="position:relative; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--card); min-height:210px; display:flex; flex-direction:column;">
+              <div id="hl-url" style="background:var(--bg-deep); border-bottom:1px solid var(--border-soft); padding:6px 10px; font-size:0.72rem; font-family:var(--mono); color:var(--muted);">about:blank</div>
+              <div id="hl-screen" style="flex:1; padding:10px; font-family:var(--sans); font-size:0.8rem;"></div>
+              <div id="hl-dark" style="position:absolute; inset:0; background:#191817; color:#8d897f; display:none; align-items:center; justify-content:center; flex-direction:column; gap:4px; font-family:var(--mono); font-size:0.8rem; text-align:center;"><span style="font-size:1.4rem;">⏻</span>no signal</div>
+            </div>
+            <div class="wlog" id="hl-log" style="min-height:210px; max-height:210px;"><span class="dim">The task log. This is where the truth lives…</span></div>
+          </div>
+        </div>
+        <p class="widget-hint">Flip the monitor off mid-run. The log never stutters — the work was never happening on the screen in the first place.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          A player piano doesn't need the keys lit to play the song. The roll turns, the
+          hammers strike, the music comes out — whether the room is full or empty, lights on
+          or off.
+        </p>
+
+        <p>
+          Software is the same. The screen was never for the program. It's for you. Every
+          pixel your computer draws is a courtesy to the human watching — and when no human is
+          watching, the same work runs fine without it.
+        </p>
+
+        <p><strong>Headless means software running with no screen attached — same work, same results, zero pixels.</strong></p>
+
+        <h2>You proved it with the plug</h2>
+
+        <p>
+          In the demo above, you yanked the monitor mid-task. The visual pane went black; the
+          log didn't even stutter. Step four, step five, "5 rows extracted ✓" — same result,
+          0 pixels rendered. And if you compared timings, the headless run finished faster,
+          because drawing pixels is real work the computer happily skipped. Run it again with
+          the monitor on and watch the same five steps draw themselves — pleasant, but
+          completely optional.
+        </p>
+
+        <p>
+          This isn't a toy fact. It's how the entire internet runs. Nobody plugs a monitor
+          into the cloud. Every <a href="server.html">server</a> answering your requests right
+          now is headless — racks of machines in dark warehouses, no screens, no keyboards,
+          doing more work per minute than every laptop you've ever owned combined.
+        </p>
+
+        <h2>Headless browsers: how your AI surfs</h2>
+
+        <p>
+          The robot in the widget was a headless browser: a real browser — real Chrome,
+          usually — with the window removed. It loads pages, fills forms, clicks buttons, runs
+          JavaScript, even takes screenshots, all in memory. When Claude researches a site,
+          scrapes a pricing table, or tests your checkout flow, this is the machinery
+          underneath.
+        </p>
+
+        <p>
+          It's also the backbone of <a href="computer-use.html">computer use</a> agents and
+          every scraping tool you've heard of. The opposite — "headful," an actual visible
+          window — exists mostly for debugging, when a human wants to watch the robot work.
+          And that screenshot step matters more than it sounds: a headless browser can't show
+          you what went wrong, but it can photograph it. Logs plus screenshots are how you see
+          into a thing that has no screen.
+        </p>
+
+        <h2>Why your automations don't need your laptop open</h2>
+
+        <p>
+          Here's where it clicks for builders. Everyone asks the same question: "if I close my
+          laptop, does my automation stop?" If it runs <em>on your laptop</em> — yes. Which is
+          exactly why you ship it to a server, where it runs headless, on a schedule — that's a
+          <a href="cron-job.html">cron job</a>, next lesson — often as an always-on background
+          service, the <a href="daemon.html">daemon</a> you just met. Your screen sleeps. The
+          work doesn't. Every automation I run works this way — agents doing their rounds on
+          a machine I haven't physically looked at in weeks.
+        </p>
+
+        <div class="callout">
+          Pro tip: headless failures feel spooky because you can't watch them happen. So make
+          every headless task narrate itself — log each step, capture a screenshot on failure.
+          You just saw why this works: the log told you everything the dark screen didn't.
+        </div>
+
+        <p>What this unlocks for you:</p>
+
+        <ul>
+          <li>Scrapers and browser automations that don't hijack your mouse for twenty minutes</li>
+          <li>AI agents that browse, fill, click, and extract at 3 AM — no lit screen required</li>
+          <li>An answer to "where does my automation live when I'm offline?" — a headless machine that never sleeps</li>
+          <li>A debugging habit that actually works: when headless work fails, ask for the logs and a screenshot</li>
+        </ul>
+
+        <p><strong>The screen is for you. The work never needed it.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your scraping task is mid-run on a server in a datacenter with no monitors anywhere. What happens to the task?</p>
+            <div class="opts">
+              <button class="opt">It pauses until someone attaches a screen</button>
+              <button class="opt" data-correct>It runs to completion — the output was never going to a screen anyway</button>
+              <button class="opt">It runs, but the results come out lower quality</button>
+            </div>
+            <div class="why">Pixels are a courtesy for humans. The program writes results to files and logs, not to a monitor — exactly what you saw when you pulled the plug mid-task.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Your AI needs to check prices on 50 product pages tonight. Which setup makes sense?</p>
+            <div class="opts">
+              <button class="opt">Open 50 tabs on your laptop and watch them yourself</button>
+              <button class="opt" data-correct>A headless browser on a server, logging results as it goes</button>
+              <button class="opt">It can't be done — browsing requires a person at a screen</button>
+            </div>
+            <div class="why">A headless browser loads and reads pages in memory — no window needed, faster without rendering, and it doesn't care that your laptop is closed.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. A headless automation failed overnight and you can't "see" what happened. Best move?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Read its logs and have it capture a screenshot at the failing step</button>
+              <button class="opt">Plug a monitor into the server and stare at the desktop</button>
+              <button class="opt">Assume the server is broken and migrate everything elsewhere</button>
+            </div>
+            <div class="why">Headless software can still narrate and photograph its work. Logs plus on-failure screenshots are the standard way to see inside a thing with no screen.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* screen off, work on */
+    (function () {
+      var runBtn = document.getElementById("hl-run");
+      var monBtn = document.getElementById("hl-monitor");
+      var screen = document.getElementById("hl-screen");
+      var urlBar = document.getElementById("hl-url");
+      var dark = document.getElementById("hl-dark");
+      var log = document.getElementById("hl-log");
+      var timeEl = document.getElementById("hl-time");
+
+      var monitorOn = true;
+      var running = false;
+      var curStep = null;
+      var best = { on: null, off: null };
+
+      function addLog(html) {
+        if (!log.dataset.started) { log.innerHTML = ""; log.dataset.started = "1"; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function box(t) {
+        return '<div style="flex:1; border:1px solid var(--border); border-radius:7px; padding:8px 4px; text-align:center; font-size:0.7rem; background:var(--card-raise);">' + t + "</div>";
+      }
+      function field(t, filled) {
+        return '<div style="border:1px solid ' + (filled ? "var(--accent-bright)" : "var(--border)") + '; border-radius:7px; padding:6px 8px; font-size:0.74rem; margin-bottom:5px; background:var(--card-raise); min-height:14px;">' + t + "</div>";
+      }
+
+      var STEPS = [
+        {
+          url: "acme.test/pricing", label: "opening the pricing page", done: "page loaded (200 OK)",
+          view: function () {
+            return '<div style="font-weight:700; margin-bottom:6px;">Acme — Pricing</div><div style="display:flex; gap:6px;">' +
+              box("Starter<br/>$9") + box("Pro<br/>$29") + box("Team<br/>$99") + "</div>";
+          }
+        },
+        {
+          url: "acme.test/quote", label: "filling the form", done: "2 fields filled",
+          view: function () {
+            return '<div style="font-weight:700; margin-bottom:6px;">Request a quote</div>' +
+              field("robot@agent.ai", true) + field("Acme Inc — 50 seats", true);
+          }
+        },
+        {
+          url: "acme.test/quote", label: "clicking submit", done: "submitted — confirmation received",
+          view: function () {
+            return '<div style="font-weight:700; margin-bottom:6px;">Request a quote</div>' +
+              field("robot@agent.ai", false) + field("Acme Inc — 50 seats", false) +
+              '<div style="margin-top:8px;"><span style="background:var(--ink); color:var(--bg); border-radius:7px; padding:5px 14px; font-size:0.74rem; font-weight:700;">Submit ✓</span></div>';
+          }
+        },
+        {
+          url: "acme.test/quote/done", label: "taking a screenshot", done: "screenshot saved (124 KB)",
+          view: function () {
+            return '<div style="text-align:center; padding-top:22px; font-size:1.7rem;">📸</div>' +
+              '<div style="text-align:center; font-size:0.74rem; color:var(--muted);">captured 1280×800</div>';
+          }
+        },
+        {
+          url: "acme.test/plans → table", label: "extracting the table", done: "5 rows extracted ✓",
+          view: function () {
+            var rows = [["Starter", "$9"], ["Pro", "$29"], ["Team", "$99"], ["Scale", "$249"], ["Enterprise", "$999"]];
+            return '<div style="font-weight:700; margin-bottom:6px;">extracted: 5 rows</div>' +
+              '<table style="width:100%; border-collapse:collapse; font-size:0.72rem;">' +
+              rows.map(function (r) {
+                return '<tr><td style="border:1px solid var(--border-soft); padding:3px 6px;">' + r[0] +
+                  '</td><td style="border:1px solid var(--border-soft); padding:3px 6px;">' + r[1] + "</td></tr>";
+              }).join("") + "</table>";
+          }
+        }
+      ];
+
+      function paint(s) {
+        urlBar.textContent = s ? s.url : "about:blank";
+        screen.innerHTML = s
+          ? s.view()
+          : '<div style="color:var(--muted); text-align:center; padding-top:34px; font-size:0.8rem;">— idle —<br/>press ▶ Run the task</div>';
+      }
+      paint(null);
+
+      monBtn.addEventListener("click", function () {
+        monitorOn = !monitorOn;
+        monBtn.innerHTML = "🔌 Monitor: <b>" + (monitorOn ? "ON" : "OFF") + "</b>";
+        dark.style.display = monitorOn ? "none" : "flex";
+        if (!monitorOn && running) {
+          addLog('<span class="err">🔌 monitor unplugged mid-task.</span> <span class="dim">the robot didn\'t flinch.</span>');
+        }
+        if (monitorOn && running) {
+          addLog('<span class="dim">🔌 monitor back on — here\'s what you missed: nothing. it kept working.</span>');
+          paint(curStep);
+        }
+      });
+
+      runBtn.addEventListener("click", function () {
+        if (running) return;
+        running = true;
+        runBtn.disabled = true;
+        var t0 = Date.now();
+        var pixels = 0;
+        var i = 0;
+        addLog('<span class="acc">▶ task started ' + (monitorOn ? "(monitor on)" : "(headless — monitor off)") + "</span>");
+
+        function next() {
+          if (i >= STEPS.length) { finish(); return; }
+          var s = STEPS[i];
+          i++;
+          curStep = s;
+          var el = ((Date.now() - t0) / 1000).toFixed(1);
+          addLog('<span class="dim">[' + el + "s]</span> step " + i + "/5 — " + s.label + "…");
+          if (monitorOn) { paint(s); pixels += 1024000; }
+          setTimeout(function () {
+            addLog('<span class="ok">  ✓ ' + s.done + "</span>");
+            next();
+          }, monitorOn ? 880 : 580);
+        }
+
+        function finish() {
+          var secs = ((Date.now() - t0) / 1000).toFixed(1);
+          var headlessRun = pixels === 0;
+          addLog('<span class="ok">✓ task complete in ' + secs + "s.</span>");
+          addLog(headlessRun
+            ? '<span class="acc">0 pixels rendered — same result.</span>'
+            : '<span class="acc">' + pixels.toLocaleString() + " pixels rendered along the way.</span>");
+          if (headlessRun) { best.off = best.off === null ? +secs : Math.min(best.off, +secs); }
+          else { best.on = best.on === null ? +secs : Math.min(best.on, +secs); }
+          if (best.on !== null && best.off !== null) {
+            addLog('<span class="dim">screen-on run: ' + best.on.toFixed(1) + "s · headless run: " + best.off.toFixed(1) + "s — the pixels were costing you time.</span>");
+          }
+          timeEl.textContent = "last run: " + secs + "s " + (headlessRun ? "(headless)" : "(screen on)");
+          running = false;
+          runBtn.disabled = false;
+          curStep = null;
+        }
+
+        next();
+      });
+    })();
+  </script>
+</body>
+</html>

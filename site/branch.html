@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Branch — Claude Club</title>
+  <meta name="description" content="Branch, explained in plain English: a safe copy to try changes on. With an interactive parallel timelines demo." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="branch" data-related="git-version-control,commit,pull-request,github">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Branch</h1>
+        <p class="tldr"><b>TLDR</b>A safe copy to try changes on.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: parallel timelines ============ -->
+      <section class="widget" aria-label="Branch parallel timelines">
+        <div class="widget-bar"><span class="dot"></span> Try it — parallel timelines</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            main is your live, working project. Fork off a branch, go wild on it, then decide:
+            merge the experiment in, or torch it. Watch what happens to main either way.
+          </p>
+
+          <div style="background:var(--card); border:1px solid var(--border-soft); border-radius:10px; padding:0.9rem; overflow-x:auto;">
+            <div style="display:flex; align-items:flex-start; gap:10px; min-height:40px;">
+              <span style="font-family:var(--sans); font-size:0.64rem; font-weight:800; letter-spacing:0.04em; color:#fff; background:var(--ink); border-radius:6px; padding:3px 7px; flex:none;">main</span>
+              <div id="br-main" style="display:flex; align-items:flex-start; gap:6px;"></div>
+            </div>
+            <div id="br-row2" style="display:none; align-items:flex-start; gap:10px; margin-top:14px; transition:all .4s ease;">
+              <span style="font-family:var(--sans); font-size:0.64rem; font-weight:800; letter-spacing:0.04em; color:#fff; background:var(--accent-bright); border-radius:6px; padding:3px 7px; flex:none;">try-new-idea</span>
+              <span style="color:var(--muted); font-size:0.8rem; flex:none; margin-top:-1px;">↘</span>
+              <div id="br-branch" style="display:flex; align-items:flex-start; gap:6px;"></div>
+            </div>
+          </div>
+
+          <div class="wrow" style="margin:0.9rem 0 0.6rem;">
+            <button class="wbtn primary" id="br-create">🌿 Create branch: try-new-idea</button>
+            <button class="wbtn" id="br-cmain">➕ Boring fix on main</button>
+            <button class="wbtn" id="br-cbr" disabled>🧪 Wild experiment on branch</button>
+          </div>
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn" id="br-merge" disabled>✅ Merge branch into main</button>
+            <button class="wbtn danger" id="br-del" disabled>🗑️ Delete branch</button>
+          </div>
+
+          <div id="br-meta" style="font-family:var(--sans); font-size:0.78rem; font-weight:600; color:var(--muted); margin-bottom:0.35rem;"></div>
+          <div id="br-status" style="font-family:var(--sans); font-size:0.85rem; color:var(--ink-soft); min-height:1.3em;">🛡️ main is safe either way.</div>
+        </div>
+        <p class="widget-hint">Run it twice: merge the experiment once, delete it once. Check main's dots after each ending.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Grandma's cookie recipe is perfect. You suspect peanut butter would make it better.
+          You do <em>not</em> scribble on her recipe card. You photocopy it, experiment on the
+          copy, and the original stays safe in the drawer no matter how the peanut butter
+          batch turns out.
+        </p>
+
+        <p>
+          Software has the same tension. The project that works is precious. Experiments are
+          how it gets better. Branches resolve it: experiment all you want, on a copy.
+        </p>
+
+        <p><strong>A branch is a parallel copy of your project where you can change anything without touching the original.</strong></p>
+
+        <h2>main is sacred</h2>
+
+        <p>
+          The top timeline in the widget — literally named <code>main</code> in
+          <a href="git-version-control.html">Git</a> — is the version of your project that
+          works. It's what's live, what customers see, what you'd demo. While your experiment
+          ran wild on its own track below, main kept calmly collecting its boring, reliable
+          fixes. Two timelines, zero interference. Every dot on either track is a
+          <a href="commit.html">commit</a> — same snapshots, just filed on different rails.
+        </p>
+
+        <h2>Two endings, both safe</h2>
+
+        <p>
+          You saw both ways an experiment can end. If it proves itself, you <strong>merge</strong>:
+          the branch's commits flow into main with a little merge marker, and the wild idea
+          becomes official. If it flops, you <strong>delete</strong>: the branch vanishes, and
+          main never even knew it existed. That's the entire trick — the cost of a failed
+          experiment is zero. The status line said it the whole time: main is safe either way.
+        </p>
+
+        <p>
+          On teams, the merge isn't a solo click. You open a
+          <a href="pull-request.html">pull request</a> — "here's my branch, please review it" —
+          and the change lands only after someone approves. Branch, then PR, then merge: that's
+          the daily rhythm of every software team on <a href="github.html">GitHub</a>.
+        </p>
+
+        <div class="callout">
+          This is also how you stay safe with AI. Asking Claude for a risky refactor? Have it
+          work on a branch. The AI can be genuinely bold — rewrite whole files, try strange
+          ideas — precisely because main can't get hurt. Branches are cheap and disposable:
+          make one per idea, name it after the idea (<code>try-new-pricing</code>,
+          <code>fix-login</code>), and toss the ones that don't work out.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li><strong>Try terrifying ideas calmly</strong> — the redesign, the rewrite, the weird experiment</li>
+          <li><strong>Many things in flight at once</strong> — you on one branch, a teammate or an AI agent on another, no collisions</li>
+          <li><strong>Reviewable work</strong> — a finished branch becomes a pull request someone can actually read</li>
+          <li><strong>Ship anytime</strong> — main always works, so you can release even mid-experiment</li>
+        </ul>
+
+        <p>
+          The original recipe stays in the drawer. You scribble on copies — and only the
+          improvements that earn it get written into the family cookbook.
+        </p>
+
+        <p><strong>Branch first. Be bold second.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You want Claude to attempt a risky redesign while your real site keeps working. Best setup?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Create a branch and let the experiment live there — main stays untouched</button>
+              <button class="opt">Let it edit main directly, but watch it closely</button>
+              <button class="opt">Email yourself a zip of the project first, just in case</button>
+            </div>
+            <div class="why">A branch is a full parallel copy. The AI can be bold there because the working version of your project never feels a thing.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. The experiment flopped. What does deleting the branch cost you?</p>
+            <div class="opts">
+              <button class="opt">You lose the recent commits on main too</button>
+              <button class="opt" data-correct>Nothing — main never contained the experiment in the first place</button>
+              <button class="opt">Main has to be restored from a backup afterward</button>
+            </div>
+            <div class="why">The experiment only ever existed on its own timeline. Delete it and main is exactly as it was — that zero-cost failure is the whole point of branching.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. The experiment turned out great. How does it become part of the real product?</p>
+            <div class="opts">
+              <button class="opt">Rename the branch to main</button>
+              <button class="opt">Copy-paste the changed files into a fresh project</button>
+              <button class="opt" data-correct>Merge the branch into main — on teams, usually via a pull request</button>
+            </div>
+            <div class="why">Merging flows the branch's commits into main, history and all. With teammates, a pull request adds a review step before the merge happens.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* parallel timelines */
+    (function () {
+      var MAIN_POOL = ["fix typo", "bump prices", "update footer", "fix dead link", "tidy css", "rename button", "patch login"];
+      var BR_POOL = ["neon everything", "homepage in haiku", "add AI chatbot", "comic sans??", "3D spinning logo", "invert all colors"];
+
+      var mainRow = document.getElementById("br-main");
+      var brRow = document.getElementById("br-branch");
+      var row2 = document.getElementById("br-row2");
+      var statusEl = document.getElementById("br-status");
+      var meta = document.getElementById("br-meta");
+      var bCreate = document.getElementById("br-create");
+      var bMain = document.getElementById("br-cmain");
+      var bBr = document.getElementById("br-cbr");
+      var bMerge = document.getElementById("br-merge");
+      var bDel = document.getElementById("br-del");
+
+      var mi = 0, bi = 0;
+      var mainN = 0, brN = 0;
+      var brLive = false, busy = false;
+      var brLabels = [];
+
+      function dot(label, color, diamond) {
+        var w = document.createElement("span");
+        w.style.cssText = "display:inline-flex;flex-direction:column;align-items:center;gap:3px;flex:none;opacity:0;transform:scale(.4);transition:all .35s ease;";
+        var c = document.createElement("span");
+        c.style.cssText = "width:13px;height:13px;background:" + color + ";flex:none;" + (diamond ? "border-radius:3px;transform:rotate(45deg);" : "border-radius:50%;");
+        var t = document.createElement("span");
+        t.textContent = label;
+        t.style.cssText = "font-family:var(--sans);font-size:0.58rem;color:var(--muted);max-width:62px;text-align:center;line-height:1.2;";
+        w.appendChild(c);
+        w.appendChild(t);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            w.style.opacity = "1";
+            w.style.transform = "scale(1)";
+          });
+        });
+        return w;
+      }
+      function addDot(row, label, color, diamond) {
+        if (row.children.length) {
+          var seg = document.createElement("span");
+          seg.style.cssText = "width:12px;height:2px;background:var(--border);flex:none;margin-top:6px;";
+          row.appendChild(seg);
+        }
+        row.appendChild(dot(label, color, diamond));
+      }
+      function say(html) { statusEl.innerHTML = html; }
+      function metaLine() {
+        meta.innerHTML = "<b>main:</b> " + mainN + " commits · <b>try-new-idea:</b> " + (brLive ? brN + " commit" + (brN === 1 ? "" : "s") : "—");
+      }
+
+      bCreate.addEventListener("click", function () {
+        if (busy) return;
+        brLive = true;
+        brN = 0;
+        brLabels = [];
+        brRow.innerHTML = "";
+        row2.style.display = "flex";
+        row2.style.opacity = "1";
+        row2.style.transform = "none";
+        bCreate.disabled = true;
+        bBr.disabled = false;
+        bMerge.disabled = false;
+        bDel.disabled = false;
+        say("🌿 Branch created — a full copy of main, frozen at this moment. Experiment freely; main can't feel a thing.");
+        metaLine();
+      });
+
+      bMain.addEventListener("click", function () {
+        if (busy) return;
+        var l = MAIN_POOL[mi % MAIN_POOL.length];
+        mi++;
+        addDot(mainRow, l, "var(--ink)");
+        mainN++;
+        say("➕ main ships another boring, reliable fix: “" + l + "”." + (brLive ? " The branch doesn't care." : ""));
+        metaLine();
+      });
+
+      bBr.addEventListener("click", function () {
+        if (busy || !brLive) return;
+        var l = BR_POOL[bi % BR_POOL.length];
+        bi++;
+        addDot(brRow, l, "var(--accent-bright)");
+        brN++;
+        brLabels.push(l);
+        say("🧪 “" + l + "” — exists only on the branch. main has no idea.");
+        metaLine();
+      });
+
+      bMerge.addEventListener("click", function () {
+        if (busy || !brLive) return;
+        if (!brN) {
+          say("🤨 The branch has no commits yet — run at least one wild experiment first.");
+          return;
+        }
+        busy = true;
+        bBr.disabled = true;
+        bMerge.disabled = true;
+        bDel.disabled = true;
+        row2.style.opacity = "0.35";
+        var n = brN;
+        var labels = brLabels.slice();
+        setTimeout(function () {
+          labels.forEach(function (l) { addDot(mainRow, l, "var(--accent-bright)"); });
+          addDot(mainRow, "merge", "var(--good)", true);
+          mainN += n + 1;
+          metaLine();
+          setTimeout(function () {
+            row2.style.display = "none";
+            row2.style.opacity = "1";
+            brLive = false;
+            brN = 0;
+            brLabels = [];
+            bCreate.disabled = false;
+            busy = false;
+            say("✅ <b>Merged.</b> " + n + " experiment commit" + (n === 1 ? "" : "s") + " + a ◆ merge marker just became part of main. The wild idea is official now — and main was safe the whole time.");
+            metaLine();
+          }, 650);
+        }, 450);
+      });
+
+      bDel.addEventListener("click", function () {
+        if (busy || !brLive) return;
+        busy = true;
+        bBr.disabled = true;
+        bMerge.disabled = true;
+        bDel.disabled = true;
+        row2.style.opacity = "0";
+        row2.style.transform = "translateY(8px)";
+        setTimeout(function () {
+          row2.style.display = "none";
+          row2.style.opacity = "1";
+          row2.style.transform = "none";
+          brLive = false;
+          brN = 0;
+          brLabels = [];
+          bCreate.disabled = false;
+          busy = false;
+          say("🗑️ Branch deleted. The experiment is gone without a trace — main never even knew it existed. 🛡️ main is safe either way.");
+          metaLine();
+        }, 420);
+      });
+
+      ["v1", "fix login", "new logo"].forEach(function (l) {
+        addDot(mainRow, l, "var(--ink)");
+        mainN++;
+      });
+      metaLine();
+    })();
+  </script>
+</body>
+</html>

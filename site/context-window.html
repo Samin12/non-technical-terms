@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Context Window — Claude Club</title>
+  <meta name="description" content="Context window, explained in plain English: how much your AI can hold in mind at once. With an interactive desk simulator." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="context-window" data-related="token,session,compaction,prompt-caching">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Context Window</h1>
+        <p class="tldr"><b>TLDR</b>How much your AI can hold in mind at once.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: the desk that fills up ============ -->
+      <section class="widget" aria-label="Context window desk simulator">
+        <div class="widget-bar"><span class="dot"></span> Try it — the desk that fills up</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            This desk is your AI's working memory. Everything it can "see" has to fit on the desk.
+            Keep adding stuff and watch what happens to the oldest items.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn primary" id="cw-msg">💬 Send a chat message</button>
+            <button class="wbtn" id="cw-doc">📄 Paste a big document</button>
+            <button class="wbtn" id="cw-new">🧹 Start a fresh session</button>
+          </div>
+
+          <div style="font-family:var(--sans); font-size:0.8rem; font-weight:600; color:var(--ink-soft); display:flex; justify-content:space-between; margin-bottom:0.35rem;">
+            <span>Desk size: <span id="cw-size-label">Small (20 tokens)</span></span>
+            <span id="cw-used">0 / 20 tokens</span>
+          </div>
+          <input type="range" class="wrange" id="cw-size" min="0" max="2" step="1" value="0" style="margin-bottom:0.8rem;" />
+
+          <div class="wmeter" id="cw-meter" style="margin-bottom:0.9rem;"><i></i></div>
+
+          <div id="cw-stack" style="display:flex; flex-wrap:wrap; gap:6px; min-height:74px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:10px;"></div>
+
+          <div style="font-family:var(--sans); font-size:0.85rem; color:var(--muted); margin-top:0.8rem;">
+            🗑️ Fallen off the desk (forgotten): <b id="cw-lost" style="color:var(--bad);">0 items</b>
+          </div>
+        </div>
+        <p class="widget-hint">Drag the slider to give the AI a bigger desk — then paste a few documents anyway. Every desk has an edge.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Your AI doesn't have a memory the way you do. It has a desk.
+        </p>
+
+        <p>
+          Everything it knows about your conversation — your instructions, every message you've
+          sent, every reply it gave, that 40-page PDF you pasted — all of it has to physically
+          sit on that desk while it works. If something is on the desk, the AI can use it.
+          If it's not on the desk, it does not exist. There is no filing cabinet behind it.
+        </p>
+
+        <p>
+          <strong>That desk is the context window.</strong> Its size is measured in
+          <a href="token.html">tokens</a> — the chunks AI reads text in. A model with a 200,000-token
+          window has a desk that fits roughly 150,000 words. Sounds huge. Fills up faster than you think.
+        </p>
+
+        <h2>Why your AI "forgets"</h2>
+
+        <p>
+          You've felt this. Two hours into a long chat, the AI starts contradicting things you
+          agreed on at the start. It's not being lazy — the desk overflowed. When new stuff
+          arrives and there's no room, the oldest stuff gets pushed off the edge, exactly like
+          the simulator above. The AI isn't ignoring your early instructions. From where it
+          sits, they're simply gone.
+        </p>
+
+        <h2>What's actually taking up space</h2>
+
+        <p>The desk holds more than your chat messages:</p>
+
+        <ul>
+          <li><strong>The standing instructions</strong> — the <a href="system-prompt.html">system prompt</a> sits on the desk the entire time</li>
+          <li><strong>Every file you attach</strong> — that PDF is thousands of tokens, permanently occupying desk space</li>
+          <li><strong>The AI's own replies</strong> — yes, its answers count against the budget too</li>
+          <li><strong>Tool results</strong> — when an agent reads files or searches the web, everything it finds lands on the desk</li>
+        </ul>
+
+        <div class="callout">
+          This is the single most useful debugging instinct for working with AI: when the answers
+          get worse, ask "what's on the desk right now?" Usually the answer is: too much, and the
+          important part fell off.
+        </div>
+
+        <h2>How builders work with it</h2>
+
+        <p>
+          You don't fight the desk. You manage it:
+        </p>
+
+        <ul>
+          <li><strong>Start fresh sessions per task.</strong> A new <a href="session.html">session</a> is a clean desk — that's why first answers feel so sharp.</li>
+          <li><strong>Don't paste the whole manual</strong> when one page will do. Desk space is attention: the less clutter, the better the focus on what matters.</li>
+          <li><strong>Summarize long chats.</strong> Tools like Claude do this automatically — it's called <a href="compaction.html">compaction</a>, and it's the next-but-one lesson.</li>
+        </ul>
+
+        <p>
+          Once you start picturing the desk, half the "weird" AI behavior you've seen stops being
+          weird. It's not moody. It's just out of desk.
+        </p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Two hours into a chat, the AI forgets a rule you set at the very start. What most likely happened?</p>
+            <div class="opts">
+              <button class="opt">The AI decided the rule no longer applies</button>
+              <button class="opt" data-correct>The conversation outgrew the context window, and the early messages fell off the desk</button>
+              <button class="opt">The rule expired after one hour</button>
+            </div>
+            <div class="why">Old messages get pushed out when the window fills. From the AI's view, your early rule doesn't exist anymore — it's not on the desk.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Which of these takes up context window space?</p>
+            <div class="opts">
+              <button class="opt">Only the messages you type</button>
+              <button class="opt">Only attached files</button>
+              <button class="opt" data-correct>Your messages, the AI's replies, attached files, and the system prompt — all of it</button>
+            </div>
+            <div class="why">Everything the AI can "see" sits on the desk together. That's why a few big PDFs can crowd out an entire conversation.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Why does a brand-new session often feel smarter than a long-running one?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Clean desk — full attention on your one question instead of two hours of clutter</button>
+              <button class="opt">New sessions get a faster model</button>
+              <button class="opt">It doesn't — long sessions are always better</button>
+            </div>
+            <div class="why">Same model, emptier desk. Less clutter competing for attention means sharper answers on the thing you just asked.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* the desk that fills up */
+    (function () {
+      var SIZES = [
+        { label: "Small (20 tokens)", cap: 20 },
+        { label: "Medium (40 tokens)", cap: 40 },
+        { label: "Large (80 tokens)", cap: 80 }
+      ];
+      var ITEMS = [
+        { icon: "💬", name: "message", min: 3, max: 6 },
+        { icon: "📄", name: "document", min: 18, max: 25 }
+      ];
+      var cap = 20, used = 0, lost = 0, n = 0;
+      var stack = [];
+
+      var elStack = document.getElementById("cw-stack");
+      var elMeter = document.querySelector("#cw-meter > i");
+      var elMeterBox = document.getElementById("cw-meter");
+      var elUsed = document.getElementById("cw-used");
+      var elLost = document.getElementById("cw-lost");
+      var elSize = document.getElementById("cw-size");
+      var elSizeLabel = document.getElementById("cw-size-label");
+
+      function chip(item) {
+        var c = document.createElement("span");
+        c.style.cssText = "font-family:var(--sans);font-size:0.74rem;font-weight:600;background:var(--card-raise);border:1px solid var(--border);border-radius:7px;padding:4px 8px;transition:all .4s ease;";
+        c.style.minWidth = (item.size * 6 + 30) + "px";
+        c.textContent = item.icon + " " + item.name + " #" + item.id + " (" + item.size + "t)";
+        return c;
+      }
+
+      function render() {
+        elUsed.textContent = used + " / " + cap + " tokens";
+        var pct = Math.min(100, Math.round((used / cap) * 100));
+        elMeter.style.width = pct + "%";
+        elMeterBox.classList.toggle("full", pct >= 95);
+        elLost.textContent = lost + (lost === 1 ? " item" : " items");
+        elSizeLabel.textContent = SIZES[elSize.value].label;
+      }
+
+      function evict() {
+        while (used > cap && stack.length) {
+          var old = stack.shift();
+          used -= old.size;
+          lost++;
+          old.el.style.opacity = "0";
+          old.el.style.transform = "translateY(14px) rotate(6deg)";
+          setTimeout(function (e) { return function () { e.remove(); }; }(old.el), 400);
+        }
+      }
+
+      function addItem(kind) {
+        var spec = ITEMS[kind];
+        n++;
+        var item = { id: n, icon: spec.icon, name: spec.name, size: spec.min + Math.floor(Math.random() * (spec.max - spec.min + 1)) };
+        item.el = chip(item);
+        elStack.appendChild(item.el);
+        stack.push(item);
+        used += item.size;
+        evict();
+        render();
+      }
+
+      document.getElementById("cw-msg").addEventListener("click", function () { addItem(0); });
+      document.getElementById("cw-doc").addEventListener("click", function () { addItem(1); });
+      document.getElementById("cw-new").addEventListener("click", function () {
+        stack.forEach(function (it) { it.el.remove(); });
+        stack = []; used = 0; lost = 0;
+        render();
+      });
+      elSize.addEventListener("input", function () {
+        cap = SIZES[elSize.value].cap;
+        evict();
+        render();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

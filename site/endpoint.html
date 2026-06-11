@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Endpoint — Claude Club</title>
+  <meta name="description" content="Endpoint, explained in plain English: one specific address on an API. With an interactive API building map." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="endpoint" data-related="api,http-methods,rest-api,webhook">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Endpoint</h1>
+        <p class="tldr"><b>TLDR</b>One specific address on an API.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: the API building map ============ -->
+      <section class="widget" aria-label="Endpoint API building map">
+        <div class="widget-bar"><span class="dot"></span> Try it — the API building map</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            One API, many doors. This whole building is <b>api.bakery.com</b>. Knock on a door
+            and see exactly what lives behind it — and watch the address build itself up top.
+          </p>
+
+          <div style="font-family:var(--mono); font-size:0.85rem; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:9px; padding:0.55rem 0.8rem; margin-bottom:0.9rem; overflow-x:auto; white-space:nowrap;">
+            🔗 https://api.bakery.com<b id="ep-path" style="color:var(--accent);"></b><span style="color:var(--muted);">▮</span>
+          </div>
+
+          <div style="background:var(--bg-deep); border:1px solid var(--border); border-radius:12px; padding:0.9rem; margin-bottom:0.9rem;">
+            <div style="text-align:center; font-weight:700; font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:0.7rem;">🏢 api.bakery.com — the building</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+              <button class="wbtn ep-door" data-path="/menu">🚪 /menu</button>
+              <button class="wbtn ep-door" data-path="/orders">🚪 /orders</button>
+              <button class="wbtn ep-door" data-path="/orders/42">🚪 /orders/42</button>
+              <button class="wbtn ep-door" data-path="/customers">🚪 /customers</button>
+            </div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <input class="winput" id="ep-input" placeholder="Or type any door… try /pizza" style="flex:1; min-width:180px;" />
+            <button class="wbtn primary" id="ep-knock">Knock</button>
+          </div>
+
+          <div class="wlog" id="ep-log"><span class="dim">Pick a door…</span></div>
+        </div>
+        <p class="widget-hint">Try typing /pizza. Then try /orders/7. Every address either has a door behind it, or it 404s. Each door is an endpoint.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>You just clicked around a building. Hold that picture.</p>
+
+        <p>
+          In the <a href="api.html">API</a> lesson, an API was a drive-thru window — the one
+          place your AI orders things from another app. Zoom in and the truth is slightly
+          bigger: an API isn't one window. It's a whole building full of doors, and every
+          single door does exactly one thing.
+        </p>
+
+        <p><strong>An endpoint is one specific address on an API — one door, one job.</strong></p>
+
+        <p>
+          The building you just explored was <code>api.bakery.com</code>. Knock on
+          <code>/orders</code> and you get the list of orders. Knock on <code>/orders/42</code>
+          and you get one specific order. Knock on <code>/menu</code> and you get pastries.
+          Same building, different doors, completely different things behind each one.
+        </p>
+
+        <h2>How to read an endpoint address</h2>
+
+        <p>Every endpoint is two parts glued together, exactly like the address bar assembled itself in the widget:</p>
+
+        <ul>
+          <li><strong>The base URL</strong> — <code>https://api.bakery.com</code>. The building. It never changes.</li>
+          <li><strong>The path</strong> — <code>/orders</code>, <code>/customers</code>, <code>/menu</code>. The door.</li>
+        </ul>
+
+        <p>
+          Now look closer at the paths, because there's a pattern hiding in them.
+          <code>/orders</code> is the whole hallway — every order at once.
+          <code>/orders/42</code> is one specific room in that hallway — just order #42.
+          Plural for the collection, an ID tacked on for one item. Nearly every API you will
+          ever touch uses this exact shape, and that's not an accident — it's a convention,
+          and it has a name: <a href="rest-api.html">REST</a>. That lesson is two doors down.
+        </p>
+
+        <h2>One door, one job</h2>
+
+        <p>
+          This is what makes endpoints powerful instead of confusing. Nobody builds a door
+          called <code>/do-everything</code>. Each endpoint has one narrow purpose, which means
+          when Stripe's docs say "send the refund to the <code>/refunds</code> endpoint,"
+          that's a complete, unambiguous instruction. Your AI doesn't have to guess where
+          refunds happen. There is exactly one door for it.
+        </p>
+
+        <p>
+          It also means errors get readable. When you typed <code>/pizza</code>, the building
+          didn't crash — it calmly told you <em>404: no such door</em>. The internet was fine.
+          The API was fine. You just knocked on a wall. And when you tried
+          <code>/orders/7</code>, the hallway existed but room 7 didn't — same answer, smaller
+          scale. A 404 is never mysterious once you think in doors.
+        </p>
+
+        <p>
+          One more thing before the next lesson spoils it: the <em>same</em> door can behave
+          differently depending on what you do at it. Reading from <code>/orders</code> and
+          creating a new order both happen at the same address — the difference is the verb
+          you bring. That's <a href="http-methods.html">HTTP Methods</a>, up next.
+        </p>
+
+        <div class="callout">
+          When something fails with <b>404 Not Found</b>, check the address before you check
+          anything else. One typo in a path — <code>/custmers</code> — and you're knocking on
+          a wall while the real door sits one letter away. The fix is almost never "restart
+          everything." It's "copy the exact path from the docs."
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>API docs stop being scary — they're door directories: address, what's behind it, done</li>
+          <li>You can brief Claude precisely: "call <code>/orders/42</code>" beats "get that order somehow"</li>
+          <li>Error messages turn into directions: 404 means wrong door, not broken code</li>
+          <li>You can predict addresses you've never seen — customers almost certainly live at <code>/customers</code></li>
+        </ul>
+
+        <p>
+          Next time your AI wires up an automation and the logs scroll past, you'll see lines
+          like <code>GET /subscribers</code> and they'll read like English: it went to the
+          subscribers door.
+        </p>
+
+        <p><strong>The API is the building. The endpoint is the door. Learn to read doors and no API will ever feel like a maze again.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Stripe's docs tell you to send refunds to <code>https://api.stripe.com/v1/refunds</code>. What is the endpoint here?</p>
+            <div class="opts">
+              <button class="opt">The whole Stripe website, including the dashboard you log into</button>
+              <button class="opt" data-correct>That specific address — the /v1/refunds door on Stripe's API building</button>
+              <button class="opt">Your API key, since nothing works without it</button>
+            </div>
+            <div class="why">The endpoint is the one specific address: base URL plus path. Stripe's building has many doors — /charges, /customers, /refunds — and refunds happen at exactly one of them.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Your AI calls <code>/orders</code> in one step and <code>/orders/42</code> in the next. What's the difference?</p>
+            <div class="opts">
+              <button class="opt">No difference — APIs ignore anything after the first word</button>
+              <button class="opt">/orders/42 is a typo; IDs never appear in addresses</button>
+              <button class="opt" data-correct>/orders is the whole collection; /orders/42 is one specific order inside it</button>
+            </div>
+            <div class="why">Plural path = the hallway, path + ID = one room in it. First call fetches every order, second call fetches just #42.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your automation suddenly returns <b>404 Not Found</b> on every run. Most likely culprit?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The path is wrong — a typo, or the API renamed that door</button>
+              <button class="opt">Your API key expired, which always shows up as 404</button>
+              <button class="opt">The entire internet connection is down</button>
+            </div>
+            <div class="why">404 means "no door at this address." A dead key is a 401, and no internet means no response at all. 404 says: the building answered, and you knocked on a wall.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* the API building map */
+    (function () {
+      var log = document.getElementById("ep-log");
+      var pathEl = document.getElementById("ep-path");
+      var input = document.getElementById("ep-input");
+      var busy = false;
+
+      var DOORS = {
+        "/menu": '[ "croissant — $4", "sourdough — $9", "cinnamon roll — $5" ]\n<span class="dim">The menu door. One job: tell you what the bakery sells.</span>',
+        "/orders": '[ { id: 41, item: "sourdough", qty: 2 },\n  { id: 42, item: "croissant", qty: 12 },\n  { id: 43, item: "baguette", qty: 1 } ]\n<span class="dim">The orders door. One job: the whole list of orders.</span>',
+        "/orders/42": '{ id: 42, item: "croissant", qty: 12,\n  customer: "Dana", status: "baking 🔥" }\n<span class="dim">One specific room in the /orders hallway: just order #42.</span>',
+        "/customers": '[ { id: 7, name: "Dana" }, { id: 8, name: "Luis" }, { id: 9, name: "Priya" } ]\n<span class="dim">The customers door. One job: who buys here.</span>'
+      };
+
+      function add(html) {
+        if (!log.dataset.started) { log.innerHTML = ""; log.dataset.started = "1"; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function typePath(p, done) {
+        var i = 0;
+        pathEl.textContent = "";
+        var t = setInterval(function () {
+          i++;
+          pathEl.textContent = p.slice(0, i);
+          if (i >= p.length) { clearInterval(t); done(); }
+        }, 26);
+      }
+
+      function knock(p) {
+        if (busy) return;
+        p = p.trim();
+        if (!p) return;
+        if (p.charAt(0) !== "/") p = "/" + p;
+        busy = true;
+        typePath(p, function () {
+          add('<span class="acc">→ GET</span> https://api.bakery.com<span class="acc">' + p.replace(/</g, "&lt;") + "</span>");
+          setTimeout(function () {
+            if (DOORS[p]) {
+              add('<span class="ok">← 200 OK</span> — the door opens:\n' + DOORS[p]);
+            } else if (/^\/orders\/\d+$/.test(p)) {
+              var id = p.split("/")[2];
+              add('<span class="err">← 404 Not Found</span> — the /orders hallway exists, but there\'s no door numbered ' + id + '. <span class="dim">(order #' + id + " was never placed — try /orders/42)</span>");
+            } else {
+              add('<span class="err">← 404 Not Found</span> — no such door in this building. <span class="dim">Doors that exist: /menu · /orders · /orders/42 · /customers</span>');
+            }
+            busy = false;
+          }, 420);
+        });
+      }
+
+      [].slice.call(document.querySelectorAll(".ep-door")).forEach(function (btn) {
+        btn.addEventListener("click", function () { knock(btn.getAttribute("data-path")); });
+      });
+
+      document.getElementById("ep-knock").addEventListener("click", function () {
+        knock(input.value);
+        input.value = "";
+      });
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") { knock(input.value); input.value = ""; }
+      });
+    })();
+  </script>
+</body>
+</html>

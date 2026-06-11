@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Env File — Claude Club</title>
+  <meta name="description" content="Env file, explained in plain English: where your secret keys live, out of the code. With an interactive leak simulator." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="env-file" data-related="api,github,deploy,oauth-agent-identity">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Env File</h1>
+        <p class="tldr"><b>TLDR</b>Where your secret keys live. Out of the code.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: leak simulator ============ -->
+      <section class="widget" aria-label="Env file leak simulator">
+        <div class="widget-bar"><span class="dot"></span> Try it — the leak simulator</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Here's a real beginner moment: a live API key pasted straight into the code.
+            Push it to GitHub and see what the scanner bots do. Then fix it the right way
+            and push again.
+          </p>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:0.8rem; margin-bottom:0.9rem;">
+            <div id="ef-code-card" style="position:relative; overflow:hidden; background:var(--code-bg); color:var(--code-ink); border-radius:10px; padding:0.85rem 1rem; font-family:var(--mono); font-size:0.76rem; line-height:1.9;">
+              <div style="color:#8d897f;">// app.js — your code (this goes to GitHub)</div>
+              <div id="ef-keyline" style="background:rgba(182,92,80,0.38); border-radius:4px; padding:0 4px; transition:background .4s ease;">const apiKey = "sk-live-4242-8819-7733";</div>
+              <div>chargeCustomer(apiKey, 49);</div>
+            </div>
+
+            <div id="ef-env-card" style="display:none; background:var(--code-bg); color:var(--code-ink); border-radius:10px; padding:0.85rem 1rem; font-family:var(--mono); font-size:0.76rem; line-height:1.9; opacity:0; transition:opacity .5s ease;">
+              <div style="color:#8d897f;"># .env — stays on your machine</div>
+              <div style="color:#9ece8c;">API_KEY=sk-live-4242-8819-7733</div>
+              <div style="margin-top:6px;"><span style="font-family:var(--sans); font-size:0.68rem; font-weight:700; background:var(--good); color:#fff; border-radius:999px; padding:3px 9px;">.gitignore ✓ — never uploaded</span></div>
+            </div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn" id="ef-push">⬆️ Push to GitHub</button>
+            <button class="wbtn primary" id="ef-move">🔒 Move key to .env</button>
+            <button class="wbtn" id="ef-reset">↺ Reset</button>
+          </div>
+
+          <div id="ef-charges" style="display:none; font-family:var(--mono); font-weight:700; font-size:1.05rem; color:var(--bad); background:var(--bad-soft); border:1px solid var(--bad); border-radius:9px; padding:0.55rem 0.85rem; margin-bottom:0.9rem;">💸 stolen-key charges: $<span id="ef-total">0</span></div>
+
+          <div class="wlog" id="ef-log"><span class="dim">The key is sitting right there in the code. Push it and find out…</span></div>
+        </div>
+        <p class="widget-hint">0.8 seconds to get robbed is barely an exaggeration — bots scan every fresh public commit, around the clock.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          You would never tape your house key to your front door. But that's exactly what
+          hard-coding an API key is — and you just watched a scanner bot find it in 0.8
+          seconds and start spending your money.
+        </p>
+
+        <p>
+          The fix isn't to hide the key more cleverly inside the code. It's to take it
+          <em>out</em> of the code entirely: key in your pocket, and a note on the door that
+          just says "use the key from my pocket."
+        </p>
+
+        <p><strong>A .env file is a hidden file on your machine where your secrets live — the code refers to them by name and never contains them.</strong></p>
+
+        <h2>What goes in it</h2>
+
+        <p>
+          Anything that proves you're you: <a href="api.html">API</a> keys, passwords,
+          database addresses with credentials inside. In the widget, the dangerous line
+          <code>apiKey = "sk-live-4242…"</code> became
+          <code>apiKey = process.env.API_KEY</code> — which reads as "fetch the value named
+          API_KEY from the environment." The code now names the key; it doesn't <em>hold</em>
+          the key. The actual secret sits in <code>.env</code>, one tidy line:
+          <code>API_KEY=sk-live-4242…</code>.
+        </p>
+
+        <p>
+          That tiny separation is the entire trick. Code can now travel anywhere — be shared,
+          published, pasted into a chat with Claude — and your accounts stay locked.
+        </p>
+
+        <h2>Why GitHub makes this urgent</h2>
+
+        <p>
+          Code's natural destiny is <a href="github.html">GitHub</a>, and a huge slice of
+          GitHub is public. Bots crawl every fresh public commit, every minute of every day,
+          pattern-matching for things shaped like keys: <code>sk-live-…</code>,
+          <code>AKIA…</code>, long random strings next to the word "key." A leaked key means
+          someone else making API calls billed to your card — the spinning charges counter
+          was theater, but the bills are real.
+        </p>
+
+        <p>
+          The badge you saw on the .env card is the second half of the defense:
+          <code>.gitignore</code> is a list of files Git must never upload, and
+          <code>.env</code> goes in it on day one. That's why your second push came back
+          clean — the code traveled, the secret stayed home.
+        </p>
+
+        <h2>What happens when you deploy</h2>
+
+        <p>
+          One catch: <code>.env</code> living only on your laptop means the server running
+          your live app doesn't have it. That's by design. Every hosting platform — Vercel,
+          Railway, all of them — has an "Environment Variables" panel in its settings. You
+          paste the same names and values there, and your code keeps working without a single
+          edit. Same note on the door, new pocket. More on that in the
+          <a href="deploy.html">Deploy</a> lesson — and when you start handing keys to AI
+          agents, <a href="oauth-agent-identity.html">OAuth &amp; Agent Identity</a> takes
+          this idea further: credentials live outside the code, always.
+        </p>
+
+        <div class="callout">
+          If a key touches a public repo for even a minute, treat it as burned. Deleting the
+          file doesn't help — Git keeps history, and the bots already copied it. The recovery
+          is always the same: <b>revoke the key, issue a fresh one, then fix the leak.</b>
+          Never "it was only up briefly, probably fine."
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Publish or share any project without sharing your accounts</li>
+          <li>Run test keys locally and live keys in production — same code, different .env</li>
+          <li>Rotate a leaked key in one place, zero code edits</li>
+          <li>Let Claude read, write, and push your code freely — the secrets were never in it</li>
+        </ul>
+
+        <p>
+          This is the single cheapest disaster-prevention habit in building software. One
+          hidden file, one .gitignore line, and the most common beginner catastrophe — the
+          one the <a href="api.html">API</a> lesson warned you about — simply can't happen
+          to you.
+        </p>
+
+        <p><strong>Code is meant to be shared. Keys are not. The .env file is the wall between the two.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Claude just wrote you a working app — with your Stripe key pasted right in the code. Before pushing to GitHub, you should…</p>
+            <div class="opts">
+              <button class="opt">Push it now, then move the key later if anyone complains</button>
+              <button class="opt" data-correct>Move the key into a .env file, add .env to .gitignore, then push</button>
+              <button class="opt">Rename the variable to something sneaky like "notAKey"</button>
+            </div>
+            <div class="why">The order matters: secret out of the code and .env ignored BEFORE the first push. Bots read code, not variable names — and once it's pushed, it's in history.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You accidentally pushed a live key to a public repo five minutes ago, then quickly deleted the file. Where do you stand?</p>
+            <div class="opts">
+              <button class="opt">Safe — it was only public for a few minutes</button>
+              <button class="opt" data-correct>The key is burned — revoke it and issue a new one right now</button>
+              <button class="opt">Safe — deleting the file removes it from GitHub completely</button>
+            </div>
+            <div class="why">Scanners work in seconds and Git history keeps the old version anyway. Assume it's copied: revoke, reissue, then fix the leak.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your app works on your laptop but crashes on your hosting platform with "API_KEY is undefined." What happened?</p>
+            <div class="opts">
+              <button class="opt">The host blocks all API calls by default</button>
+              <button class="opt">You forgot to commit your .env file to GitHub</button>
+              <button class="opt" data-correct>Your .env never leaves your machine — you need to add the key in the platform's environment settings</button>
+            </div>
+            <div class="why">That's the system working: .env stays home, so the server needs its own copy. Every platform has an Environment Variables panel for exactly this — committing .env would defeat the whole point.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* the leak simulator */
+    (function () {
+      var log = document.getElementById("ef-log");
+      var codeCard = document.getElementById("ef-code-card");
+      var keyline = document.getElementById("ef-keyline");
+      var envCard = document.getElementById("ef-env-card");
+      var chargesBox = document.getElementById("ef-charges");
+      var totalEl = document.getElementById("ef-total");
+      var moved = false, busy = false, total = 0;
+
+      function add(html) {
+        if (!log.dataset.started) { log.innerHTML = ""; log.dataset.started = "1"; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function sweep() {
+        var bar = document.createElement("div");
+        bar.style.cssText = "position:absolute; top:0; bottom:0; left:-44px; width:40px; background:linear-gradient(90deg, transparent, rgba(217,119,87,0.5), transparent); transition:left 0.8s linear; pointer-events:none;";
+        codeCard.appendChild(bar);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { bar.style.left = "calc(100% + 44px)"; });
+        });
+        setTimeout(function () { bar.remove(); }, 1000);
+      }
+
+      function drainMoney(done) {
+        chargesBox.style.display = "block";
+        var ticks = 0;
+        var t = setInterval(function () {
+          ticks++;
+          total += 89 + Math.floor(Math.random() * 160);
+          totalEl.textContent = total.toLocaleString();
+          if (ticks >= 12) {
+            clearInterval(t);
+            done();
+          }
+        }, 140);
+      }
+
+      document.getElementById("ef-push").addEventListener("click", function () {
+        if (busy) return;
+        busy = true;
+        add('<span class="acc">→ git push</span> app.js → github.com/you/bakery-app <span class="dim">(public)</span>');
+        if (moved) {
+          add('<span class="dim">(.env skipped — it\'s in .gitignore)</span>');
+          sweep();
+          setTimeout(function () {
+            add('<span class="ok">🤖 key-scanner-bot: scanning fresh commit… nothing found.</span>');
+            add('<span class="ok">Your key never left your machine. Ship it. ✓</span>');
+            busy = false;
+          }, 900);
+          return;
+        }
+        sweep();
+        setTimeout(function () {
+          add('<span class="err">🤖 key-scanner-bot: MATCH — "sk-live-4242…" found in app.js (0.8s after push)</span>');
+          add('<span class="err">💸 key stolen — charges incoming:</span>');
+          drainMoney(function () {
+            add('<span class="err">…card limit reached. Key dead. Weekend ruined.</span>');
+            add('<span class="dim">Now click 🔒 Move key to .env — then push again.</span>');
+            busy = false;
+          });
+        }, 850);
+      });
+
+      document.getElementById("ef-move").addEventListener("click", function () {
+        if (busy) return;
+        if (moved) {
+          add('<span class="dim">already moved — the code only holds the key\'s name now.</span>');
+          return;
+        }
+        moved = true;
+        keyline.textContent = "const apiKey = process.env.API_KEY;";
+        keyline.style.background = "rgba(111,143,103,0.35)";
+        envCard.style.display = "block";
+        requestAnimationFrame(function () { envCard.style.opacity = "1"; });
+        add('<span class="ok">🔒 key moved to .env</span> — the code now just says "use the key named API_KEY."');
+        add('<span class="dim">+ .env added to .gitignore → GitHub will never see it. Try pushing again.</span>');
+      });
+
+      document.getElementById("ef-reset").addEventListener("click", function () {
+        if (busy) return;
+        moved = false;
+        total = 0;
+        totalEl.textContent = "0";
+        chargesBox.style.display = "none";
+        envCard.style.opacity = "0";
+        envCard.style.display = "none";
+        keyline.textContent = 'const apiKey = "sk-live-4242-8819-7733";';
+        keyline.style.background = "rgba(182,92,80,0.38)";
+        log.innerHTML = '<span class="dim">The key is sitting right there in the code. Push it and find out…</span>';
+        delete log.dataset.started;
+      });
+    })();
+  </script>
+</body>
+</html>

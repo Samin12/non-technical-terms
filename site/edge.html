@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edge — Claude Club</title>
+  <meta name="description" content="Edge, explained in plain English: code that runs close to your users. With an interactive latency test." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="edge" data-related="cdn,serverless,server,dns">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Edge</h1>
+        <p class="tldr"><b>TLDR</b>Code that runs close to your users.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: latency test ============ -->
+      <section class="widget" aria-label="Edge latency test">
+        <div class="widget-bar"><span class="dot"></span> Try it — latency test</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Your app has one tiny function — <code style="font-family:var(--mono); font-size:0.8rem; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:5px; padding:1px 5px;">check login</code>.
+            Choose where it's deployed, then tap a city to ping it and watch the request travel.
+          </p>
+
+          <div class="wrow" style="margin-bottom:1rem;">
+            <button class="wbtn primary" id="eg-mode-origin">📍 Origin — Virginia only</button>
+            <button class="wbtn" id="eg-mode-edge">⚡ Edge — everywhere</button>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; font-family:var(--sans); font-size:0.68rem; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem;">
+            <span>Your users</span><span>📍 Virginia (origin)</span>
+          </div>
+
+          <div class="eg-row" style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.55rem;">
+            <button class="wbtn eg-ping" data-i="0" style="flex:0 0 auto;">📡 Tokyo 🗼</button>
+            <div class="eg-track" style="flex:1; min-width:80px; position:relative; height:20px;">
+              <i style="position:absolute; left:0; right:0; top:9px; height:2px; background:var(--border); border-radius:2px;"></i>
+              <span class="eg-node" style="position:absolute; left:22px; top:0; font-size:0.85rem; line-height:20px; color:var(--muted); opacity:0.25; transition:all 0.4s ease;">✳</span>
+              <span class="eg-dot" style="position:absolute; left:0; top:5px; width:10px; height:10px; border-radius:50%; background:var(--accent-bright); box-shadow:0 0 0 2px var(--accent-faint);"></span>
+            </div>
+            <span class="eg-res" style="flex:0 0 86px; text-align:right; font-family:var(--sans); font-size:0.78rem; font-weight:600; color:var(--muted);">—</span>
+          </div>
+
+          <div class="eg-row" style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.55rem;">
+            <button class="wbtn eg-ping" data-i="1" style="flex:0 0 auto;">📡 London 🎡</button>
+            <div class="eg-track" style="flex:1; min-width:80px; position:relative; height:20px;">
+              <i style="position:absolute; left:0; right:0; top:9px; height:2px; background:var(--border); border-radius:2px;"></i>
+              <span class="eg-node" style="position:absolute; left:22px; top:0; font-size:0.85rem; line-height:20px; color:var(--muted); opacity:0.25; transition:all 0.4s ease;">✳</span>
+              <span class="eg-dot" style="position:absolute; left:0; top:5px; width:10px; height:10px; border-radius:50%; background:var(--accent-bright); box-shadow:0 0 0 2px var(--accent-faint);"></span>
+            </div>
+            <span class="eg-res" style="flex:0 0 86px; text-align:right; font-family:var(--sans); font-size:0.78rem; font-weight:600; color:var(--muted);">—</span>
+          </div>
+
+          <div class="eg-row" style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.2rem;">
+            <button class="wbtn eg-ping" data-i="2" style="flex:0 0 auto;">📡 São Paulo 🌴</button>
+            <div class="eg-track" style="flex:1; min-width:80px; position:relative; height:20px;">
+              <i style="position:absolute; left:0; right:0; top:9px; height:2px; background:var(--border); border-radius:2px;"></i>
+              <span class="eg-node" style="position:absolute; left:22px; top:0; font-size:0.85rem; line-height:20px; color:var(--muted); opacity:0.25; transition:all 0.4s ease;">✳</span>
+              <span class="eg-dot" style="position:absolute; left:0; top:5px; width:10px; height:10px; border-radius:50%; background:var(--accent-bright); box-shadow:0 0 0 2px var(--accent-faint);"></span>
+            </div>
+            <span class="eg-res" style="flex:0 0 86px; text-align:right; font-family:var(--sans); font-size:0.78rem; font-weight:600; color:var(--muted);">—</span>
+          </div>
+
+          <div style="border:1px solid var(--border-soft); background:var(--bg-deep); border-radius:10px; padding:0.7rem 0.9rem; margin-top:0.9rem; font-family:var(--sans); font-size:0.8rem;">
+            <div style="font-weight:700; letter-spacing:0.08em; text-transform:uppercase; font-size:0.66rem; color:var(--muted); margin-bottom:0.4rem;">Latency scoreboard</div>
+            <div id="eg-score" style="display:grid; gap:4px; color:var(--ink-soft);"></div>
+          </div>
+
+          <div style="margin-top:0.9rem; border:1px dashed var(--border); border-radius:10px; padding:0.65rem 0.9rem; font-family:var(--sans); font-size:0.82rem; color:var(--ink-soft); line-height:1.7;">
+            🗂️ <b>CDN</b> = <em>copies of your files</em>, stored near users → <a href="cdn.html">that's its own lesson</a><br />
+            ⚡ <b>Edge</b> = <em>your code</em>, <em>running</em> near users → that's what you just timed
+          </div>
+        </div>
+        <p class="widget-hint">Ping all three cities on origin first. Then flip to edge and ping again — the scoreboard keeps both times for the before/after.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Imagine one headquarters answering every phone call for the whole planet.
+          Tokyo calls — the phone rings in Virginia. São Paulo calls — same desk.
+          Every caller waits while their question crosses an ocean, twice.
+        </p>
+
+        <p>
+          Now open a tiny desk in every city, staffed to answer the common questions.
+          Suddenly almost every call is local. That's the flip you just made in the
+          widget: same function, same code — the only thing that changed is <em>where</em>
+          it ran. Tokyo went from ~290ms to ~20ms without anyone's internet getting faster.
+        </p>
+
+        <p>
+          <strong>Edge means running your code in small data centers near your users,
+          instead of in one home base.</strong>
+        </p>
+
+        <h2>Why distance is lag</h2>
+
+        <p>
+          Data moves fast, but not instantly — and a request has to get there <em>and</em>
+          back. Tokyo to Virginia is about 6,700 miles each way, plus stops at every relay
+          in between. Do that round trip for a login check, then again for a redirect, then
+          again for the page itself, and your app "feels slow" in half the world. Even after
+          <a href="dns.html">DNS</a> points a visitor to the right address quickly, the miles
+          still cost. The dot crawling across the track in origin mode? That's your user, waiting.
+        </p>
+
+        <p>
+          And 300 milliseconds sounds like nothing until you remember it happens on every
+          tap. Five round trips to load one page is a second and a half of staring at
+          nothing. Users don't file bug reports about that — they just quietly leave.
+        </p>
+
+        <h2>The CDN's sibling — but for code</h2>
+
+        <p>
+          You may know this trick from the <a href="cdn.html">CDN</a> lesson: keep
+          <em>copies of files</em> — images, video, the site itself — close to every visitor.
+          The edge takes the next step. Instead of a saved copy of something, it's a live
+          function <em>executing</em> in the node down the street: it can check things,
+          decide things, and answer differently for every single visitor. A CDN hands out
+          photocopies. The edge does actual work.
+        </p>
+
+        <h2>What belongs at the edge</h2>
+
+        <p>Small, fast decisions that happen on every visit:</p>
+
+        <ul>
+          <li><strong>Auth checks</strong> — "is this person logged in?" answered next door, not across an ocean</li>
+          <li><strong>Redirects</strong> — send Japanese visitors to /jp the instant they arrive</li>
+          <li><strong>Personalization</strong> — swap the headline, currency, or banner per visitor</li>
+          <li><strong>A/B splits</strong> — coin-flip visitors into test groups with zero added lag</li>
+        </ul>
+
+        <p>
+          There are limits. Edge nodes are small, built for tiny, fast functions — the
+          <a href="serverless.html">serverless</a> idea, just deployed to hundreds of
+          locations instead of one. Your big <a href="database.html">database</a> usually
+          still lives back at the origin. So heavy lifting — reports, payments, anything
+          that needs the full records — still happens at headquarters. The edge handles the
+          greeting at the door; the origin still runs the kitchen.
+        </p>
+
+        <div class="callout">
+          Pro tip: keep edge code self-contained. If your "nearby" function has to phone the
+          origin database five times to answer, you've rebuilt the long-distance call with
+          extra steps. The win only exists when the edge can answer from what it has on hand.
+        </div>
+
+        <p>
+          This is a big part of why modern apps feel instant: the common questions moved
+          next door, and only the rare, heavy ones still travel. When you deploy on
+          platforms like Vercel or Cloudflare, your AI-built app often gets this for free —
+          Claude writes a small middleware function, the platform quietly runs it in 300
+          cities, and nobody in Tokyo ever sees the spinner.
+        </p>
+
+        <p><strong>Stop making Tokyo call Virginia just to ask if someone's logged in.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Users in Sydney say your checkout "feels laggy." Your server is in Virginia, and the slow part is a quick logged-in check on every click. What's the real fix?</p>
+            <div class="opts">
+              <button class="opt">Buy a much bigger server in Virginia</button>
+              <button class="opt" data-correct>Run that check at edge nodes near the users — the problem is distance, not power</button>
+              <button class="opt">Ask Australian users to upgrade their internet plans</button>
+            </div>
+            <div class="why">A faster Virginia server still makes Sydney cross the Pacific twice per click. Moving the check next door is what took Tokyo from ~290ms to ~20ms in the widget.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Your site already uses a CDN. What does adding edge functions give you that the CDN doesn't?</p>
+            <div class="opts">
+              <button class="opt">Nothing — CDN and edge are two names for the same thing</button>
+              <button class="opt" data-correct>Code that actually runs near users — live decisions per visitor, not just stored copies of files</button>
+              <button class="opt">A bigger database in every city</button>
+            </div>
+            <div class="why">CDN = photocopies of your files, parked nearby. Edge = your function executing nearby. One serves; the other thinks.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Which of these tasks belongs at the edge?</p>
+            <div class="opts">
+              <button class="opt">Running the end-of-month revenue report across the whole database</button>
+              <button class="opt" data-correct>Redirecting Japanese visitors to /jp the moment they arrive</button>
+              <button class="opt">Storing all customer records in every city</button>
+            </div>
+            <div class="why">Edge nodes are for small, instant decisions. Heavy jobs that need the full database stay at the origin — the big records don't live at the edge.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* latency test */
+    (function () {
+      var CITIES = [
+        { name: "Tokyo 🗼", origin: [270, 310], edge: [14, 24] },
+        { name: "London 🎡", origin: [240, 280], edge: [16, 28] },
+        { name: "São Paulo 🌴", origin: [250, 295], edge: [15, 26] }
+      ];
+      var mode = "origin";
+      var best = CITIES.map(function () { return { origin: null, edge: null }; });
+
+      var btnOrigin = document.getElementById("eg-mode-origin");
+      var btnEdge = document.getElementById("eg-mode-edge");
+      var elScore = document.getElementById("eg-score");
+      var rows = [].slice.call(document.querySelectorAll(".eg-row")).map(function (r) {
+        return {
+          track: r.querySelector(".eg-track"),
+          node: r.querySelector(".eg-node"),
+          dot: r.querySelector(".eg-dot"),
+          res: r.querySelector(".eg-res"),
+          busy: false
+        };
+      });
+
+      function rnd(range) {
+        return range[0] + Math.floor(Math.random() * (range[1] - range[0] + 1));
+      }
+
+      function renderScore() {
+        elScore.innerHTML = CITIES.map(function (c, i) {
+          var o = best[i].origin, e = best[i].edge;
+          return "<div>" + c.name +
+            " — origin: <b style=\"color:" + (o ? "var(--bad)" : "var(--muted)") + ";\">" + (o ? o + "ms 😬 laggy" : "—") + "</b>" +
+            " · edge: <b style=\"color:" + (e ? "var(--good)" : "var(--muted)") + ";\">" + (e ? e + "ms ⚡ instant" : "—") + "</b></div>";
+        }).join("");
+      }
+
+      function setMode(m) {
+        mode = m;
+        btnOrigin.classList.toggle("primary", m === "origin");
+        btnEdge.classList.toggle("primary", m === "edge");
+        rows.forEach(function (row) {
+          row.node.style.opacity = m === "edge" ? "1" : "0.25";
+          row.node.style.color = m === "edge" ? "var(--accent-bright)" : "var(--muted)";
+          row.node.style.textShadow = m === "edge" ? "0 0 10px rgba(217,119,87,0.55)" : "none";
+        });
+      }
+
+      function ping(i) {
+        var row = rows[i];
+        if (row.busy) return;
+        row.busy = true;
+        var ms = rnd(CITIES[i][mode]);
+        var target = mode === "origin" ? Math.max(48, row.track.clientWidth - 12) : 24;
+        var dur = Math.max(120, ms * 3); // scaled so you can see it
+        row.res.textContent = "…";
+        row.res.style.color = "var(--muted)";
+        row.dot.style.transition = "left " + (dur / 2) + "ms ease-in";
+        row.dot.style.left = target + "px";
+        setTimeout(function () {
+          row.dot.style.transition = "left " + (dur / 2) + "ms ease-out";
+          row.dot.style.left = "0px";
+        }, dur / 2);
+        setTimeout(function () {
+          row.res.textContent = ms + "ms " + (ms <= 60 ? "⚡" : "😬");
+          row.res.style.color = ms <= 60 ? "var(--good)" : "var(--bad)";
+          best[i][mode] = ms;
+          renderScore();
+          row.busy = false;
+        }, dur + 80);
+      }
+
+      btnOrigin.addEventListener("click", function () { setMode("origin"); });
+      btnEdge.addEventListener("click", function () { setMode("edge"); });
+      [].slice.call(document.querySelectorAll(".eg-ping")).forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          ping(parseInt(btn.getAttribute("data-i"), 10));
+        });
+      });
+
+      renderScore();
+    })();
+  </script>
+</body>
+</html>

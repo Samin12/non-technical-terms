@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daemon — Claude Club</title>
+  <meta name="description" content="Daemon, explained in plain English: background helpers that never sleep. With an interactive services panel." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="daemon" data-related="process,server,headless,cron-job">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Daemon</h1>
+        <p class="tldr"><b>TLDR</b>Background helpers that never sleep.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: services panel ============ -->
+      <section class="widget" aria-label="Daemon services panel">
+        <div class="widget-bar"><span class="dot"></span> Try it — the services panel</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Up top: your apps — the part of the computer you can see. Below: four daemons with no
+            windows at all. Log out and watch who keeps working.
+          </p>
+
+          <div style="position:relative; margin-bottom:0.8rem;">
+            <div id="dm-apps" style="background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:10px; transition:opacity .5s ease;">
+              <div style="font-family:var(--sans); font-size:0.66rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">your apps — the part you can see</div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <span style="font-family:var(--sans); font-size:0.85rem; background:var(--card-raise); border:1px solid var(--border); border-radius:8px; padding:6px 10px;">📝 Notes</span>
+                <span style="font-family:var(--sans); font-size:0.85rem; background:var(--card-raise); border:1px solid var(--border); border-radius:8px; padding:6px 10px;">🌍 Browser</span>
+                <span style="font-family:var(--sans); font-size:0.85rem; background:var(--card-raise); border:1px solid var(--border); border-radius:8px; padding:6px 10px;">🎵 Music</span>
+              </div>
+            </div>
+            <div id="dm-overlay" style="position:absolute; inset:0; background:rgba(31,30,29,0.85); border-radius:10px; color:#f0eee6; display:none; align-items:center; justify-content:center; font-family:var(--sans); font-weight:600; font-size:0.88rem; text-align:center; padding:0 1rem;">🌙 logged out — every window closed</div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="dm-logout">🚪 Log out / close every window</button>
+          </div>
+
+          <div style="font-family:var(--sans); font-size:0.66rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">the basement — four daemons, no windows down here</div>
+          <div id="dm-rows" style="display:flex; flex-direction:column; gap:6px; margin-bottom:0.9rem;"></div>
+
+          <div class="wlog" id="dm-log"><span class="dim">services running. watch the uptimes tick…</span></div>
+        </div>
+        <p class="widget-hint">Stick around a moment: one of these will crash. Watch the supervisor restart it in two seconds flat — no human required.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Picture an office building at 2 AM. Every office is dark, every desk empty. But the
+          security guard is doing rounds, the boiler is keeping the pipes warm, and the night
+          cleaner is on floor six. The building never actually sleeps — only the visible part
+          of it does.
+        </p>
+
+        <p>
+          Your computer is that building. The apps you see — windows, buttons, dock icons —
+          are the daytime offices. Underneath, dozens of programs with no windows at all are
+          doing rounds: syncing the clock, watching the wifi, fetching mail, backing things up.
+        </p>
+
+        <p>
+          <strong>A daemon is a <a href="process.html">process</a> with no window and no UI that
+          runs in the background — usually starting when the machine starts, and never exiting.</strong>
+          It's pronounced "DEE-mun," and no, it's not evil. It's old programmer humor for a
+          helpful spirit that works unseen.
+        </p>
+
+        <h2>You already depend on a dozen of them</h2>
+
+        <p>
+          You never "open" a daemon. There's nothing to click. The operating system launches
+          them at boot and they just… stay. Notification arriving? A daemon was listening.
+          Dropbox icon says "synced"? A daemon watched your folders. Clock always right? A
+          daemon — literally one of the rows in the panel above — has been quietly correcting
+          drift the whole time you've been reading. Open Activity Monitor on a Mac and count:
+          hundreds of processes, and the overwhelming majority have no window you could point
+          to. That's the basement staff.
+        </p>
+
+        <p>
+          That's why the log-out button in the widget is the whole lesson. You left. Every
+          window closed. And the uptimes kept counting, the log kept streaming. Daemons don't
+          belong to your windows or your mood — they belong to the machine.
+        </p>
+
+        <h2>Crashes, supervisors, and uptime</h2>
+
+        <p>
+          You probably caught <code>backup-d</code> dying in the panel. Status: crashed. Two
+          seconds later: running again, uptime reset to zero. Nobody clicked anything.
+        </p>
+
+        <p>
+          That's the other half of daemon life: a supervisor — itself a daemon — watches every
+          service and restarts whatever falls over. macOS calls its supervisor launchd; Linux
+          calls it systemd. This is how machines run for months unattended: not because nothing
+          ever crashes, but because something is always standing by to restart what does.
+          Daemon people brag about uptime the way runners brag about streaks — "up 247 days"
+          is a badge of honor.
+        </p>
+
+        <h2>Why this matters when you ship</h2>
+
+        <p>
+          Here's the connection to your own projects: when you deploy a web app, your code
+          becomes a daemon. It's a process on a <a href="server.html">server</a> with no screen
+          attached — that's <a href="headless.html">headless</a>, the next lesson — answering
+          requests at 3 AM, auto-restarted when it crashes. "Always on" isn't magic. It's a
+          daemon, plus a supervisor, plus a machine that never closes.
+        </p>
+
+        <p>Once you know the word, you can ask for the right thing:</p>
+
+        <ul>
+          <li>"Run it as a service" means: run it as a daemon — background, supervised, restarted on crash</li>
+          <li>A Telegram bot or webhook listener that must be always-on? That's a daemon job, not a leave-the-laptop-open job</li>
+          <li>Activity Monitor full of names you don't recognize? Mostly daemons. Mostly fine.</li>
+          <li>Your scheduled AI agents lean on the oldest daemon of all — cron, the <a href="cron-job.html">cron job</a> lesson is two stops away</li>
+        </ul>
+
+        <div class="callout">
+          Warning: daemons fail silently. No window means no error popup — a dead background
+          service just stops, and you find out days later when the backups are missing. The
+          builder's rule: every daemon must write logs, and you must know where they are.
+          Logs are a daemon's only voice.
+        </div>
+
+        <p><strong>Your apps work shifts. Daemons work forever.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You close every app and log out of your Mac. Which of these keeps working?</p>
+            <div class="opts">
+              <button class="opt">Nothing — logging out stops the whole computer</button>
+              <button class="opt" data-correct>Background daemons like sync, clock, and backup services</button>
+              <button class="opt">Only the apps you minimized before logging out</button>
+            </div>
+            <div class="why">Daemons don't belong to your windows or your login session. No UI, nothing to close — they keep ticking, exactly like the panel did after you hit log out.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. A backup service crashes on a healthy server at 3 AM. What usually happens next?</p>
+            <div class="opts">
+              <button class="opt" data-correct>A supervisor notices within seconds and restarts it automatically</button>
+              <button class="opt">It stays dead until a human reboots the machine</button>
+              <button class="opt">The whole server shuts down as a safety measure</button>
+            </div>
+            <div class="why">Supervisors (launchd on macOS, systemd on Linux) exist precisely for this: watch every service, restart what falls over. That's the auto-restart that hit backup-d in the widget.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You built a Telegram bot that must respond 24/7, but your laptop sleeps at night. What do you actually need?</p>
+            <div class="opts">
+              <button class="opt">Leave the laptop open forever with the script running in a terminal</button>
+              <button class="opt" data-correct>Run it as a daemon on a server — background, supervised, always on</button>
+              <button class="opt">Nothing — code keeps running after a laptop goes to sleep</button>
+            </div>
+            <div class="why">A sleeping laptop pauses its processes. Always-on work belongs on an always-on machine, running as a supervised background service — a daemon.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* services panel */
+    (function () {
+      var daemons = [
+        { icon: "⏰", name: "clock-sync", up: 4823, crashed: false, acts: ["synced clock (drift 0.02s)", "synced clock (drift 0.01s)", "checked time server — all good"] },
+        { icon: "💾", name: "backup-d", up: 1294, crashed: false, acts: ["snapshot saved (212 files)", "verified last night's backup ✓", "snapshot saved (87 files)"] },
+        { icon: "🌐", name: "web-server", up: 96211, crashed: false, acts: ["served 14 requests", "served 3 requests", "handled 1 form submission"] },
+        { icon: "📨", name: "mail-fetcher", up: 9377, crashed: false, acts: ["fetched 2 emails", "fetched 1 email", "inbox checked — nothing new"] }
+      ];
+      var loggedOut = false;
+      var rows = document.getElementById("dm-rows");
+      var log = document.getElementById("dm-log");
+      var overlay = document.getElementById("dm-overlay");
+      var apps = document.getElementById("dm-apps");
+      var btn = document.getElementById("dm-logout");
+
+      function addLog(html) {
+        if (!log.dataset.started) { log.innerHTML = ""; log.dataset.started = "1"; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function fmt(s) {
+        var d = Math.floor(s / 86400);
+        var h = Math.floor((s % 86400) / 3600);
+        var m = Math.floor((s % 3600) / 60);
+        var sec = s % 60;
+        function p(n) { return (n < 10 ? "0" : "") + n; }
+        return (d > 0 ? d + "d " : "") + p(h) + ":" + p(m) + ":" + p(sec);
+      }
+
+      daemons.forEach(function (d) {
+        var row = document.createElement("div");
+        row.style.cssText =
+          "display:flex; align-items:center; gap:0.6rem; background:var(--card); border:1px solid var(--border);" +
+          "border-radius:9px; padding:8px 12px; font-family:var(--sans); font-size:0.85rem;";
+        row.innerHTML =
+          '<span style="font-size:1rem;">' + d.icon + "</span>" +
+          '<b style="font-family:var(--mono); font-size:0.8rem;">' + d.name + "</b>" +
+          '<span class="dm-status" style="font-weight:600; font-size:0.78rem; color:var(--good); transition:color .3s ease;">● running</span>' +
+          '<span class="dm-up" style="margin-left:auto; font-family:var(--mono); font-size:0.76rem; color:var(--muted);">up ' + fmt(d.up) + "</span>";
+        d.statusEl = row.querySelector(".dm-status");
+        d.upEl = row.querySelector(".dm-up");
+        rows.appendChild(row);
+      });
+
+      /* uptime tick */
+      setInterval(function () {
+        daemons.forEach(function (d) {
+          if (d.crashed) return;
+          d.up++;
+          d.upEl.textContent = "up " + fmt(d.up);
+        });
+      }, 1000);
+
+      /* activity blips */
+      setInterval(function () {
+        var alive = daemons.filter(function (d) { return !d.crashed; });
+        if (!alive.length) return;
+        var d = alive[Math.floor(Math.random() * alive.length)];
+        var act = d.acts[Math.floor(Math.random() * d.acts.length)];
+        var suffix = loggedOut && Math.random() < 0.35 ? ' <span class="dim">(you left. we didn\'t.)</span>' : "";
+        addLog(d.icon + ' <span class="acc">' + d.name + "</span>: " + act + suffix);
+      }, 3200);
+
+      /* crash drama: backup-d dies, supervisor revives it */
+      function scheduleCrash() {
+        setTimeout(function () {
+          var d = daemons[1];
+          d.crashed = true;
+          d.statusEl.textContent = "✖ crashed";
+          d.statusEl.style.color = "var(--bad)";
+          d.upEl.textContent = "—";
+          addLog('<span class="err">💾 backup-d crashed (exit code 1).</span> <span class="dim">no popup. no sound. it just died.</span>');
+          setTimeout(function () {
+            d.crashed = false;
+            d.up = 0;
+            d.statusEl.textContent = "● running";
+            d.statusEl.style.color = "var(--good)";
+            d.upEl.textContent = "up " + fmt(0);
+            addLog('<span class="ok">🛟 the supervisor restarted backup-d ✓</span> <span class="dim">uptime back to zero. total downtime: 2 seconds.</span>');
+            scheduleCrash();
+          }, 2000);
+        }, 9000 + Math.random() * 11000);
+      }
+      scheduleCrash();
+
+      /* log out / back in */
+      btn.addEventListener("click", function () {
+        loggedOut = !loggedOut;
+        overlay.style.display = loggedOut ? "flex" : "none";
+        apps.style.opacity = loggedOut ? "0.25" : "1";
+        btn.textContent = loggedOut ? "🌅 Log back in" : "🚪 Log out / close every window";
+        if (loggedOut) {
+          addLog('<span class="dim">🚪 you logged out. every window closed.</span>');
+          addLog('<span class="ok">the daemons: still here. you left. we didn\'t.</span>');
+        } else {
+          addLog('<span class="ok">🌅 logged back in.</span> <span class="dim">check the uptimes — nobody down here stopped working.</span>');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

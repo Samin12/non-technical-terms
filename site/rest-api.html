@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>REST API — Claude Club</title>
+  <meta name="description" content="REST API, explained in plain English: the rulebook most APIs follow. With an interactive order-by-the-rules simulator." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="rest-api" data-related="api,endpoint,http-methods,sdk">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>REST API</h1>
+        <p class="tldr"><b>TLDR</b>The rulebook most APIs follow.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: order by the rules ============ -->
+      <section class="widget" aria-label="REST API order-by-the-rules simulator">
+        <div class="widget-bar"><span class="dot"></span> Try it — order by the rules</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            REST is two pickers and a pattern: pick a <b>thing</b> (a noun), pick a <b>verb</b>,
+            send. Every answer is predictable. Then flip on Chaos and feel the bad old days.
+          </p>
+
+          <div id="ra-rest">
+            <div style="font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem;">Resource — the noun</div>
+            <div class="wrow" style="margin-bottom:0.75rem;">
+              <button class="wbtn ra-res" data-r="/orders" style="font-family:var(--mono); font-size:0.8rem;">/orders</button>
+              <button class="wbtn ra-res" data-r="/customers" style="font-family:var(--mono); font-size:0.8rem;">/customers</button>
+              <button class="wbtn ra-res" data-r="/menu" style="font-family:var(--mono); font-size:0.8rem;">/menu</button>
+            </div>
+            <div style="font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem;">Verb — the action</div>
+            <div class="wrow" style="margin-bottom:0.85rem;">
+              <button class="wbtn ra-verb" data-v="GET">GET</button>
+              <button class="wbtn ra-verb" data-v="POST">POST</button>
+              <button class="wbtn ra-verb" data-v="DELETE">DELETE</button>
+            </div>
+            <div class="wrow" style="margin-bottom:0.9rem;">
+              <button class="wbtn primary" id="ra-send">🛎️ Send: <b id="ra-line" style="font-family:var(--mono); font-weight:600;">GET /orders</b></button>
+            </div>
+          </div>
+
+          <div id="ra-chaos" style="display:none; margin-bottom:0.9rem;">
+            <div style="font-weight:600; margin-bottom:0.55rem;">Welcome to 2003. No rulebook. Your task: <b>fetch the customer list</b>. Start guessing:</div>
+            <div class="wrow">
+              <button class="wbtn ra-guess" data-k="orders" style="font-family:var(--mono); font-size:0.76rem;">/getAllOrdersNow.php</button>
+              <button class="wbtn ra-guess" data-k="boom" style="font-family:var(--mono); font-size:0.76rem;">/makeOrderHappen2.asp?yes=true</button>
+              <button class="wbtn danger ra-guess" data-k="del" style="font-family:var(--mono); font-size:0.76rem;">/del_cust_FINAL</button>
+              <button class="wbtn ra-guess" data-k="redir" style="font-family:var(--mono); font-size:0.76rem;">/menu_show2.aspx</button>
+              <button class="wbtn ra-guess" data-k="win" style="font-family:var(--mono); font-size:0.76rem;">/cust_dump_v3.cgi?fmt=old</button>
+            </div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn" id="ra-chaos-btn">🌀 Chaos API: OFF</button>
+          </div>
+
+          <div class="wlog" id="ra-log"><span class="dim">Pick a noun and a verb, then ring the bell…</span></div>
+        </div>
+        <p class="widget-hint">In REST mode you never guessed once — noun + verb told you everything. In Chaos mode, guessing is the whole job.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Walk into any location of a big chain restaurant, anywhere on earth, and you can
+          order in ten seconds. Menu board in the same place, combos numbered the same way,
+          "make it large" works everywhere. You learned the system once; now every branch is
+          familiar.
+        </p>
+
+        <p>
+          That's REST. And the Chaos toggle you just suffered through? That's what the web was
+          like before it — every API a hand-built snowflake, every developer guessing at URLs
+          like <code>/del_cust_FINAL</code> and praying.
+        </p>
+
+        <p><strong>REST is the rulebook most APIs follow: name things as nouns, act on them with standard verbs, answer with standard codes.</strong></p>
+
+        <h2>The three rules that matter</h2>
+
+        <ul>
+          <li><strong>Everything is a noun.</strong> Orders live at <code>/orders</code>, customers at <code>/customers</code>. One <a href="endpoint.html">endpoint</a> per thing, named after the thing. No <code>/getAllOrdersNow.php</code> — the URL names <em>what</em>, never <em>how</em>.</li>
+          <li><strong>Actions come from the verbs you already know.</strong> There's no <code>/createOrder</code> door, because <code>POST /orders</code> already says it. The whole <a href="http-methods.html">HTTP Methods</a> lesson plugs straight in here.</li>
+          <li><strong>Receipts are standardized.</strong> 200 means here's your data, 201 means created, 404 means no such thing. Even the refusals follow the rulebook — when you tried to DELETE the menu, you got a clean 405 "method not allowed," not a mystery explosion.</li>
+        </ul>
+
+        <h2>Predictability is the feature</h2>
+
+        <p>
+          Nothing about REST is technically impressive. That's the point. Its entire value is
+          that it's <em>boring in the same way everywhere</em>. In the widget, you composed
+          nine different requests without reading a single page of documentation — you knew
+          <code>GET /customers</code> would list customers before you clicked, the same way
+          you know where the fries are on the menu board.
+        </p>
+
+        <p>
+          Compare that to your Chaos run: five cryptic URLs, one of which silently
+          <em>deleted a customer</em> while you were just trying to read the list. Pre-REST,
+          that wasn't a joke — every integration started with archaeology. REST won because
+          it replaced guessing with a grammar. It's a convention, not a law — you'll meet
+          APIs that bend it — but the default assumption is right so often that it's the
+          first thing to try.
+        </p>
+
+        <h2>Why your AI can drive APIs it has never seen</h2>
+
+        <p>
+          Here's where this stops being trivia. Claude has absorbed thousands of REST
+          <a href="api.html">APIs</a>, and because they all share the grammar, it can operate
+          one it's never met. Hand it the docs for some brand-new service and it already knows
+          the shape: nouns for resources, verbs for actions, 201 when something's created.
+          That's a huge part of why AI agents can wire into your tools in minutes — and why an
+          <a href="sdk.html">SDK</a> can wrap any of these APIs so neatly. Predictable rules
+          are automatable rules.
+        </p>
+
+        <div class="callout">
+          Meeting a new API? Find the <b>list of resources</b> in the docs first — the nouns.
+          Once you know a service thinks in <code>/contacts</code>, <code>/deals</code>, and
+          <code>/notes</code>, you can usually predict 80% of its endpoints before reading
+          another page. The nouns are the map.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Skim any API's docs in minutes — you already know the shape</li>
+          <li>Predict addresses before the docs confirm them</li>
+          <li>Debug from status codes: 404 = wrong noun, 405 = wrong verb at the right noun</li>
+          <li>Hand Claude a fresh API's docs and trust it to drive</li>
+        </ul>
+
+        <p><strong>REST won because it made every API feel like the same restaurant. Learn the rulebook once, and you can order anywhere.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You've never touched the Notion API, but you know it's RESTful and you want to read your pages. What's your first bet?</p>
+            <div class="opts">
+              <button class="opt">/getAllPagesNow.php — descriptive URLs are clearest</button>
+              <button class="opt" data-correct>GET /pages — noun for the resource, GET to read it</button>
+              <button class="opt">/doPageStuff?action=read — one flexible endpoint for everything</button>
+            </div>
+            <div class="why">REST grammar: resources are nouns (/pages), actions are verbs (GET). That guess is right so often that it's always the first thing to try.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Why can your AI operate an API it has never encountered before?</p>
+            <div class="opts">
+              <button class="opt">It memorized every API on the internet during training</button>
+              <button class="opt">All APIs secretly run on one shared server</button>
+              <button class="opt" data-correct>Most APIs follow the same REST conventions, so the pattern transfers</button>
+            </div>
+            <div class="why">It's not memorization — it's grammar. Once you (or Claude) know nouns + verbs + standard codes, a brand-new API is just new vocabulary in a familiar language.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. A request comes back <b>201</b>. Without reading anything else, what almost certainly just happened?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Something new was created — a 201 is the standard receipt for a successful POST</button>
+              <button class="opt">Something was deleted</button>
+              <button class="opt">The server crashed — anything above 200 is an error</button>
+            </div>
+            <div class="why">Standard codes are part of the rulebook: 201 Created follows a successful "make a new one" request. Deletions usually answer 204, and crashes live in the 500s.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* order by the rules */
+    (function () {
+      var log = document.getElementById("ra-log");
+      var line = document.getElementById("ra-line");
+      var res = "/orders", verb = "GET";
+      var nextOrder = 44, custIx = 0, pastryIx = 0, busy = false;
+      var NEWCUST = ["Sam", "Noor", "Kai"];
+      var NEWPASTRY = ["cardamom bun — $6", "rye loaf — $8", "mochi donut — $5"];
+      var chaosOn = false, guesses = 0, chaosSolved = false;
+
+      function add(html) {
+        if (!log.dataset.started) { log.innerHTML = ""; log.dataset.started = "1"; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function paint(btns, attr, val) {
+        btns.forEach(function (b) {
+          var on = b.getAttribute(attr) === val;
+          b.style.background = on ? "var(--accent-faint)" : "";
+          b.style.borderColor = on ? "var(--accent-bright)" : "";
+          b.style.color = on ? "var(--accent)" : "";
+        });
+      }
+
+      var resBtns = [].slice.call(document.querySelectorAll(".ra-res"));
+      var verbBtns = [].slice.call(document.querySelectorAll(".ra-verb"));
+
+      function sync() {
+        paint(resBtns, "data-r", res);
+        paint(verbBtns, "data-v", verb);
+        line.textContent = verb + " " + res;
+      }
+
+      resBtns.forEach(function (b) {
+        b.addEventListener("click", function () { res = b.getAttribute("data-r"); sync(); });
+      });
+      verbBtns.forEach(function (b) {
+        b.addEventListener("click", function () { verb = b.getAttribute("data-v"); sync(); });
+      });
+
+      function respond(v, r) {
+        if (v === "GET") {
+          if (r === "/orders") return { path: r, code: "200 OK", ok: true, body: "[ #41 sourdough ×2 · #42 croissant ×12 · #43 baguette ×1 ]" };
+          if (r === "/customers") return { path: r, code: "200 OK", ok: true, body: '[ "Dana", "Luis", "Priya" ]' };
+          return { path: r, code: "200 OK", ok: true, body: "[ croissant $4 · sourdough $9 · cinnamon roll $5 ]" };
+        }
+        if (v === "POST") {
+          if (r === "/orders") return { path: r, code: "201 Created", ok: true, body: "order #" + (nextOrder++) + " is in the oven" };
+          if (r === "/customers") return { path: r, code: "201 Created", ok: true, body: 'new customer added: "' + NEWCUST[custIx++ % NEWCUST.length] + '"' };
+          return { path: r, code: "201 Created", ok: true, body: "new pastry listed: " + NEWPASTRY[pastryIx++ % NEWPASTRY.length] };
+        }
+        if (r === "/orders") return { path: "/orders/41", code: "204 No Content", ok: true, body: 'order #41 cancelled and removed <span class="dim">(REST aims DELETE at one specific thing)</span>' };
+        if (r === "/customers") return { path: "/customers/7", code: "204 No Content", ok: true, body: 'customer #7 removed <span class="dim">(REST aims DELETE at one specific thing)</span>' };
+        return { path: r, code: "405 Method Not Allowed", ok: false, body: 'the bakery says no — the menu isn\'t yours to delete <span class="dim">(right door, wrong verb — and even the refusal is standardized)</span>' };
+      }
+
+      document.getElementById("ra-send").addEventListener("click", function () {
+        if (busy || chaosOn) return;
+        busy = true;
+        var rsp = respond(verb, res);
+        add('<span class="acc">→ ' + verb + " " + rsp.path + "</span>");
+        setTimeout(function () {
+          add((rsp.ok ? '<span class="ok">← ' : '<span class="err">← ') + rsp.code + "</span> — " + rsp.body);
+          busy = false;
+        }, 380);
+      });
+
+      /* chaos mode */
+      var CHAOS = {
+        orders: ['<span class="acc">← 200 OK</span> — here are the ORDERS. You asked for customers. <span class="err">Wrong guess.</span>'],
+        boom: ['<span class="err">← 500 Server Error</span> — something exploded in the kitchen. No hint why.'],
+        del: ['<span class="err">← 200 OK — "1 customer deleted."</span> WAIT. That URL <b>deleted someone</b>. In chaos-land, nothing warns you.'],
+        redir: ['<span class="err">← 302 Found</span> — redirects to /menu_show3.aspx… which is down.']
+      };
+
+      var chaosBtn = document.getElementById("ra-chaos-btn");
+      var restPanel = document.getElementById("ra-rest");
+      var chaosPanel = document.getElementById("ra-chaos");
+
+      chaosBtn.addEventListener("click", function () {
+        chaosOn = !chaosOn;
+        guesses = 0;
+        chaosSolved = false;
+        chaosBtn.textContent = chaosOn ? "🌀 Chaos API: ON — flip back to REST" : "🌀 Chaos API: OFF";
+        chaosBtn.style.borderColor = chaosOn ? "var(--bad)" : "";
+        chaosBtn.style.color = chaosOn ? "var(--bad)" : "";
+        restPanel.style.display = chaosOn ? "none" : "";
+        chaosPanel.style.display = chaosOn ? "" : "none";
+        add(chaosOn
+          ? '<span class="err">🌀 chaos enabled.</span> Every action has its own weird URL. The docs were last updated in 2009. Guess away.'
+          : '<span class="ok">✨ REST restored.</span> Nouns + verbs + standard codes. <span class="dim">GET /customers — one guess, every time.</span>');
+      });
+
+      [].slice.call(document.querySelectorAll(".ra-guess")).forEach(function (b) {
+        b.addEventListener("click", function () {
+          if (chaosSolved) {
+            add('<span class="dim">already found it — flip Chaos off to feel the difference.</span>');
+            return;
+          }
+          guesses++;
+          var k = b.getAttribute("data-k");
+          add('<span class="acc">→ ??? ' + b.textContent + "</span>");
+          if (k === "win") {
+            chaosSolved = true;
+            setTimeout(function () {
+              add('<span class="ok">← 200 OK</span> — [ "Dana", "Luis", "Priya" ] ✓ Found it… after ' + guesses + " guess" + (guesses === 1 ? "" : "es") + " of pure archaeology.");
+              add('<span class="dim">Now flip Chaos off. In REST it\'s just GET /customers — first try, on every API you\'ll ever meet.</span>');
+            }, 380);
+          } else {
+            setTimeout(function () { add(CHAOS[k][0]); }, 380);
+          }
+        });
+      });
+
+      sync();
+    })();
+  </script>
+</body>
+</html>

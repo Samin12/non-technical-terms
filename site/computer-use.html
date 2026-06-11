@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Computer Use — Claude Club</title>
+  <meta name="description" content="Computer Use, explained in plain English: AI that clicks and types like a person. With an interactive ghost cursor demo." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="computer-use" data-related="agent,api,headless,mcp">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Computer Use</h1>
+        <p class="tldr"><b>TLDR</b>AI that clicks and types like a person.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: ghost cursor demo ============ -->
+      <section class="widget" aria-label="Computer use ghost cursor demo">
+        <div class="widget-bar"><span class="dot"></span> Try it — ghost cursor demo</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            This little spreadsheet has no API — just a screen. Watch your AI use it anyway:
+            look, think, move, click, type. A ghost at your keyboard.
+          </p>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="cu-run">▶ Run task: "log my $40 expense"</button>
+          </div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:stretch;">
+            <div id="cu-stage" style="position:relative; flex:1 1 250px; min-width:250px; background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden;">
+              <div style="background:var(--bg-deep); border-bottom:1px solid var(--border-soft); padding:0.4rem 0.7rem; font-size:0.72rem; font-weight:700; letter-spacing:0.05em; color:var(--ink-soft); display:flex; justify-content:space-between;">
+                <span>📊 SheetPal — Expenses.xlsx</span><span id="cu-status" style="color:var(--good);"></span>
+              </div>
+              <div style="padding:0.8rem;">
+                <table style="width:100%; border-collapse:collapse; font-size:0.84rem;">
+                  <tr>
+                    <th style="border:1px solid var(--border-soft); background:var(--bg-deep); padding:0.35rem 0.55rem; text-align:left; font-size:0.7rem; letter-spacing:0.06em;">DATE</th>
+                    <th style="border:1px solid var(--border-soft); background:var(--bg-deep); padding:0.35rem 0.55rem; text-align:left; font-size:0.7rem; letter-spacing:0.06em;">AMOUNT</th>
+                  </tr>
+                  <tr>
+                    <td style="border:1px solid var(--border-soft); padding:0.35rem 0.55rem; font-family:var(--mono); font-size:0.78rem;">06/10</td>
+                    <td style="border:1px solid var(--border-soft); padding:0.35rem 0.55rem; font-family:var(--mono); font-size:0.78rem;">$12.20</td>
+                  </tr>
+                  <tr>
+                    <td id="cu-date" style="border:1px solid var(--border-soft); padding:0.35rem 0.55rem; font-family:var(--mono); font-size:0.78rem; height:1.6rem;"></td>
+                    <td id="cu-amt" style="border:1px solid var(--border-soft); padding:0.35rem 0.55rem; font-family:var(--mono); font-size:0.78rem; height:1.6rem;"></td>
+                  </tr>
+                </table>
+                <div style="display:flex; gap:6px; margin-top:0.8rem;">
+                  <button class="wbtn" id="cu-save" style="font-size:0.76rem; padding:0.35rem 0.7rem;">💾 Save</button>
+                  <button class="wbtn" style="font-size:0.76rem; padding:0.35rem 0.7rem;">＋ Add row</button>
+                </div>
+              </div>
+              <div id="cu-cursor" style="position:absolute; left:86%; top:84%; width:30px; height:30px; margin-left:-15px; margin-top:-15px; border-radius:50%; background:rgba(217,119,87,0.16); border:2px solid var(--accent-bright); display:flex; align-items:center; justify-content:center; font-size:0.85rem; transition:left .65s ease, top .65s ease, transform .18s ease; pointer-events:none; z-index:5;">👻</div>
+            </div>
+            <div class="wlog" id="cu-log" style="flex:1 1 230px; min-width:230px; max-height:280px;"><span class="dim">The agent is waiting. Run the task…</span></div>
+          </div>
+        </div>
+        <p class="widget-hint">Every single move costs a full look-think-act cycle. That's why computer use is slower than an API — and why it works on apps an API can't touch.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Most well-run apps have a staff entrance around the back — the
+          <a href="api.html">API</a> — where software walks in, places an order, and leaves.
+          But a huge amount of the world's software has no staff entrance at all. The only way
+          in is the front door: the screen, the mouse, the keyboard.
+        </p>
+
+        <p>
+          Computer use is your AI walking in the front door. No special access, no integration,
+          no permission slip from the app's developers. It uses the exact same interface you do.
+        </p>
+
+        <p>
+          <strong>Computer use is an AI operating a computer the way a person does: looking at
+          the screen, moving the cursor, clicking buttons, and typing into boxes.</strong>
+        </p>
+
+        <h2>Look, think, act, repeat</h2>
+
+        <p>
+          You just watched the whole trick. The ghost cursor wasn't following a script — in a
+          real run, Claude literally takes a screenshot (LOOK), decides on one small action
+          (THINK), performs it (MOVE, CLICK, TYPE), then screenshots again to check what
+          happened. It has no magical awareness of the screen. It re-looks constantly, like
+          driving at night: headlights show a little road, you move, you look again.
+        </p>
+
+        <p>
+          That loop is what makes this an <a href="agent.html">agent</a> behavior, not a chat
+          trick. The model isn't describing how one would log an expense. It's actually doing
+          it — one verified step at a time, hands on your mouse. And because every step gets
+          checked with fresh eyes, it can recover from surprises — a cookie banner, a login
+          prompt — the same way you would: look again, adjust, continue.
+        </p>
+
+        <h2>When the front door is the only door</h2>
+
+        <p>
+          If an app has an API, use the API. It's the staff entrance: faster, cheaper, far
+          sturdier. Computer use is for everything else:
+        </p>
+
+        <ul>
+          <li>That accounting program from 2009 your business still runs on</li>
+          <li>Government portals and internal tools that will never ship an API</li>
+          <li>Websites that only exist as forms and buttons</li>
+          <li>Testing your own app the way a real human user experiences it</li>
+        </ul>
+
+        <p>
+          It's also slower and more fragile, and you should know why. Each tiny action costs a
+          full look-think-act cycle — your $40 expense took thirteen steps and three
+          screenshots. Screenshots are heavy to process. And because it navigates by what it
+          sees, a redesigned button or a surprise popup can send it somewhere you didn't
+          intend. An API call is one order at the window; computer use is a whole errand. Often
+          it runs in a <a href="headless.html">headless</a> browser — same clicking, no visible
+          screen, nobody watching.
+        </p>
+
+        <div class="callout">
+          Safety first: an AI with computer use can click <em>anything</em> you can click —
+          including "Send," "Pay," and "Delete." Supervise early runs end to end, use a
+          separate browser profile or sandbox account, and keep it away from anything
+          irreversible. Treat it like a brilliant new intern at your keyboard: fast, capable,
+          and not yet trusted with the company card.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Automate the un-automatable — software with no API gets the same AI leverage as everything else</li>
+          <li>Fill the same form 200 times without losing your mind (or your afternoon)</li>
+          <li>QA-test your product by having an AI use it like a confused first-time customer</li>
+          <li>Bridge the gap while you wait for a proper API or MCP connection to exist</li>
+        </ul>
+
+        <p>
+          The pattern to remember: staff entrance when it exists, front door when it doesn't.
+          Between the two, almost nothing on a screen is out of reach anymore.
+        </p>
+
+        <p><strong>APIs are the staff entrance. Computer use is the front door — and your AI just learned to open it.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your county's permit portal is a creaky old website with no API, and you want your AI to file the same form every month. What's the realistic play?</p>
+            <div class="opts">
+              <button class="opt">It can't be automated — no API means no automation</button>
+              <button class="opt" data-correct>Computer use — the AI fills out the same web form you would, with screenshots and clicks</button>
+              <button class="opt">Paste the form into a chat and ask the AI to "submit it mentally"</button>
+            </div>
+            <div class="why">No staff entrance? Use the front door. Computer use exists precisely for software that only offers a screen, a mouse, and a form.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. The same task takes 2 seconds through an API and 90 seconds through computer use. Why the gap?</p>
+            <div class="opts">
+              <button class="opt">APIs run on faster internet connections</button>
+              <button class="opt" data-correct>Every small action needs its own look-think-act cycle with screenshots, instead of one direct request</button>
+              <button class="opt">The mouse cursor has a built-in speed limit</button>
+            </div>
+            <div class="why">You watched it: thirteen steps and three screenshots for one expense row. An API does the same job as a single order at the window.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You're about to let an agent drive your real browser, logged into all your accounts. What's the right instinct?</p>
+            <div class="opts">
+              <button class="opt">Relax — AI can only click "safe" buttons</button>
+              <button class="opt">Turn off your monitor so it can't see anything private</button>
+              <button class="opt" data-correct>Supervise it, and use a separate profile or sandbox account — it can click anything you can, including Pay and Delete</button>
+            </div>
+            <div class="why">Computer use has exactly your powers at the screen. New-intern rules apply: watch the first runs, fence off the irreversible stuff.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* ghost cursor demo */
+    (function () {
+      var stage = document.getElementById("cu-stage");
+      var cursor = document.getElementById("cu-cursor");
+      var log = document.getElementById("cu-log");
+      var runBtn = document.getElementById("cu-run");
+      var cellDate = document.getElementById("cu-date");
+      var cellAmt = document.getElementById("cu-amt");
+      var saveBtn = document.getElementById("cu-save");
+      var status = document.getElementById("cu-status");
+      var busy = false;
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function posOf(el) {
+        var s = stage.getBoundingClientRect();
+        var r = el.getBoundingClientRect();
+        return { x: r.left - s.left + r.width / 2, y: r.top - s.top + r.height / 2 };
+      }
+      function moveTo(el, next) {
+        var p = posOf(el);
+        cursor.style.left = p.x + "px";
+        cursor.style.top = p.y + "px";
+        setTimeout(next, 750);
+      }
+      function clickFx(el, next) {
+        cursor.style.transform = "scale(0.68)";
+        el.style.outline = "2px solid var(--accent-bright)";
+        setTimeout(function () {
+          cursor.style.transform = "scale(1)";
+          el.style.outline = "none";
+          next();
+        }, 380);
+      }
+      function typeInto(el, text, next) {
+        var i = 0;
+        var iv = setInterval(function () {
+          el.textContent += text.charAt(i);
+          i++;
+          if (i >= text.length) { clearInterval(iv); setTimeout(next, 300); }
+        }, 120);
+      }
+      function say(html, ms, next) { add(html); setTimeout(next, ms); }
+
+      var STEPS = [
+        function (n) { say('<span class="dim">📸 LOOK — screenshot taken. I see "Expenses.xlsx", last row empty.</span>', 850, n); },
+        function (n) { say('<span class="acc">🧠 THINK — date goes first. Target: the empty Date cell.</span>', 800, n); },
+        function (n) { say("🖱️ MOVE → Date cell", 80, function () { moveTo(cellDate, n); }); },
+        function (n) { say("🖱️ CLICK", 60, function () { clickFx(cellDate, n); }); },
+        function (n) { say('⌨️ TYPE "06/11"', 60, function () { typeInto(cellDate, "06/11", n); }); },
+        function (n) { say('<span class="dim">📸 LOOK — new screenshot. Date landed. Amount still empty.</span>', 850, n); },
+        function (n) { say('<span class="acc">🧠 THINK — now the amount: $40.00.</span>', 750, n); },
+        function (n) { say("🖱️ MOVE → Amount cell", 80, function () { moveTo(cellAmt, n); }); },
+        function (n) { say("🖱️ CLICK", 60, function () { clickFx(cellAmt, n); }); },
+        function (n) { say('⌨️ TYPE "$40.00"', 60, function () { typeInto(cellAmt, "$40.00", n); }); },
+        function (n) { say('<span class="dim">📸 LOOK — row complete. There\'s a Save button bottom-left.</span>', 850, n); },
+        function (n) { say("🖱️ MOVE → Save", 80, function () { moveTo(saveBtn, n); }); },
+        function (n) {
+          say("🖱️ CLICK — Save", 60, function () {
+            clickFx(saveBtn, function () {
+              status.textContent = "Saved ✓";
+              n();
+            });
+          });
+        },
+        function (n) { say('<span class="ok">✓ DONE — expense logged. 13 steps, 3 screenshots, zero APIs.</span>', 100, n); }
+      ];
+
+      function run(i) {
+        if (i >= STEPS.length) {
+          busy = false;
+          runBtn.disabled = false;
+          runBtn.textContent = "↻ Replay the task";
+          return;
+        }
+        STEPS[i](function () { run(i + 1); });
+      }
+
+      runBtn.addEventListener("click", function () {
+        if (busy) return;
+        busy = true;
+        runBtn.disabled = true;
+        cellDate.textContent = "";
+        cellAmt.textContent = "";
+        status.textContent = "";
+        log.innerHTML = "";
+        delete log.dataset.started;
+        add('<span class="acc">→ TASK:</span> "log my $40 expense"');
+        setTimeout(function () { run(0); }, 500);
+      });
+    })();
+  </script>
+</body>
+</html>

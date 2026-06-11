@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CDN — Claude Club</title>
+  <meta name="description" content="CDN, explained in plain English: copies of your site, close to every visitor. With an interactive world ping map." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="cdn" data-related="cache,edge,server,dns">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>CDN</h1>
+        <p class="tldr"><b>TLDR</b>Copies of your site, close to every visitor.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: world ping map ============ -->
+      <section class="widget" aria-label="CDN world ping map">
+        <div class="widget-bar"><span class="dot"></span> Try it — the world ping map</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            One origin server in Virginia. Visitors all over the planet. Feel the distance
+            with the CDN off — then flip it on and visit again.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn cdn-city" data-c="tokyo">🇯🇵 Visit from Tokyo</button>
+            <button class="wbtn cdn-city" data-c="london">🇬🇧 Visit from London</button>
+            <button class="wbtn cdn-city" data-c="saopaulo">🇧🇷 Visit from São Paulo</button>
+            <button class="wbtn" id="cdn-toggle">✳ CDN: <b>OFF</b></button>
+          </div>
+
+          <div id="cdn-map" style="position:relative; height:225px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; overflow:hidden; margin-bottom:0.9rem;">
+            <svg id="cdn-svg" viewBox="0 0 100 60" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%;"></svg>
+
+            <div style="position:absolute; left:26%; top:37%; transform:translate(-50%,-50%); text-align:center; font-size:0.66rem; font-weight:700; line-height:1.25; color:var(--ink-soft);">
+              <span id="cdn-pin-virginia" style="display:inline-block; font-size:1.15rem; transition:transform .3s ease;">📍</span><br />Virginia<br /><span style="color:var(--muted); font-weight:600;">origin server</span>
+            </div>
+            <div style="position:absolute; left:50%; top:22%; transform:translate(-50%,-50%); text-align:center; font-size:0.66rem; font-weight:700; line-height:1.25; color:var(--ink-soft);">
+              <span id="cdn-pin-london" style="display:inline-block; font-size:1rem; transition:transform .3s ease;">🇬🇧</span><br />London
+            </div>
+            <div style="position:absolute; left:86%; top:33%; transform:translate(-50%,-50%); text-align:center; font-size:0.66rem; font-weight:700; line-height:1.25; color:var(--ink-soft);">
+              <span id="cdn-pin-tokyo" style="display:inline-block; font-size:1rem; transition:transform .3s ease;">🇯🇵</span><br />Tokyo
+            </div>
+            <div style="position:absolute; left:34%; top:78%; transform:translate(-50%,-50%); text-align:center; font-size:0.66rem; font-weight:700; line-height:1.25; color:var(--ink-soft);">
+              <span id="cdn-pin-saopaulo" style="display:inline-block; font-size:1rem; transition:transform .3s ease;">🇧🇷</span><br />São Paulo
+            </div>
+
+            <div id="cdn-node-london" style="position:absolute; left:45%; top:30%; transform:translate(-50%,-50%); opacity:0; transition:opacity .5s ease; text-align:center; font-size:0.6rem; font-weight:700; line-height:1.2; color:var(--accent);">
+              <span id="cdn-nodepin-london" style="display:inline-block; font-size:1rem; transition:transform .3s ease;">✳</span><br />copy
+            </div>
+            <div id="cdn-node-tokyo" style="position:absolute; left:79%; top:43%; transform:translate(-50%,-50%); opacity:0; transition:opacity .5s ease; text-align:center; font-size:0.6rem; font-weight:700; line-height:1.2; color:var(--accent);">
+              <span id="cdn-nodepin-tokyo" style="display:inline-block; font-size:1rem; transition:transform .3s ease;">✳</span><br />copy
+            </div>
+            <div id="cdn-node-saopaulo" style="position:absolute; left:29%; top:68%; transform:translate(-50%,-50%); opacity:0; transition:opacity .5s ease; text-align:center; font-size:0.6rem; font-weight:700; line-height:1.2; color:var(--accent);">
+              <span id="cdn-nodepin-saopaulo" style="display:inline-block; font-size:1rem; transition:transform .3s ease;">✳</span><br />copy
+            </div>
+
+            <span style="position:absolute; right:8px; bottom:5px; font-size:0.6rem; color:var(--muted);">map not to scale. at all.</span>
+          </div>
+
+          <div style="overflow-x:auto; margin-bottom:0.7rem;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.84rem;">
+              <thead>
+                <tr style="color:var(--muted); text-align:left;">
+                  <th style="padding:0.3rem 0.5rem; font-weight:600;">Visitor</th>
+                  <th style="padding:0.3rem 0.5rem; font-weight:600;">CDN off</th>
+                  <th style="padding:0.3rem 0.5rem; font-weight:600;">CDN on</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-top:1px solid var(--border-soft);">
+                  <td style="padding:0.3rem 0.5rem; font-weight:600;">🇯🇵 Tokyo</td>
+                  <td id="cdn-t-tokyo-off" style="padding:0.3rem 0.5rem; font-family:var(--mono); font-size:0.78rem; color:var(--muted);">—</td>
+                  <td id="cdn-t-tokyo-on" style="padding:0.3rem 0.5rem; font-family:var(--mono); font-size:0.78rem; color:var(--muted);">—</td>
+                </tr>
+                <tr style="border-top:1px solid var(--border-soft);">
+                  <td style="padding:0.3rem 0.5rem; font-weight:600;">🇬🇧 London</td>
+                  <td id="cdn-t-london-off" style="padding:0.3rem 0.5rem; font-family:var(--mono); font-size:0.78rem; color:var(--muted);">—</td>
+                  <td id="cdn-t-london-on" style="padding:0.3rem 0.5rem; font-family:var(--mono); font-size:0.78rem; color:var(--muted);">—</td>
+                </tr>
+                <tr style="border-top:1px solid var(--border-soft);">
+                  <td style="padding:0.3rem 0.5rem; font-weight:600;">🇧🇷 São Paulo</td>
+                  <td id="cdn-t-saopaulo-off" style="padding:0.3rem 0.5rem; font-family:var(--mono); font-size:0.78rem; color:var(--muted);">—</td>
+                  <td id="cdn-t-saopaulo-on" style="padding:0.3rem 0.5rem; font-family:var(--mono); font-size:0.78rem; color:var(--muted);">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="font-size:0.85rem; color:var(--muted); margin-bottom:0.55rem;">✳ origin trips saved by the CDN: <b id="cdn-saved" style="color:var(--accent);">0</b></div>
+
+          <div class="wlog" id="cdn-log"><span class="dim">CDN is OFF. Every visit must travel to Virginia. Try one…</span></div>
+        </div>
+        <p class="widget-hint">Visit every city with the CDN off, then flip it on and visit again. That gap in the table is why the internet feels fast.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Imagine your pizza place makes the best pie on Earth — but the only kitchen is in
+          Virginia. An order comes in from Tokyo. Even with the fastest courier alive, that
+          pizza is crossing an ocean. It arrives cold. It always arrives cold, no matter how
+          good the kitchen is, because the problem was never the kitchen. It's the distance.
+        </p>
+
+        <p>
+          Pizza chains figured out the fix long before the internet did: open kitchens
+          everywhere, same recipe. Whoever orders gets pizza from the kitchen nearest them.
+        </p>
+
+        <p><strong>A CDN — content delivery network — keeps copies of your site in dozens of cities, so every visitor downloads from somewhere close.</strong></p>
+
+        <h2>Distance is the speed limit</h2>
+
+        <p>
+          Data travels at nearly the speed of light, and it is still too slow. You watched it on
+          the map: Tokyo to the Virginia origin server and back is roughly 280 milliseconds — and
+          a single page load makes dozens of those round trips for images, fonts, and scripts.
+          Stack them up and "across the ocean" becomes a site that feels heavy and slow.
+        </p>
+
+        <p>
+          Flip the CDN on and the same visit hits a copy a few hundred miles away instead: ~25
+          milliseconds. Nothing about your site changed. The files just stopped commuting.
+        </p>
+
+        <h2>How the copies actually work</h2>
+
+        <p>
+          CDNs shine for static files — images, video, CSS, fonts, this very lesson page. Files
+          that are identical for every visitor are perfect to photocopy.
+        </p>
+
+        <p>
+          The first visitor in each city does a little extra work. Tokyo's node doesn't have
+          your homepage yet, so it fetches it from the origin once, hands it over, and keeps the
+          copy. That's called warming the <a href="cache.html">cache</a> — and every Tokyo
+          visitor after that gets the fast version. One slow trip buys a whole city's speed.
+          You saw it as the "origin trips saved" counter climbing.
+        </p>
+
+        <p>
+          The flip side: copies can briefly run stale. Update your logo, and a visitor in London
+          might see the old one for a few minutes until London's copy refreshes. If a friend
+          ever swears your update "isn't live" while you're staring right at it — it's live.
+          Their copy is just a beat behind.
+        </p>
+
+        <h2>You're probably already using one</h2>
+
+        <p>
+          The platforms you <a href="deploy.html">deploy</a> to — the Vercels and Netlifys of
+          the world — quietly put a CDN in front of every site they host. That's a big part of
+          why everything you ship feels instantly fast worldwide, and why skipping it (serving
+          big images from one lonely server) is something your visitors in Sydney feel
+          immediately. <a href="dns.html">DNS</a> even plays along: the name resolves to
+          whichever copy sits nearest the visitor.
+        </p>
+
+        <div class="callout">
+          Pro tip: if your site is snappy at home but "slow" in another country, don't rewrite
+          your code. Your files are just far away. Putting a CDN in front is usually a checkbox
+          on your host, not a project — check that box before you refactor anything.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Diagnose "it's slow in Australia" in one sentence</li>
+          <li>Ship the image-heavy site Claude built you without melting one poor server</li>
+          <li>Understand what hosts mean when they brag about their "global network"</li>
+          <li>Stay calm when a just-deployed change looks stale to someone else</li>
+        </ul>
+
+        <p>
+          And when you want to run code in all those cities — not just store files there —
+          that's a later lesson: the <a href="edge.html">edge</a>.
+        </p>
+
+        <p><strong>One kitchen can't feed the planet. Copies can. That's the whole CDN.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your site loads instantly for you in New York, but visitors in Sydney call it "painfully slow." What's the likely fix?</p>
+            <div class="opts">
+              <button class="opt">Rewrite the site in a faster programming language</button>
+              <button class="opt" data-correct>Put a CDN in front so Sydney downloads from a nearby copy</button>
+              <button class="opt">Tell Sydney users to upgrade their wifi</button>
+            </div>
+            <div class="why">The code is fine — the files are 15,000 km away. Copies close to visitors remove the distance, which was the actual problem.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. The first visitor from Tokyo waits 300 ms, but every Tokyo visitor after that waits 25 ms. What happened?</p>
+            <div class="opts">
+              <button class="opt">The server physically warmed up and got faster</button>
+              <button class="opt" data-correct>Tokyo's node fetched the page from the origin once, kept a copy, and now serves it locally</button>
+              <button class="opt">The later visitors had faster phones</button>
+            </div>
+            <div class="why">That first slow request "warms" the local cache. One origin trip buys fast loads for the entire city afterward.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You deploy a new logo, but a friend in London still sees the old one for a few minutes. Why?</p>
+            <div class="opts">
+              <button class="opt">Your deploy silently failed</button>
+              <button class="opt">London is outside your CDN's coverage</button>
+              <button class="opt" data-correct>London's cached copy hasn't refreshed yet — it will catch up shortly</button>
+            </div>
+            <div class="why">A CDN serves stored copies, and copies refresh on a short delay after a deploy. Stale-for-a-moment is normal, not broken.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* world ping map */
+    (function () {
+      var ORIGIN = { x: 26, y: 22 };
+      var CITIES = {
+        tokyo: { label: "Tokyo", flag: "🇯🇵", x: 86, y: 20, node: { x: 79, y: 26 }, off: 280, on: 24 },
+        london: { label: "London", flag: "🇬🇧", x: 50, y: 13, node: { x: 45, y: 18 }, off: 150, on: 21 },
+        saopaulo: { label: "São Paulo", flag: "🇧🇷", x: 34, y: 47, node: { x: 29, y: 41 }, off: 240, on: 28 }
+      };
+      var svg = document.getElementById("cdn-svg");
+      var log = document.getElementById("cdn-log");
+      var toggle = document.getElementById("cdn-toggle");
+      var savedEl = document.getElementById("cdn-saved");
+      var cdnOn = false, saved = 0, started = false;
+      var lastOff = {};
+
+      function add(html) {
+        if (!started) { log.innerHTML = ""; started = true; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function rnd(base, j) {
+        return base + Math.floor(Math.random() * (j * 2 + 1)) - j;
+      }
+
+      function line(from, to, dur, color) {
+        var ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        ln.setAttribute("x1", from.x);
+        ln.setAttribute("y1", from.y);
+        ln.setAttribute("x2", to.x);
+        ln.setAttribute("y2", to.y);
+        ln.setAttribute("stroke-linecap", "round");
+        ln.setAttribute("vector-effect", "non-scaling-stroke");
+        ln.style.stroke = color;
+        ln.style.strokeWidth = "2.5px";
+        var len = Math.hypot(to.x - from.x, to.y - from.y);
+        ln.style.strokeDasharray = len;
+        ln.style.strokeDashoffset = len;
+        ln.style.transition = "stroke-dashoffset " + dur + "ms ease-out";
+        svg.appendChild(ln);
+        requestAnimationFrame(function () { ln.style.strokeDashoffset = "0"; });
+        setTimeout(function () {
+          ln.style.transition = "opacity 0.5s ease";
+          ln.style.opacity = "0";
+          setTimeout(function () { ln.remove(); }, 550);
+        }, dur + 700);
+      }
+
+      function pulse(id) {
+        var el = document.getElementById(id);
+        if (!el) { return; }
+        el.style.transform = "scale(1.6)";
+        setTimeout(function () { el.style.transform = "scale(1)"; }, 350);
+      }
+
+      function visit(key, btn) {
+        var c = CITIES[key];
+        btn.disabled = true;
+        var lat = cdnOn ? rnd(c.on, 4) : rnd(c.off, 14);
+        var dur = 280 + lat * 2;
+        var to = cdnOn ? c.node : ORIGIN;
+        line({ x: c.x, y: c.y }, to, dur, cdnOn ? "var(--good)" : "var(--bad)");
+        setTimeout(function () { pulse(cdnOn ? "cdn-nodepin-" + key : "cdn-pin-virginia"); }, dur);
+        setTimeout(function () {
+          var cell;
+          if (cdnOn) {
+            saved++;
+            savedEl.textContent = saved;
+            cell = document.getElementById("cdn-t-" + key + "-on");
+            cell.textContent = lat + " ms";
+            cell.style.color = "var(--good)";
+            cell.style.fontWeight = "700";
+            var faster = lastOff[key] ? ' <span class="dim">(' + Math.round(lastOff[key] / lat) + "× faster — and Virginia never even heard about it)</span>" : ' <span class="dim">(short hop)</span>';
+            add(c.flag + " " + c.label + ' → nearby copy ✳ … <span class="ok">' + lat + " ms</span>" + faster);
+          } else {
+            lastOff[key] = lat;
+            cell = document.getElementById("cdn-t-" + key + "-off");
+            cell.textContent = lat + " ms";
+            cell.style.color = "var(--bad)";
+            cell.style.fontWeight = "700";
+            add(c.flag + " " + c.label + ' → Virginia origin … <span class="err">' + lat + ' ms</span> <span class="dim">(the long way, every single time)</span>');
+          }
+          btn.disabled = false;
+        }, dur + 150);
+      }
+
+      [].slice.call(document.querySelectorAll(".cdn-city")).forEach(function (btn) {
+        btn.addEventListener("click", function () { visit(btn.getAttribute("data-c"), btn); });
+      });
+
+      toggle.addEventListener("click", function () {
+        cdnOn = !cdnOn;
+        toggle.innerHTML = "✳ CDN: <b>" + (cdnOn ? "ON" : "OFF") + "</b>";
+        toggle.style.borderColor = cdnOn ? "var(--good)" : "var(--border)";
+        ["tokyo", "london", "saopaulo"].forEach(function (k) {
+          document.getElementById("cdn-node-" + k).style.opacity = cdnOn ? "1" : "0";
+        });
+        add(cdnOn
+          ? '<span class="ok">✳ CDN ON</span> — copies of your site just appeared near every region. Visit again.'
+          : '<span class="dim">CDN OFF — every visit travels to Virginia again.</span>');
+      });
+    })();
+  </script>
+</body>
+</html>

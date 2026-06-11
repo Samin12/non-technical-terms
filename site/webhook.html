@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Webhook — Claude Club</title>
+  <meta name="description" content="Webhook, explained in plain English: an app that pings you the moment something happens. With an interactive doorbell vs. door-checking demo." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="webhook" data-related="api,endpoint,cron-job,deploy">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Webhook</h1>
+        <p class="tldr"><b>TLDR</b>An app that pings you the moment something happens.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: doorbell vs. door-checking ============ -->
+      <section class="widget" aria-label="Webhook doorbell vs door-checking demo">
+        <div class="widget-bar"><span class="dot"></span> Try it — doorbell vs. door-checking</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Same shop, two strategies for hearing about new payments. Left: you keep walking to
+            the door to check. Right: a doorbell rings the instant one lands. Turn on
+            auto-checking, then fire a few payments and compare.
+          </p>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(235px, 1fr)); gap:0.8rem; margin-bottom:0.9rem;">
+            <div style="border:1px solid var(--border); border-radius:10px; padding:0.8rem; background:var(--card);">
+              <div style="font-weight:700; font-size:0.74rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:0.6rem;">🚪 Polling — you keep asking</div>
+              <div class="wrow" style="margin-bottom:0.6rem;">
+                <button class="wbtn" id="wh-check">🚶 Check the door</button>
+                <button class="wbtn" id="wh-auto">Auto-check every 2s: OFF</button>
+              </div>
+              <div class="wlog" id="wh-poll-log" style="min-height:120px; max-height:140px; font-size:0.73rem;"><span class="dim">No checks yet…</span></div>
+              <div style="font-size:0.78rem; color:var(--muted); margin-top:0.5rem;">checks: <b id="wh-checks">0</b> · wasted trips: <b id="wh-wasted" style="color:var(--bad);">0</b> · caught: <b id="wh-pcaught">0</b></div>
+            </div>
+
+            <div style="border:1px solid var(--border); border-radius:10px; padding:0.8rem; background:var(--card);">
+              <div style="font-weight:700; font-size:0.74rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:0.6rem;"><span id="wh-bell" style="display:inline-block;">🔔</span> Webhook — it tells you</div>
+              <div class="wrow" style="margin-bottom:0.6rem;">
+                <button class="wbtn primary" id="wh-pay">💳 Customer pays $49</button>
+              </div>
+              <div class="wlog" id="wh-hook-log" style="min-height:120px; max-height:140px; font-size:0.73rem;"><span class="dim">Doorbell armed at yoursite.com/hooks/stripe — waiting…</span></div>
+              <div style="font-size:0.78rem; color:var(--muted); margin-top:0.5rem;">pings: <b id="wh-pings">0</b> · wasted trips: <b style="color:var(--good);">0</b> · caught: <b id="wh-wcaught">0</b></div>
+            </div>
+          </div>
+
+          <div id="wh-tally" style="font-family:var(--sans); font-size:0.85rem; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:9px; padding:0.6rem 0.85rem; color:var(--ink-soft);">Fire a payment to start the comparison…</div>
+        </div>
+        <p class="widget-hint">Let auto-check run for 20 seconds without any payments. Count the wasted trips. Now you know why everything real-time is a webhook.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Imagine expecting a package and checking your front door every thirty seconds. Open
+          the door. Nothing. Close it. Wait. Open it again. Nothing. You'd do it hundreds of
+          times for one delivery — which is exactly what the left panel just did, and exactly
+          why its wasted-trips counter looks embarrassing.
+        </p>
+
+        <p>
+          The sane move is to install a doorbell and let the courier press it. One ring, the
+          moment it matters, zero wasted trips. That's the right panel.
+        </p>
+
+        <p><strong>A webhook is the doorbell: instead of you asking an app "anything new?", the app pings your address the instant something happens.</strong></p>
+
+        <h2>Pull vs. push</h2>
+
+        <p>
+          A normal <a href="api.html">API</a> call is <em>pull</em>: you ask, it answers. Great
+          when you want something on demand — but a terrible way to find out about events.
+          Poll every two seconds and you hammer the API thousands of times a day for mostly
+          "nothing yet…". Poll gently, every ten minutes, and your "instant" payment alert is
+          nine minutes stale. Pull makes you choose between wasteful and slow.
+        </p>
+
+        <p>
+          A webhook is <em>push</em>. You hand the other app an address, and it calls
+          <em>you</em> — once per event, zero delay, nothing wasted. In the widget, every
+          payment rang the bell in the same instant you clicked it. The polling side caught
+          the same payments, but always late, and buried under empty checks.
+        </p>
+
+        <h2>The doorbell address</h2>
+
+        <p>
+          Here's the twist that makes webhooks click: the address you hand over is an
+          <a href="endpoint.html">endpoint</a> on <em>your</em> side. The roles flip. You're
+          not the one knocking on Stripe's doors anymore — you've built a door of your own,
+          something like <code>yoursite.com/hooks/stripe</code>, and told Stripe "when a
+          payment succeeds, send the details here." The ping itself is just a small request
+          carrying a payload, like the one you watched arrive:
+          <code>event: payment.succeeded · amount: $49</code>.
+        </p>
+
+        <p>
+          You'll meet these everywhere: Stripe pinging you on every payment, a form tool
+          pinging when someone submits, GitHub pinging when code is pushed — which is the
+          classic trigger for an automatic <a href="deploy.html">deploy</a>. And note the
+          difference from a <a href="cron-job.html">cron job</a>: cron fires on a clock,
+          a webhook fires on an event. "Every morning at 9" is cron. "The second someone
+          pays" is a webhook.
+        </p>
+
+        <div class="callout">
+          When an automation silently stops working, check the doorbell first. Webhooks fail
+          quietly: if your receiving address changed or your server was napping, the sender
+          shrugs, maybe retries a few times, then gives up — and nobody emails you about it.
+          Moved your site? Re-point every webhook. And treat the URL itself like it's
+          semi-secret: anyone who knows your doorbell address can ring it.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <p>Once you can receive pings, your tools start talking to you instead of waiting to be asked:</p>
+
+        <ul>
+          <li>"Someone paid" → a Slack message and a thank-you email, within a second</li>
+          <li>Form submission → contact filed into your CRM, no copy-paste</li>
+          <li>Code pushed → site rebuilds and ships itself</li>
+          <li>Agents that wake up on events — your AI springs into action <em>because something happened</em>, not because a timer went off</li>
+        </ul>
+
+        <p>
+          Look at any automation platform — Zapier, n8n, all of them — and squint: almost
+          every "trigger" is a webhook and almost every "action" is an API call. Your whole
+          automation stack is doorbells glued to drive-thru windows.
+        </p>
+
+        <p><strong>APIs are how your software asks. Webhooks are how it gets told.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You want a Slack message the moment anyone buys your product. The cleanest setup?</p>
+            <div class="opts">
+              <button class="opt">Have your AI call Stripe's API every 60 seconds asking "any sales yet?"</button>
+              <button class="opt" data-correct>Give Stripe a webhook URL so it pings you the instant a payment succeeds</button>
+              <button class="opt">Export a sales CSV every night and read it in the morning</button>
+            </div>
+            <div class="why">"The moment it happens" is push territory. Polling every minute is wasteful AND up to a minute late; the webhook rings once, instantly, only when there's news.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. What actually <em>is</em> the webhook URL you paste into Stripe's settings?</p>
+            <div class="opts">
+              <button class="opt">A secret password that unlocks your Stripe account</button>
+              <button class="opt">The checkout page customers visit to pay you</button>
+              <button class="opt" data-correct>An address on your side that Stripe sends the event details to</button>
+            </div>
+            <div class="why">It's your doorbell: an endpoint you control. Stripe pushes a small payload (event name, amount, ID) to that address every time the event fires.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your "new sale → email the customer" automation worked for months, then silently stopped right after you moved your site to a new host. Most likely cause?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The webhook is pointing at the old address — the doorbell got unplugged in the move</button>
+              <button class="opt">Stripe stopped supporting webhooks</button>
+              <button class="opt">Emails just get slower in the winter</button>
+            </div>
+            <div class="why">Webhooks fail silently: Stripe kept ringing an address that no longer answers, then gave up. After any move, re-point your webhooks first.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* doorbell vs. door-checking */
+    (function () {
+      var pollLog = document.getElementById("wh-poll-log");
+      var hookLog = document.getElementById("wh-hook-log");
+      var bell = document.getElementById("wh-bell");
+      var tally = document.getElementById("wh-tally");
+      var elChecks = document.getElementById("wh-checks");
+      var elWasted = document.getElementById("wh-wasted");
+      var elPCaught = document.getElementById("wh-pcaught");
+      var elPings = document.getElementById("wh-pings");
+      var elWCaught = document.getElementById("wh-wcaught");
+      var autoBtn = document.getElementById("wh-auto");
+
+      var checks = 0, wasted = 0, pcaught = 0, events = 0;
+      var pending = [];
+      var timer = null;
+      var payN = 0;
+
+      function add(log, html) {
+        if (!log.dataset.started) { log.innerHTML = ""; log.dataset.started = "1"; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        while (log.childNodes.length > 120) { log.removeChild(log.firstChild); }
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function counters() {
+        elChecks.textContent = checks;
+        elWasted.textContent = wasted;
+        elPCaught.textContent = pcaught;
+        elPings.textContent = events;
+        elWCaught.textContent = events;
+      }
+
+      function updateTally() {
+        if (events === 0 && checks === 0) return;
+        if (events === 0) {
+          tally.innerHTML = "🚪 Polling: <b>" + checks + "</b> check" + (checks === 1 ? "" : "s") + " so far — <b style='color:var(--bad);'>all wasted</b>. Nothing has happened yet. That's polling.";
+          return;
+        }
+        tally.innerHTML =
+          "🚪 Polling: <b>" + checks + "</b> checks → <b style='color:var(--bad);'>" + wasted + " wasted</b>, caught " + pcaught + " (always late) &nbsp;·&nbsp; " +
+          "🔔 Webhook: <b>" + events + "</b> event" + (events === 1 ? "" : "s") + " → caught <b style='color:var(--good);'>" + events + ", instantly</b>, 0 wasted trips";
+      }
+
+      function check() {
+        checks++;
+        if (pending.length) {
+          var found = pending.splice(0, pending.length);
+          pcaught += found.length;
+          found.forEach(function (p) {
+            var late = ((Date.now() - p.t) / 1000).toFixed(1);
+            add(pollLog, '<span class="ok">→ check #' + checks + ": found " + p.id + " ($49)</span> — " + late + "s after it happened");
+          });
+        } else {
+          wasted++;
+          add(pollLog, '<span class="dim">→ check #' + checks + ": nothing yet… (wasted trip)</span>");
+        }
+        counters();
+        updateTally();
+      }
+
+      document.getElementById("wh-check").addEventListener("click", check);
+
+      autoBtn.addEventListener("click", function () {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+          autoBtn.textContent = "Auto-check every 2s: OFF";
+          autoBtn.style.borderColor = "";
+          autoBtn.style.color = "";
+          add(pollLog, '<span class="dim">auto-checking stopped.</span>');
+        } else {
+          timer = setInterval(check, 2000);
+          autoBtn.textContent = "Auto-check every 2s: ON";
+          autoBtn.style.borderColor = "var(--accent-bright)";
+          autoBtn.style.color = "var(--accent)";
+          add(pollLog, '<span class="acc">auto-checking every 2s… walk, look, walk back.</span>');
+          check();
+        }
+      });
+
+      document.getElementById("wh-pay").addEventListener("click", function () {
+        payN++;
+        events++;
+        var p = { id: "pay_10" + (40 + payN), t: Date.now() };
+        pending.push(p);
+        add(hookLog, '<span class="ok">🔔 PING — instant.</span> event: payment.succeeded · amount: $49 · id: ' + p.id);
+        if (bell.animate) {
+          bell.animate(
+            [
+              { transform: "rotate(0deg)" },
+              { transform: "rotate(22deg)" },
+              { transform: "rotate(-18deg)" },
+              { transform: "rotate(12deg)" },
+              { transform: "rotate(-6deg)" },
+              { transform: "rotate(0deg)" }
+            ],
+            { duration: 550, easing: "ease-out" }
+          );
+        }
+        counters();
+        updateTally();
+      });
+    })();
+  </script>
+</body>
+</html>

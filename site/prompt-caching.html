@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prompt Caching — Claude Club</title>
+  <meta name="description" content="Prompt caching, explained in plain English: pay to read it once, reuse it for cents. With an interactive cold vs. cached race." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="prompt-caching" data-related="token,context-window,system-prompt,cache,api">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Prompt Caching</h1>
+        <p class="tldr"><b>TLDR</b>Pay to read it once. Reuse it for cents.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: cold vs. cached race ============ -->
+      <section class="widget" aria-label="Prompt caching cold vs. cached race">
+        <div class="widget-bar"><span class="dot"></span> Try it — cold vs. cached race</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Your AI is a new employee. Before answering <em>anything</em>, it has to read the
+            whole company handbook below. The only question is whether you pay full price for
+            that reading every single time.
+          </p>
+
+          <div id="pc-block" style="background:var(--code-bg); color:var(--code-ink); border:2px solid transparent; border-radius:10px; padding:0.8rem 1rem; font-family:var(--mono); font-size:0.78rem; line-height:1.65; margin-bottom:0.85rem; transition:border-color .3s ease, box-shadow .3s ease;">
+            <span style="color:#f0b27a;">📚 THE HANDBOOK — sent with every single question</span><br />
+            system prompt + product docs + examples · <b>50,000 tokens</b>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; gap:0.6rem; font-family:var(--sans); font-size:0.8rem; font-weight:600; color:var(--ink-soft); margin-bottom:0.35rem;">
+            <span id="pc-status">Idle. Ask something below.</span>
+            <span id="pc-lat" style="color:var(--accent); white-space:nowrap;"></span>
+          </div>
+          <div class="wmeter" style="margin-bottom:0.9rem;"><i id="pc-meter"></i></div>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn" id="pc-cold">🐢 Ask a question (no cache)</button>
+            <button class="wbtn primary" id="pc-warm">⚡ Ask with cache</button>
+            <button class="wbtn" id="pc-race">🏁 10 questions, both ways</button>
+          </div>
+
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:0.6rem;">
+            <div style="flex:1; min-width:150px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:0.65rem 0.85rem;">
+              <div style="font-family:var(--sans); font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">🐢 No cache</div>
+              <div style="font-family:var(--sans); font-size:1.3rem; font-weight:800; color:var(--bad);" id="pc-cold-total">$0.00</div>
+              <div style="font-family:var(--sans); font-size:0.78rem; color:var(--muted);"><span id="pc-cold-n">0</span> questions answered</div>
+            </div>
+            <div style="flex:1; min-width:150px; background:var(--good-soft); border:1px solid var(--good); border-radius:10px; padding:0.65rem 0.85rem;">
+              <div style="font-family:var(--sans); font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">⚡ With cache</div>
+              <div style="font-family:var(--sans); font-size:1.3rem; font-weight:800; color:var(--good);" id="pc-cache-total">$0.00</div>
+              <div style="font-family:var(--sans); font-size:0.78rem; color:var(--muted);"><span id="pc-cache-n">0</span> questions answered</div>
+            </div>
+          </div>
+
+          <div id="pc-savings" style="display:none; font-family:var(--sans); font-size:0.9rem; background:var(--accent-faint); border:1px solid var(--accent-soft); border-radius:10px; padding:0.6rem 0.9rem; margin-bottom:0.9rem;"></div>
+
+          <div class="wlog" id="pc-log"><span class="dim">Two ways to ask the same question. Pick one…</span></div>
+        </div>
+        <p class="widget-hint">Run the 🏁 race. Same 10 questions, same answers — one bill is 10× the other. That gap is prompt caching.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Picture your first hire. Brilliant, fast, never sleeps — but with one ridiculous rule:
+          before answering any question, they must re-read the entire company handbook. Front to
+          back. Every time.
+        </p>
+
+        <p>
+          "What's our refund policy?" Three hundred pages, then an answer. "Do we ship to
+          Canada?" Three hundred pages. Again. You're not paying for answers anymore. You're
+          paying for the same reading, over and over.
+        </p>
+
+        <p>
+          <strong>Prompt caching fixes that: the AI reads the big, repeated part of your prompt
+          once, then reuses that reading for a fraction of the price.</strong>
+        </p>
+
+        <h2>Why your AI re-reads everything</h2>
+
+        <p>
+          Here's the part nobody tells you: the model has no memory between requests. None.
+          Every time you call it, you send the entire pile again — the
+          <a href="system-prompt.html">system prompt</a>, your docs, your examples, the whole
+          conversation so far. The model reads every <a href="token.html">token</a> of it, and
+          you're billed for every token it reads.
+        </p>
+
+        <p>
+          So a support bot carrying a 50,000-token product manual doesn't pay for that manual
+          once. It pays on question one, question two, question two hundred. Same manual, same
+          reading, fresh bill. That's the 🐢 button you kept pressing in the race above — $0.15
+          and 4.2 seconds, every single time.
+        </p>
+
+        <h2>What the cache actually does</h2>
+
+        <p>
+          With caching on, the provider keeps a snapshot of the heavy reading work — the
+          already-processed version of your prompt's opening section. The next request checks:
+          does this prompt start with the exact same 50,000 tokens? It does? Skip straight to
+          the new part.
+        </p>
+
+        <p>
+          That's the ⚡ button: same question, same answer, roughly 10× cheaper and seconds
+          faster, because the handbook was already in memory. The employee read it this morning.
+          Now they just answer.
+        </p>
+
+        <p>
+          The first read isn't free, of course. Writing to the cache actually costs a little
+          <em>more</em> than a normal read — you're paying the librarian to file everything
+          properly. It pays for itself by the second question, which is why the race wasn't
+          even close.
+        </p>
+
+        <p>
+          One catch: the snapshot doesn't live forever. Caches expire after a few minutes of
+          silence. They're built for bursts of work — which is exactly what a busy chatbot
+          session or an agent loop looks like.
+        </p>
+
+        <h2>The one rule: stable stuff first</h2>
+
+        <p>
+          The cache only matches from the very beginning of the prompt. Change one early word
+          and the snapshot is worthless — full re-read, full price.
+        </p>
+
+        <p>
+          So builders arrange every prompt the same way: stable content first (system prompt,
+          docs, examples), changing content last (the user's question, today's data). And
+          remember — caching makes the desk cheaper to refill, it doesn't make the desk bigger.
+          Everything still has to fit in the <a href="context-window.html">context window</a>.
+        </p>
+
+        <div class="callout">
+          The classic cache-killer: putting today's date, a timestamp, or the user's name at the
+          <em>top</em> of the prompt. Now every request starts differently, the cache never
+          matches, and you silently pay cold price forever. Anything that changes goes at the end.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>A support bot that carries your full product manual yet answers for pennies</li>
+          <li>Agents that re-read the same instructions on every step of their loop without burning your budget</li>
+          <li>Long conversations where the growing chat history gets cached as it goes</li>
+          <li>"Paste the whole codebase and ask questions" workflows that would otherwise cost dollars per question</li>
+        </ul>
+
+        <p>
+          You felt it in the widget: after five questions the savings line appeared, and it only
+          grows from there. At a thousand questions a day, that gap is the difference between a
+          tool you run freely and a bill you're scared of.
+        </p>
+
+        <p><strong>Read it once. Answer all day for cents.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your support bot sends a 40,000-token product manual with every request, and customers ask 300 questions a day. What does prompt caching change?</p>
+            <div class="opts">
+              <button class="opt">The model memorizes the manual permanently, so you can stop sending it</button>
+              <button class="opt" data-correct>The manual gets fully processed once, then reused — each question now costs a fraction</button>
+              <button class="opt">The manual gets compressed into a shorter summary to save space</button>
+            </div>
+            <div class="why">The manual still gets sent and still has to fit, but the expensive reading work happens once. Every reuse is ~10× cheaper — that was the ⚡ button.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. A builder puts "Today is June 11" at the very top of the prompt, before 50,000 tokens of docs. Why is the bill still at full cold price?</p>
+            <div class="opts">
+              <button class="opt">Caching only works for prompts under 1,000 tokens</button>
+              <button class="opt" data-correct>The prompt's beginning changes every day, so the cache never matches — stable content must come first</button>
+              <button class="opt">Dates are billed at a higher token rate</button>
+            </div>
+            <div class="why">The cache matches from the first token onward. One changing word up top makes every request look brand new. Anything that changes belongs at the end.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Which workload gets the biggest win from prompt caching?</p>
+            <div class="opts">
+              <button class="opt">One-off questions with a tiny prompt and no documents</button>
+              <button class="opt" data-correct>An agent that re-reads the same big instructions and docs on every step of its loop</button>
+              <button class="opt">Requests where the entire prompt is different every time</button>
+            </div>
+            <div class="why">Caching pays off when a big chunk of the prompt repeats. Agents are the extreme case — same handbook, dozens of reads per task.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* cold vs. cached race */
+    (function () {
+      var COLD_MILLS = 150;   /* $0.15 per cold question, in tenths of a cent */
+      var CACHE_MILLS = 15;   /* $0.015 per cached question */
+      var QUESTIONS = [
+        "What's our refund policy?",
+        "Do we ship to Canada?",
+        "What's the wifi password?",
+        "When does payroll run?",
+        "Can customers pay by invoice?",
+        "What's the holiday schedule?",
+        "Who approves discounts?",
+        "How do I file an expense?"
+      ];
+
+      var coldN = 0, coldMills = 0, cacheN = 0, cacheMills = 0, asks = 0, qi = 0;
+      var busy = false, readTimer = null;
+
+      var block = document.getElementById("pc-block");
+      var meter = document.getElementById("pc-meter");
+      var status = document.getElementById("pc-status");
+      var lat = document.getElementById("pc-lat");
+      var log = document.getElementById("pc-log");
+      var savings = document.getElementById("pc-savings");
+      var coldBtn = document.getElementById("pc-cold");
+      var warmBtn = document.getElementById("pc-warm");
+      var raceBtn = document.getElementById("pc-race");
+      var btns = [coldBtn, warmBtn, raceBtn];
+
+      function money(m) {
+        return "$" + (m % 10 === 0 ? (m / 1000).toFixed(2) : (m / 1000).toFixed(3));
+      }
+      function nextQ() { var q = QUESTIONS[qi % QUESTIONS.length]; qi++; return q; }
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function clearIfFirst() { if (!log.dataset.started) { log.innerHTML = ""; } }
+      function setBusy(b) { busy = b; btns.forEach(function (x) { x.disabled = b; }); }
+
+      function meterRun(pct, dur) {
+        meter.style.transition = "none";
+        meter.style.width = "0%";
+        void meter.offsetWidth;
+        meter.style.transition = "width " + dur + "ms linear";
+        meter.style.width = pct + "%";
+      }
+      function meterReset() {
+        meter.style.transition = "width 300ms ease";
+        meter.style.width = "0%";
+      }
+
+      function paint() {
+        document.getElementById("pc-cold-total").textContent = money(coldMills);
+        document.getElementById("pc-cold-n").textContent = coldN;
+        document.getElementById("pc-cache-total").textContent = money(cacheMills);
+        document.getElementById("pc-cache-n").textContent = cacheN;
+        if (asks >= 5) {
+          var saved = cacheN * (COLD_MILLS - CACHE_MILLS);
+          savings.style.display = "block";
+          savings.innerHTML = saved > 0
+            ? "💰 You've saved <b>" + money(saved) + "</b> so far — same handbook, read once."
+            : "💸 You've saved <b>$0.00</b> — every question re-read the whole pile. Try the ⚡ button.";
+        }
+      }
+
+      coldBtn.addEventListener("click", function () {
+        if (busy) return;
+        setBusy(true);
+        clearIfFirst();
+        var q = nextQ();
+        add('<span class="acc">→ Q' + (asks + 1) + ':</span> "' + q + '" <span class="dim">(no cache)</span>');
+        block.style.borderColor = "var(--accent-bright)";
+        lat.textContent = "";
+        var page = 0;
+        meterRun(100, 2000);
+        readTimer = setInterval(function () {
+          page = Math.min(300, page + 21);
+          status.textContent = "🐢 Re-reading the handbook… page " + page + " / 300";
+        }, 140);
+        setTimeout(function () {
+          clearInterval(readTimer);
+          block.style.borderColor = "transparent";
+          status.textContent = "Done — the whole 50,000 tokens, again.";
+          lat.textContent = "latency: 4.2s";
+          coldN++; coldMills += COLD_MILLS; asks++;
+          add('<span class="err">← re-read 50,000 tokens.</span> answered · 4.2s · ' + money(COLD_MILLS));
+          paint();
+          meterReset();
+          setBusy(false);
+        }, 2100);
+      });
+
+      warmBtn.addEventListener("click", function () {
+        if (busy) return;
+        setBusy(true);
+        clearIfFirst();
+        var q = nextQ();
+        add('<span class="acc">→ Q' + (asks + 1) + ':</span> "' + q + '" <span class="dim">(cached ⚡)</span>');
+        block.style.borderColor = "var(--good)";
+        block.style.boxShadow = "0 0 0 4px var(--good-soft)";
+        status.textContent = "⚡ Cache hit — handbook already read.";
+        meterRun(100, 250);
+        setTimeout(function () {
+          block.style.borderColor = "transparent";
+          block.style.boxShadow = "none";
+          lat.textContent = "latency: 0.9s";
+          cacheN++; cacheMills += CACHE_MILLS; asks++;
+          add('<span class="ok">← ⚡ cache hit.</span> answered · 0.9s · ' + money(CACHE_MILLS));
+          paint();
+          meterReset();
+          setBusy(false);
+        }, 600);
+      });
+
+      raceBtn.addEventListener("click", function () {
+        if (busy) return;
+        setBusy(true);
+        clearIfFirst();
+        add('<span class="acc">🏁 RACE:</span> the same 10 questions, asked both ways…');
+        lat.textContent = "";
+        meterReset();
+        var step = 0;
+        var iv = setInterval(function () {
+          step++;
+          coldN++; coldMills += COLD_MILLS;
+          cacheN++; cacheMills += CACHE_MILLS;
+          asks += 2;
+          meter.style.transition = "width 150ms linear";
+          meter.style.width = (step * 10) + "%";
+          status.textContent = "🏁 Question " + step + " / 10 — 🐢 re-reading… ⚡ already done.";
+          paint();
+          if (step >= 10) {
+            clearInterval(iv);
+            add('<span class="err">🐢 no cache: ' + money(10 * COLD_MILLS) + '</span> <span class="dim">(10 full re-reads)</span>');
+            add('<span class="ok">⚡ cached: ' + money(10 * CACHE_MILLS) + '</span> <span class="dim">(one read, ten reuses)</span>');
+            add('Same questions. Same answers. <span class="ok">10× cheaper, ~5× faster.</span>');
+            status.textContent = "Race over. The cache lapped the re-reader.";
+            meterReset();
+            setBusy(false);
+          }
+        }, 230);
+      });
+    })();
+  </script>
+</body>
+</html>

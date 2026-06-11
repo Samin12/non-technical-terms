@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CLAUDE.md — Claude Club</title>
+  <meta name="description" content="CLAUDE.md, explained in plain English: house rules your AI reads before it starts. With an interactive house-rules toggle board." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="claude-md" data-related="system-prompt,markdown,session,skill">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>CLAUDE.md</h1>
+        <p class="tldr"><b>TLDR</b>House rules your AI reads before it starts.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: house rules toggles ============ -->
+      <section class="widget" aria-label="CLAUDE.md house rules toggles">
+        <div class="widget-bar"><span class="dot"></span> Try it — house rules toggles</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            This is a project’s CLAUDE.md. Claude reads it before touching anything. Toggle the
+            rules, send the same request, and watch the work change.
+          </p>
+
+          <div style="font-family:var(--mono); font-size:0.8rem; background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:0.9rem;">
+            <div style="background:var(--bg-deep); border-bottom:1px solid var(--border-soft); padding:0.45rem 0.9rem; font-weight:700;">📄 CLAUDE.md <span style="color:var(--muted); font-weight:400;">— your project’s house rules</span></div>
+            <div style="padding:0.7rem 0.9rem; display:grid; gap:0.45rem;">
+              <label style="display:flex; gap:0.55rem; align-items:center; cursor:pointer;"><input type="checkbox" id="cm-ts" checked /> <span style="transition:all .2s ease;">- Use TypeScript</span></label>
+              <label style="display:flex; gap:0.55rem; align-items:center; cursor:pointer;"><input type="checkbox" id="cm-main" checked /> <span style="transition:all .2s ease;">- Never push to main</span></label>
+              <label style="display:flex; gap:0.55rem; align-items:center; cursor:pointer;"><input type="checkbox" id="cm-test" /> <span style="transition:all .2s ease;">- Write tests first</span></label>
+              <label style="display:flex; gap:0.55rem; align-items:center; cursor:pointer;"><input type="checkbox" id="cm-brand" /> <span style="transition:all .2s ease;">- Use brand color #d97757 <i style="display:inline-block; width:10px; height:10px; background:#d97757; border-radius:3px;"></i></span></label>
+            </div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="cm-run">✳ Ask Claude: “add a save button”</button>
+          </div>
+
+          <div class="wlog" id="cm-log"><span class="dim">Toggle the rules, then send the request. Re-run with a different mix and compare.</span></div>
+        </div>
+        <p class="widget-hint">Turn every rule off and re-run — watch Claude fill the gaps its own way. That 😱 is exactly why house rules exist.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          A good house-sitter doesn’t guess. You leave a laminated sheet on the fridge: the cat
+          eats at 7, bins go out Tuesday, never open the door for the “gas company,” wifi password
+          is on the router. Any sitter, any week — the house runs the same way.
+        </p>
+
+        <p>CLAUDE.md is that sheet, for your project.</p>
+
+        <p><strong>CLAUDE.md is a plain text file in your project folder that Claude Code reads automatically at the start of every session — your house rules, written down once.</strong></p>
+
+        <h2>It’s just a file. That’s the best part</h2>
+
+        <p>
+          No settings screen, no special syntax to learn. It’s <a href="markdown.html">markdown</a> —
+          plain text with light formatting — sitting in your project folder, named
+          <code>CLAUDE.md</code>. Open it, write your rules in plain English, save. From then on,
+          every new session begins with Claude reading the sheet before touching anything.
+        </p>
+
+        <p>
+          You saw the effect in the widget. “Add a save button” is an ambiguous request, and Claude
+          filled the gaps differently depending on which rules were on. Tests-first on? The test
+          file came before the button. Brand rule on? Out comes #d97757. Every rule off? You got
+          generic JavaScript pushed straight to main — the house-sitter who never got a sheet,
+          improvising in your kitchen.
+        </p>
+
+        <h2>What belongs on the sheet</h2>
+
+        <p>Short, specific, checkable entries:</p>
+
+        <ul>
+          <li><strong>Conventions:</strong> “Use TypeScript.” “Styles live in styles.css, never inline.”</li>
+          <li><strong>Commands:</strong> “Run <code>npm test</code> before any commit.” “Start the dev server with <code>npm run dev</code>.”</li>
+          <li><strong>Never-dos:</strong> “Never push to main.” “Never edit the /legacy folder.”</li>
+          <li><strong>Context:</strong> “This is a Next.js app. The API lives in /server.”</li>
+        </ul>
+
+        <p>
+          Notice every rule is checkable. “Write good code” is a vibe. “Tests first” is a rule.
+          Vibes get ignored; rules get followed.
+        </p>
+
+        <p>
+          Starting one takes two minutes: create the file, write the five rules you already know
+          you care about. The rest accumulates the natural way — every time Claude does something
+          that makes you wince, that wince becomes a line in the file. Within a week, the sheet
+          knows your project better than your last contractor did.
+        </p>
+
+        <h2>Project memory vs. chat memory</h2>
+
+        <p>
+          Why not just tell Claude your preferences in chat? Because chat memory dies. A
+          <a href="session.html">session</a> is one conversation — close it, and what you said is
+          gone. Tomorrow’s session starts blank, and you’re explaining the brand color again, like
+          briefing a new sitter every single morning.
+        </p>
+
+        <p>
+          CLAUDE.md flips that. The file lives with the project, so the rules survive every
+          session, every teammate, every new laptop. It’s also a close cousin of the
+          <a href="system-prompt.html">system prompt</a> — both are standing orders an AI follows.
+          The difference is ownership: the system prompt is wired into the product by whoever built
+          it. CLAUDE.md is yours — per project, editable any time, saved right next to your code.
+          And for repeatable procedures rather than standing rules, there’s a third tool: the
+          <a href="skill.html">skill</a>, coming up.
+        </p>
+
+        <div class="callout">
+          Keep it short. CLAUDE.md rides into the context window at the start of every session — a
+          bloated file taxes Claude’s attention (and your token bill) on every single request. Ten
+          sharp rules beat three pages of philosophy. Prune it like a packing list.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Stop repeating yourself — preferences stick across sessions automatically</li>
+          <li>New teammates, human or AI, onboard from the same sheet on day one</li>
+          <li>Protect what matters with never-do rules <em>before</em> the AI starts working</li>
+          <li>Encode your taste once: naming, colors, tone, structure — and it shows up everywhere</li>
+        </ul>
+
+        <p><strong>Tell Claude once, in a file — not every morning, in chat.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Every single session, you have to remind Claude that this project uses spaces, not tabs. What’s the fix?</p>
+            <div class="opts">
+              <button class="opt">Paste the reminder at the start of every chat, forever</button>
+              <button class="opt" data-correct>Put the rule in CLAUDE.md — it’s read automatically at every session start</button>
+              <button class="opt">Switch to a model with better manners</button>
+            </div>
+            <div class="why">Chat memory dies with the session. CLAUDE.md is project memory — the rule loads itself every time, no reminders needed.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. A teammate clones your project and runs Claude Code on their laptop. What happens with your CLAUDE.md?</p>
+            <div class="opts">
+              <button class="opt">Nothing — house rules only work on the machine that wrote them</button>
+              <button class="opt" data-correct>Their Claude reads the same file and follows the same house rules</button>
+              <button class="opt">They have to buy a license for the rules</button>
+            </div>
+            <div class="why">It’s a file in the project folder, so it travels with the code. One sheet, every sitter — that’s the point.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Which of these belongs in CLAUDE.md?</p>
+            <div class="opts">
+              <button class="opt">Your Stripe API key, so Claude always has it handy</button>
+              <button class="opt" data-correct>“Run npm test before every commit. Never touch /legacy.”</button>
+              <button class="opt">A 30-page history of the company</button>
+            </div>
+            <div class="why">Short, checkable rules earn their place. Secrets belong in an env file, and a 30-page essay just clogs the context window every session.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* house rules toggles */
+    (function () {
+      var boxes = {
+        ts: document.getElementById("cm-ts"),
+        main: document.getElementById("cm-main"),
+        test: document.getElementById("cm-test"),
+        brand: document.getElementById("cm-brand")
+      };
+      var run = document.getElementById("cm-run");
+      var log = document.getElementById("cm-log");
+      var timers = [];
+
+      function paintRule(box) {
+        var span = box.parentNode.querySelector("span");
+        span.style.opacity = box.checked ? "1" : "0.4";
+        span.style.textDecoration = box.checked ? "none" : "line-through";
+      }
+      for (var k in boxes) {
+        (function (box) {
+          paintRule(box);
+          box.addEventListener("change", function () { paintRule(box); });
+        })(boxes[k]);
+      }
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      run.addEventListener("click", function () {
+        timers.forEach(clearTimeout);
+        timers = [];
+        log.innerHTML = "";
+        log.dataset.started = "";
+        run.disabled = true;
+
+        var on = {
+          ts: boxes.ts.checked,
+          main: boxes.main.checked,
+          test: boxes.test.checked,
+          brand: boxes.brand.checked
+        };
+        var count = (on.ts ? 1 : 0) + (on.main ? 1 : 0) + (on.test ? 1 : 0) + (on.brand ? 1 : 0);
+
+        var lines = [];
+        lines.push('<span class="acc">→ YOU:</span> “add a save button”');
+        lines.push('<span class="dim">✳ Claude reads CLAUDE.md… ' + (count ? count + (count === 1 ? " rule" : " rules") + " found." : "file is empty — no rules. Improvising.") + "</span>");
+
+        var n = 0;
+        function step(txt) { n++; lines.push(n + ". " + txt); }
+
+        if (on.test) step('wrote <span class="acc">save.test.ts</span> first — 3 failing tests, as the rules demand <span class="ok">✓</span>');
+        step(on.ts
+          ? 'created <span class="acc">SaveButton.tsx</span> — typed props, strict mode <span class="ok">✓</span>'
+          : 'created <span class="acc">save-button.js</span> — plain JavaScript, untyped');
+        if (on.test) step('ran the tests — <span class="ok">3 / 3 passing ✓</span>');
+        step(on.brand
+          ? 'styled the button <span style="color:#d97757;">■ #d97757</span> — brand color <span class="ok">✓</span>'
+          : "styled it browser-default grey");
+        step(on.main
+          ? 'opened branch <span class="acc">feat/save-button</span> and pushed there — main untouched <span class="ok">✓</span>'
+          : '<span class="err">pushed straight to main 😱</span> — no rule said not to');
+
+        lines.push(count
+          ? '<span class="ok">✓ Done — your way.</span> <span class="dim">Same request. The rules did the steering.</span>'
+          : '<span class="err">Done — its way.</span> <span class="dim">Nothing was wrong, exactly. It just wasn’t yours.</span>');
+
+        lines.forEach(function (l, i) {
+          timers.push(setTimeout(function () {
+            add(l);
+            if (i === lines.length - 1) run.disabled = false;
+          }, 300 + i * 480));
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SDK — Claude Club</title>
+  <meta name="description" content="SDK, explained in plain English: a toolkit for building on a service. With an interactive raw-parts-vs-the-kit race." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="sdk" data-related="api,rest-api,agents-sdk,vibe-coding">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>SDK</h1>
+        <p class="tldr"><b>TLDR</b>A toolkit for building on a service.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: raw parts vs. the kit ============ -->
+      <section class="widget" aria-label="SDK raw parts vs the kit race">
+        <div class="widget-bar"><span class="dot"></span> Try it — raw parts vs. the kit</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            The task: text a customer <b>"Your order shipped!"</b> through an SMS service.
+            Left builds the request raw against the API. Right uses the service's SDK.
+            Same finish line — race them.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="sdk-run">▶ Run both</button>
+            <button class="wbtn" id="sdk-reset">↺ Reset</button>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(235px, 1fr)); gap:0.8rem;">
+            <div style="border:1px solid var(--border); border-radius:10px; padding:0.8rem; background:var(--card);">
+              <div style="font-weight:700; font-size:0.74rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:0.6rem;">🪵 Raw API — no kit</div>
+              <div class="wlog" id="sdk-raw" style="min-height:185px; max-height:200px; font-size:0.73rem;"><span class="dim">waiting at the start line…</span></div>
+              <div style="font-size:0.78rem; color:var(--muted); margin-top:0.5rem;">lines of code: <b id="sdk-raw-lines">0</b> · time: <b id="sdk-raw-time">0.0s</b></div>
+            </div>
+
+            <div style="border:1px solid var(--border); border-radius:10px; padding:0.8rem; background:var(--card);">
+              <div style="font-weight:700; font-size:0.74rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:0.6rem;">📦 With the SDK</div>
+              <div class="wlog" id="sdk-kit" style="min-height:185px; max-height:200px; font-size:0.73rem;"><span class="dim">waiting at the start line…</span></div>
+              <div style="font-size:0.78rem; color:var(--muted); margin-top:0.5rem;">lines of code: <b id="sdk-kit-lines">0</b> · time: <b id="sdk-kit-time">0.0s</b></div>
+            </div>
+          </div>
+
+          <div id="sdk-score" style="display:none; font-family:var(--sans); font-size:0.88rem; background:var(--good-soft); border:1px solid var(--good); border-radius:9px; padding:0.7rem 0.9rem; margin-top:0.9rem; color:var(--ink);"></div>
+        </div>
+        <p class="widget-hint">Both sides sent the exact same message. One of them now owns 23 lines of plumbing forever.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          There are two ways to get a bookshelf. Option one: a pile of raw lumber, a saw, and
+          confidence. Option two: the IKEA flat-pack — pre-cut parts, the little wrench,
+          instructions with pictures. Same bookshelf at the end. Very different afternoon.
+        </p>
+
+        <p>
+          You just watched that afternoon play out. The left panel measured, cut, and sanded
+          eight fiddly steps to send one text message. The right panel turned one bolt.
+        </p>
+
+        <p><strong>An SDK — software development kit — is a service's API pre-wrapped into your programming language, so one line does what twenty-three used to.</strong></p>
+
+        <h2>What's actually in the box</h2>
+
+        <p>
+          An SDK is mostly a library of functions named after the things you want to do:
+          <code>sms.send(…)</code>, <code>stripe.charges.create(…)</code>,
+          <code>claude.messages.create(…)</code>. Under each friendly name sits all the
+          plumbing from the left panel — building the URL, attaching the auth header, encoding
+          the body, timeouts, retries, parsing four flavors of error — written once by the
+          people who know the service best, tested by thousands of teams before you.
+        </p>
+
+        <p>
+          The box usually also includes docs, example code, and helpers for the annoying
+          edge cases. That's why it's called a <em>kit</em>: parts plus instructions, not
+          just parts. And when the service changes something on its end, the vendor updates
+          the kit — you bump a version number instead of rewriting plumbing at midnight.
+        </p>
+
+        <h2>It's still just the API underneath</h2>
+
+        <p>
+          No magic here. When the right panel "won," the SDK quietly made the same call to the
+          same <a href="api.html">API</a>, following the same <a href="rest-api.html">REST</a>
+          conventions as the left panel. It's a wrapper, not a different road. Two practical
+          consequences:
+        </p>
+
+        <ul>
+          <li><strong>If an official SDK exists, use it.</strong> Anthropic ships one so that calling Claude is about three lines of code. Stripe, Twilio, OpenAI — same deal. The vendor already did the boring 90%.</li>
+          <li><strong>You're never trapped.</strong> If the SDK hasn't caught up to a brand-new feature, you can always drop down and call the raw endpoint directly. The kit is a convenience, not a wall.</li>
+        </ul>
+
+        <p>
+          And the idea scales up. The <a href="agents-sdk.html">Agents SDK</a> from a few
+          lessons back is the same concept one level higher: not just "call Claude in one
+          line," but "assemble a whole AI worker from pre-built parts."
+        </p>
+
+        <div class="callout">
+          When you're <a href="vibe-coding.html">vibe coding</a>, add five words to your
+          prompt: <b>"use the official SDK."</b> Claude will reach for the kit instead of
+          hand-rolling raw HTTP calls — and a whole class of bugs (auth typos, missing
+          retries, mangled errors) never gets written in the first place.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Wire up Claude, Stripe, or Twilio in minutes instead of an afternoon</li>
+          <li>Fewer lines you wrote = fewer lines you debug at midnight</li>
+          <li>Retries, timeouts, and error handling maintained by the vendor, not by you</li>
+          <li>A sharper eye when reading AI-generated code: if you see 30 lines of hand-built request plumbing, ask why it isn't one SDK call</li>
+        </ul>
+
+        <p>
+          The pattern to keep: services publish a window (the API) and hand out a kit for
+          using it (the SDK). It's why the word is everywhere — iOS SDK, Stripe SDK,
+          Anthropic SDK. Any time a company wants builders on its platform, it ships a kit,
+          because builders who get the kit ship the same feature in a tenth of the time —
+          and their code breaks less, since the hard parts were never theirs to maintain.
+        </p>
+
+        <p><strong>Raw lumber or the flat-pack — the bookshelf looks identical. Take the kit.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You're building an app that calls Claude. What's the fastest sane route?</p>
+            <div class="opts">
+              <button class="opt">Hand-build the HTTP requests — auth headers, retries, error parsing — for full control</button>
+              <button class="opt" data-correct>Install the Anthropic SDK and call it in a few lines</button>
+              <button class="opt">Copy your login cookies from claude.ai into the code</button>
+            </div>
+            <div class="why">The official SDK is the vendor's own pre-built plumbing: auth, retries, and errors handled. Hand-rolling buys you nothing but maintenance, and cookies aren't an integration.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. What's the real relationship between an SDK and the service's API?</p>
+            <div class="opts">
+              <button class="opt">The SDK replaces the API with a faster private connection</button>
+              <button class="opt" data-correct>The SDK is a wrapper — under the hood it calls the same API endpoints</button>
+              <button class="opt">The SDK is the server where the service actually runs</button>
+            </div>
+            <div class="why">Same road, better car. Every sdk.send() becomes a normal API request underneath — which is why anything the API offers is ultimately reachable, kit or no kit.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. A service just launched a brand-new feature, but its SDK hasn't added support yet. You need it today. What do you do?</p>
+            <div class="opts">
+              <button class="opt">Wait for the SDK update — there's no other way in</button>
+              <button class="opt">Switch to a different service entirely</button>
+              <button class="opt" data-correct>Call that one endpoint directly — the SDK is a convenience, not a wall</button>
+            </div>
+            <div class="why">The SDK wraps the API; it doesn't gate it. You can mix one raw call in with your SDK code and swap it out when the kit catches up.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* raw parts vs. the kit */
+    (function () {
+      var rawLog = document.getElementById("sdk-raw");
+      var kitLog = document.getElementById("sdk-kit");
+      var rawLines = document.getElementById("sdk-raw-lines");
+      var rawTime = document.getElementById("sdk-raw-time");
+      var kitLines = document.getElementById("sdk-kit-lines");
+      var kitTime = document.getElementById("sdk-kit-time");
+      var score = document.getElementById("sdk-score");
+      var runBtn = document.getElementById("sdk-run");
+      var timeouts = [];
+      var busy = false;
+
+      var STEPS = [
+        ["dig the URL out of the docs: api.smsservice.com/v2/messages", 3],
+        ["set the auth header… wait, where's my key again?", 2],
+        ["JSON-encode the body — escape those quotes", 3],
+        ["set Content-Type: application/json", 1],
+        ["open the connection", 2],
+        ["handle the timeout (what's a sane limit? 10s? 30s?)", 4],
+        ["parse four different error formats", 5],
+        ["add retry with backoff for flaky moments", 3]
+      ];
+
+      function add(log, html) {
+        if (!log.dataset.started) { log.innerHTML = ""; log.dataset.started = "1"; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function later(fn, ms) { timeouts.push(setTimeout(fn, ms)); }
+
+      function reset() {
+        timeouts.forEach(clearTimeout);
+        timeouts = [];
+        busy = false;
+        runBtn.disabled = false;
+        rawLog.innerHTML = '<span class="dim">waiting at the start line…</span>';
+        kitLog.innerHTML = '<span class="dim">waiting at the start line…</span>';
+        delete rawLog.dataset.started;
+        delete kitLog.dataset.started;
+        rawLines.textContent = "0";
+        kitLines.textContent = "0";
+        rawTime.textContent = "0.0s";
+        kitTime.textContent = "0.0s";
+        score.style.display = "none";
+      }
+
+      runBtn.addEventListener("click", function () {
+        if (busy) return;
+        busy = true;
+        runBtn.disabled = true;
+
+        /* right lane: the kit */
+        later(function () {
+          add(kitLog, '<span class="acc">sms.send("+1 555-0134", "Your order shipped!")</span> <span class="dim">(+1 line)</span>');
+          kitLines.textContent = "1";
+        }, 250);
+        later(function () {
+          add(kitLog, '<span class="ok">✓ message sent — 200 OK · id msg_88231</span>');
+          kitTime.textContent = "0.5s";
+          add(kitLog, '<span class="dim">…now waiting politely for the other lane.</span>');
+        }, 500);
+
+        /* left lane: raw parts */
+        var lines = 0;
+        STEPS.forEach(function (step, i) {
+          later(function () {
+            lines += step[1];
+            add(rawLog, '<span class="acc">step ' + (i + 1) + "/8</span> — " + step[0] + ' <span class="dim">(+' + step[1] + " lines)</span>");
+            rawLines.textContent = lines;
+            rawTime.textContent = ((i + 1) * 0.45).toFixed(1) + "s";
+          }, 350 + i * 450);
+        });
+        later(function () {
+          add(rawLog, '<span class="ok">✓ message sent — 200 OK · id msg_88232</span>');
+          rawTime.textContent = "4.1s";
+        }, 350 + STEPS.length * 450 + 250);
+
+        /* scoreboard */
+        later(function () {
+          score.style.display = "block";
+          score.innerHTML = "🏁 <b>Same result, both lanes.</b> Lines of code: <b>23 vs 1</b> · time: <b>4.1s vs 0.5s</b> · headaches: <b>8 vs 0</b>. The kit made the exact same API call underneath — you just didn't have to build it.";
+          busy = false;
+          runBtn.disabled = false;
+        }, 350 + STEPS.length * 450 + 700);
+      });
+
+      document.getElementById("sdk-reset").addEventListener("click", reset);
+    })();
+  </script>
+</body>
+</html>

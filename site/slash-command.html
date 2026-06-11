@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Slash Command — Claude Club</title>
+  <meta name="description" content="Slash command, explained in plain English: a shortcut that expands into a whole prompt. With an interactive command menu." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="slash-command" data-related="skill,system-prompt,cli,claude-md">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Slash Command</h1>
+        <p class="tldr"><b>TLDR</b>A shortcut that expands into a whole prompt.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: type / and see ============ -->
+      <section class="widget" aria-label="Slash command menu demo">
+        <div class="widget-bar"><span class="dot"></span> Try it — type / and see</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            This chat box has saved commands. Type <code style="font-family:var(--mono); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:5px; padding:0.05em 0.35em;">/</code>
+            to open the menu, pick one, and watch a few keystrokes become a whole prompt.
+          </p>
+
+          <div style="position:relative; margin-bottom:0.9rem;">
+            <input class="winput" id="sc-input" placeholder="Type / to open your command menu…" autocomplete="off" />
+            <div id="sc-menu" style="display:none; position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:5; background:var(--card-raise); border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow-lift); overflow:hidden;"></div>
+          </div>
+
+          <div id="sc-expand" style="display:none; margin-bottom:0.9rem;">
+            <div id="sc-count" style="font-family:var(--sans); font-size:0.8rem; font-weight:700; margin-bottom:0.4rem;"></div>
+            <div id="sc-short" style="font-family:var(--mono); font-size:0.78rem; background:var(--code-bg); color:var(--code-ink); border-radius:8px; padding:0.55rem 0.8rem; line-height:1.55;"></div>
+            <div style="font-family:var(--sans); font-size:0.78rem; font-weight:700; color:var(--accent); margin:0.35rem 0;">⬇ expands into</div>
+            <div id="sc-full" style="font-family:var(--mono); font-size:0.78rem; background:var(--code-bg); color:var(--code-ink); border-radius:8px; padding:0.55rem 0.8rem; line-height:1.55;"></div>
+            <div style="margin-top:0.6rem;"><button class="wbtn primary" id="sc-send">Send to the AI →</button></div>
+          </div>
+
+          <div class="wlog" id="sc-log"><span class="dim">Type “/” in the box above…</span></div>
+
+          <details style="margin-top:0.9rem; font-family:var(--sans); font-size:0.88rem;">
+            <summary style="cursor:pointer; font-weight:700; color:var(--accent);">＋ Build your own command</summary>
+            <div style="display:grid; gap:0.5rem; margin-top:0.6rem;">
+              <input class="winput" id="sc-new-name" placeholder="/standup" />
+              <textarea class="winput" id="sc-new-prompt" rows="3" placeholder="Write my standup update: yesterday, today, blockers — each one line, casual tone, no fluff…"></textarea>
+              <div><button class="wbtn" id="sc-add">Add to menu</button></div>
+            </div>
+          </details>
+        </div>
+        <p class="widget-hint">Pick a command and watch ~14 keystrokes become 240+ characters of your best prompting — then build your own and find it in the menu.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Your phone’s speed dial never made you remember an eleven-digit number. You press 2, the
+          phone dials the whole thing. You stored the number once; the phone does the typing
+          forever after.
+        </p>
+
+        <p>
+          That’s a slash command. You just felt it in the widget: fourteen keystrokes —
+          <code>/weekly-report</code> — and the AI received a 240-character prompt you wrote once,
+          on your best day.
+        </p>
+
+        <p><strong>A slash command is a saved prompt with a short name: type the name, and the entire prompt fires.</strong></p>
+
+        <h2>Your best prompts, on speed dial</h2>
+
+        <p>
+          Everyone who works with AI has a few killer prompts — the summary format that’s exactly
+          right, the review checklist that catches everything. And most people retype them. From
+          memory. Slightly differently every time. Usually worse.
+        </p>
+
+        <p>
+          A slash command freezes the good version. The day you wrote it, you were careful:
+          “exactly 3 bullets, under 20 words each, keep the numbers, end with a next action.” Every
+          <code>/summarize</code> after that fires the careful version — including for the
+          Friday-afternoon you who would otherwise type “sum this up pls.”
+        </p>
+
+        <p>
+          The character counter in the widget is the whole pitch: 10 keystrokes in, 240+ characters
+          out. You’re not typing less because you’re lazy. You’re typing less because the thinking
+          is already done.
+        </p>
+
+        <p>
+          Commands can take input, too. Type <code>/translate-spanish see you Tuesday</code> and
+          everything after the command gets woven into the saved prompt — speed dial with a message
+          attached. One shortcut, infinite variations, and the careful part never gets retyped.
+        </p>
+
+        <h2>One command, one team, one voice</h2>
+
+        <p>
+          Solo, slash commands save time. On a team, they create consistency. If five people
+          summarize client calls five different ways, your call notes are chaos. Give everyone the
+          same <code>/call-notes</code> command and the outputs line up — same sections, same tone,
+          same fields — because everyone is firing the literally identical prompt. And when the
+          prompt improves, you update one file and the whole team’s next <code>/call-notes</code>
+          is upgraded with it.
+        </p>
+
+        <p>
+          It’s the same standardization play as a <a href="skill.html">skill</a>, one size smaller:
+          a skill packages a whole procedure with steps and scripts, a slash command packages a
+          prompt. They’re cousins — skills can be fired as slash commands too. And both are different
+          from the <a href="system-prompt.html">system prompt</a>, which is always on: a command
+          only runs when you call it.
+        </p>
+
+        <h2>Where they live</h2>
+
+        <p>
+          In Claude Code, slash commands are just markdown files in a <code>.claude/commands</code>
+          folder — one file per command, and the filename becomes the name. Create a file, type the
+          prompt, done. The little builder in the widget was a toy version of exactly that. Type
+          <code>/</code> in the <a href="cli.html">CLI</a> and the menu pops up: built-ins, your
+          commands, your team’s, plus any installed skills.
+        </p>
+
+        <p>
+          Because they’re files, they travel with the project the same way
+          <a href="claude-md.html">CLAUDE.md</a> does: clone the repo, inherit the commands. A new
+          teammate types <code>/</code> on day one and sees how your team works.
+        </p>
+
+        <div class="callout">
+          The rule of three: the third time you type the same prompt, stop and save it as a
+          command. Thirty seconds of saving beats a hundred retypings — and the saved version is
+          the one you wrote when you were paying attention.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li><code>/standup</code> writes your update in the exact format your team expects</li>
+          <li><code>/review</code> runs your full checklist without you remembering a single item</li>
+          <li><code>/client-email</code> drafts in your voice, with your sign-off, every time</li>
+          <li>Your prompt library becomes a menu instead of a memory test</li>
+        </ul>
+
+        <p><strong>Type the shortcut. Ship the whole prompt.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You paste the same 250-word review-checklist prompt into Claude several times a day. Best move?</p>
+            <div class="opts">
+              <button class="opt">Keep a sticky note on your monitor and retype it</button>
+              <button class="opt" data-correct>Save it as /review — seven keystrokes now fire all 250 words</button>
+              <button class="opt">Shorten the checklist so it’s easier to remember</button>
+            </div>
+            <div class="why">That’s exactly what slash commands are for: store the careful version once, fire it with a few keystrokes forever.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Five teammates summarize client calls five different ways, and the notes are a mess. How do slash commands fix this?</p>
+            <div class="opts">
+              <button class="opt" data-correct>A shared /call-notes command means everyone fires the identical prompt — identical structure out</button>
+              <button class="opt">They remind everyone to type more carefully</button>
+              <button class="opt">They automatically merge the five versions into one</button>
+            </div>
+            <div class="why">Consistency comes from everyone literally sending the same saved prompt. The shortcut is the standard.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You hit send on /weekly-report. What does the AI actually receive?</p>
+            <div class="opts">
+              <button class="opt">Just the 14 characters — it guesses the rest from vibes</button>
+              <button class="opt" data-correct>The full saved prompt the command expands into — that’s what it acts on</button>
+              <button class="opt">Nothing — slash commands skip the AI entirely</button>
+            </div>
+            <div class="why">The command is speed dial, not the call. What reaches the AI is the whole stored prompt — you watched the expansion happen in the widget.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* type / and see */
+    (function () {
+      var CMDS = [
+        {
+          name: "/summarize",
+          desc: "3-bullet recap of anything",
+          prompt: "Summarize the conversation above in exactly 3 bullet points. Lead each bullet with a bolded takeaway under 6 words, keep every bullet under 20 words, preserve all numbers and dates exactly, skip pleasantries, and end with one suggested next action for me.",
+          out: "• <b>Ship date locked:</b> Friday the 19th • <b>Payment bug owned:</b> Dana, fix by Wed • <b>Revenue up:</b> $4,210, +9% — Next action: confirm Friday scope with Dana."
+        },
+        {
+          name: "/translate-spanish",
+          desc: "casual-pro LatAm Spanish",
+          prompt: "Translate my next message into Spanish. Keep the tone casual but professional, prefer Latin American vocabulary, leave names, product terms and links untouched, and after the translation add one short line explaining any phrase that does not map cleanly.",
+          out: "“¿Revisamos el informe el martes?” — note: kept “Q2 report” as <i>informe</i>; “circle back” has no clean equivalent, used <i>retomamos</i>."
+        },
+        {
+          name: "/weekly-report",
+          desc: "numbers → chart → email",
+          prompt: "Run the weekly report: pull this week's numbers, compare them to last week, build one bar chart, write a 3-line summary in my voice, then draft the team email with a subject line. Flag anything that moved more than 10% in either direction.",
+          out: "Numbers pulled, chart built, summary written. Draft email ready — subject: “Week 23: +9%, one flag”. Flagged: churn moved +12%."
+        }
+      ];
+      var input = document.getElementById("sc-input");
+      var menu = document.getElementById("sc-menu");
+      var expand = document.getElementById("sc-expand");
+      var countEl = document.getElementById("sc-count");
+      var shortEl = document.getElementById("sc-short");
+      var fullEl = document.getElementById("sc-full");
+      var sendBtn = document.getElementById("sc-send");
+      var log = document.getElementById("sc-log");
+      var newName = document.getElementById("sc-new-name");
+      var newPrompt = document.getElementById("sc-new-prompt");
+      var addBtn = document.getElementById("sc-add");
+      var selected = null;
+      var busy = false;
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function renderMenu(prefix) {
+        menu.innerHTML = "";
+        var hits = CMDS.filter(function (c) { return c.name.indexOf(prefix) === 0; });
+        if (!hits.length) {
+          var d = document.createElement("div");
+          d.style.cssText = "padding:0.55rem 0.9rem; color:var(--muted); font-family:var(--sans); font-size:0.85rem;";
+          d.textContent = "no command matches “" + prefix + "”";
+          menu.appendChild(d);
+          return;
+        }
+        hits.forEach(function (c) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.style.cssText = "display:flex; justify-content:space-between; align-items:baseline; gap:0.8rem; width:100%; text-align:left; padding:0.55rem 0.9rem; background:none; border:none; border-bottom:1px solid var(--border-soft); font-size:0.88rem; cursor:pointer; color:var(--ink);";
+          var n = document.createElement("b");
+          n.style.fontFamily = "var(--mono)";
+          n.textContent = c.name;
+          var s = document.createElement("span");
+          s.style.cssText = "color:var(--muted); font-size:0.78rem;";
+          s.textContent = c.desc;
+          b.appendChild(n);
+          b.appendChild(s);
+          b.addEventListener("mouseover", function () { b.style.background = "var(--accent-faint)"; });
+          b.addEventListener("mouseout", function () { b.style.background = "none"; });
+          b.addEventListener("click", function () { select(c); });
+          menu.appendChild(b);
+        });
+      }
+
+      function select(cmd) {
+        selected = cmd;
+        input.value = cmd.name;
+        menu.style.display = "none";
+        countEl.innerHTML = "⌨️ " + cmd.name.length + ' chars typed <span style="color:var(--accent);">→</span> ' + cmd.prompt.length + " chars sent to the AI";
+        shortEl.textContent = cmd.name;
+        fullEl.textContent = cmd.prompt;
+        expand.style.display = "block";
+      }
+
+      input.addEventListener("input", function () {
+        var v = input.value.trim().toLowerCase();
+        if (v.charAt(0) === "/") {
+          renderMenu(v);
+          menu.style.display = "block";
+        } else {
+          menu.style.display = "none";
+        }
+        if (!selected || input.value !== selected.name) {
+          expand.style.display = "none";
+        }
+      });
+
+      sendBtn.addEventListener("click", function () {
+        if (!selected || busy) return;
+        busy = true;
+        var c = selected;
+        add('<span class="acc">→ YOU typed:</span> ' + c.name + ' <span class="dim">(' + c.name.length + " chars)</span>");
+        setTimeout(function () {
+          add('<span class="dim">⚡ expanded → full saved prompt (' + c.prompt.length + " chars) goes to the AI</span>");
+        }, 400);
+        setTimeout(function () {
+          add('<span class="ok">✳ AI:</span> ' + c.out);
+          busy = false;
+        }, 1050);
+      });
+
+      addBtn.addEventListener("click", function () {
+        var nm = newName.value.trim();
+        var pr = newPrompt.value.trim();
+        if (!nm || !pr) {
+          add('<span class="err">Builder needs both a name and a prompt.</span>');
+          return;
+        }
+        nm = nm.replace(/\s+/g, "-").toLowerCase();
+        if (nm.charAt(0) !== "/") nm = "/" + nm;
+        var cmd = {
+          name: nm,
+          desc: "your custom command",
+          prompt: pr,
+          out: "Ran your saved instructions to the letter — " + pr.length + " chars of careful prompt from " + nm.length + " keystrokes."
+        };
+        CMDS.push(cmd);
+        newName.value = "";
+        newPrompt.value = "";
+        add('<span class="ok">+ ' + nm + " added to the menu.</span> <span class=\"dim\">It expands to " + pr.length + " chars. Type “/” above to find it.</span>");
+        select(cmd);
+      });
+    })();
+  </script>
+</body>
+</html>

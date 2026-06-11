@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vibe Coding — Claude Club</title>
+  <meta name="description" content="Vibe Coding, explained in plain English: describe it, let AI write the code. With an interactive prompt-to-app builder." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="vibe-coding" data-related="agent,hallucination,deploy,git-version-control">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Vibe Coding</h1>
+        <p class="tldr"><b>TLDR</b>Describe it. Let AI write the code.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: prompt-to-app ============ -->
+      <section class="widget" aria-label="Vibe coding prompt-to-app builder">
+        <div class="widget-bar"><span class="dot"></span> Try it — prompt-to-app</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Describe the app. Don't write a line of code. Build it, click around in it,
+            then send it back to the kitchen with the refine chips.
+          </p>
+          <textarea class="winput" id="vc-prompt" rows="2" style="margin-bottom:0.6rem; resize:vertical; font-family:var(--sans);">A pomodoro timer, orange theme</textarea>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="vc-build">🔨 Build it ▶</button>
+            <button class="wbtn vc-refine" data-refine="break" disabled>＋ "Add a break button"</button>
+            <button class="wbtn vc-refine" data-refine="huge" disabled>🔍 "Make the numbers huge"</button>
+          </div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:stretch;">
+            <div class="wlog" id="vc-log" style="flex:1 1 230px; min-width:230px; max-height:260px;"><span class="dim">The kitchen is open. Describe your dish…</span></div>
+            <div id="vc-preview" style="flex:1 1 230px; min-width:230px; background:var(--card); border:1px solid var(--border); border-radius:10px; display:flex; align-items:center; justify-content:center; min-height:190px; padding:1rem;">
+              <span style="color:var(--muted); font-size:0.85rem;">your app appears here</span>
+            </div>
+          </div>
+        </div>
+        <p class="widget-hint">That timer is real — start it. Then refine it twice. You just ran the whole loop: describe → generate → refine. Zero syntax.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          You don't have to cook to eat at a great restaurant. You describe what you want, the
+          chef makes it, you taste it, and you send it back if it's not right. Nobody hands you
+          a knife and says "first, learn to julienne."
+        </p>
+
+        <p>
+          For seventy years, software didn't work like that. If you wanted an app, you learned
+          to cook — syntax, semicolons, stack traces — or you hired someone who had. That wall
+          just fell.
+        </p>
+
+        <p>
+          <strong>Vibe coding is building software by describing what you want in plain English
+          and letting AI write the code — then steering with feedback instead of syntax.</strong>
+        </p>
+
+        <p>
+          You just did it. The pomodoro timer in the widget is a real, running app. You ordered
+          it, the kitchen built it, and when you wanted a break button and bigger numbers, you
+          didn't open the code. You said so.
+        </p>
+
+        <h2>The loop: describe → generate → refine</h2>
+
+        <p>
+          That three-beat loop is the entire craft. Describe what you want. Let Claude generate
+          it. Then look at the running thing and refine: "the button's too small," "it should
+          pause when I switch tabs," "make it orange." Each refinement is a new order to the
+          kitchen — and you taste between every course.
+        </p>
+
+        <p>
+          In real life this loop runs inside tools like Claude Code, where an
+          <a href="agent.html">agent</a> writes the files, runs the app, reads the errors, and
+          fixes them — the widget you just used, scaled up to anything.
+        </p>
+
+        <h2>You can only refine what you can name</h2>
+
+        <p>
+          Here's the part nobody puts on the poster: the chef is only as good as your order.
+          "Make it better" gets you a shrug in code form. "The numbers reset when I refresh —
+          keep the state" gets you a fix in one pass. Same app, same AI. The difference is
+          vocabulary.
+        </p>
+
+        <p>
+          That's not a coding skill. It's a naming skill — and it's the entire reason this site
+          exists. Every lesson on this path is another word you can use in an order: <em>deploy
+          it, the API call is failing, cache that, try it on a branch first.</em> The vocabulary
+          is the steering wheel. Without it you're a passenger; with it, vibe coding turns you
+          into a builder who happens not to type the code.
+        </p>
+
+        <h2>Where it breaks — and what fixes it</h2>
+
+        <p>
+          The AI will occasionally serve a beautiful dish that's raw inside: code that looks
+          right and quietly isn't. That's <a href="hallucination.html">hallucination</a>, and it
+          doesn't go away because you asked nicely. So the non-negotiable rule: run it, click
+          it, try to break it. You are the taster. The describing is fast; the tasting is the
+          job.
+        </p>
+
+        <p>
+          And a toy on your laptop isn't a product. When something works, you save the progress
+          with <a href="git-version-control.html">version control</a> — in the widget, rebuilding
+          from the original prompt wiped your refinements; real builders never lose work that
+          way — and you push it live with a <a href="deploy.html">deploy</a>. Both are lessons
+          on this path.
+        </p>
+
+        <div class="callout">
+          Never ship what you haven't personally clicked through. Vibe coding doesn't remove the
+          work — it moves the work from writing code to verifying it. That trade is fantastic.
+          It is not optional.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Personal tools in an afternoon — trackers, calculators, dashboards nobody would ever build for you</li>
+          <li>Prototypes before hiring — show the working thing instead of writing a spec for it</li>
+          <li>Glue between the apps you already use — small automations that save hours weekly</li>
+          <li>This very site — described, generated, refined, shipped. The loop you just ran built the page you're reading</li>
+        </ul>
+
+        <p>
+          The people winning with AI right now aren't the best typists of code. They're the
+          clearest describers of problems — the ones who can name what they see.
+        </p>
+
+        <p><strong>You bring the taste and the vocabulary. The AI brings the syntax. That trade is the whole revolution.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your vibe-coded invoice tool looks perfect, and the AI says it's done. Before you send a real client invoice with it, what's the must-do step?</p>
+            <div class="opts">
+              <button class="opt">Nothing — if the AI says it's done, it's done</button>
+              <button class="opt" data-correct>Run it yourself with realistic data and click every path — AI code can look right and be quietly wrong</button>
+              <button class="opt">Ask the same AI "are you sure?" and trust the yes</button>
+            </div>
+            <div class="why">Vibe coding moves your job from writing to verifying. Confident-but-wrong output is a known failure mode — you are the taster before anything ships.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Two builders refine the same buggy timer. A says "make it better." B says "the timer resets on refresh — keep the state." Why does B get a fix in one pass?</p>
+            <div class="opts">
+              <button class="opt">B's prompt is longer, and longer prompts always win</button>
+              <button class="opt" data-correct>B can name the problem — precise vocabulary turns vibes into instructions the AI can act on</button>
+              <button class="opt">The AI rewards politeness with better code</button>
+            </div>
+            <div class="why">You can only refine what you can name. "State," "refresh," "reset" — each word aims the fix. That vocabulary is exactly what this site is teaching you.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your vibe-coded app runs great on your laptop, and friends want to use it. What's the next move called?</p>
+            <div class="opts">
+              <button class="opt">Email them the code files — if they have the code, they have the app</button>
+              <button class="opt" data-correct>Deploy — push it live somewhere everyone can reach it</button>
+              <button class="opt">Buy a domain name — the name alone puts it online</button>
+            </div>
+            <div class="why">An app on your laptop is visible to exactly one person. Deploying puts it on a server the world can reach — that's a later lesson on this path.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* prompt-to-app */
+    (function () {
+      var log = document.getElementById("vc-log");
+      var preview = document.getElementById("vc-preview");
+      var promptEl = document.getElementById("vc-prompt");
+      var buildBtn = document.getElementById("vc-build");
+      var refineBtns = [].slice.call(document.querySelectorAll(".vc-refine"));
+
+      var busy = false, built = false, breakAdded = false, huge = false;
+      var iv = null, remaining = 10, running = false, mode = "focus";
+      var timeEl, modeEl, startBtn, resetBtn, btnRow;
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function clearLog() {
+        log.innerHTML = "";
+        delete log.dataset.started;
+      }
+      function esc(s) {
+        return String(s).replace(/[&<>"]/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+        });
+      }
+      function runLines(lines, doneFn) {
+        lines.forEach(function (l, i) {
+          setTimeout(function () {
+            add(l);
+            if (i === lines.length - 1 && doneFn) { doneFn(); }
+          }, 700 * (i + 1));
+        });
+      }
+
+      /* ---- the actual mini-app ---- */
+      function fmtT(s) { return "0:" + (s < 10 ? "0" + s : s); }
+      function paintTime() { timeEl.textContent = fmtT(remaining); }
+      function stopTick() {
+        if (iv) { clearInterval(iv); iv = null; }
+        running = false;
+        if (startBtn) { startBtn.textContent = "▶ Start"; }
+      }
+      function startTick() {
+        if (running) return;
+        running = true;
+        startBtn.textContent = "⏸ Pause";
+        iv = setInterval(function () {
+          remaining--;
+          if (remaining <= 0) {
+            remaining = 0;
+            paintTime();
+            stopTick();
+            if (mode === "focus") {
+              modeEl.textContent = "🍅 round done — break time!";
+            } else {
+              mode = "focus";
+              remaining = 10;
+              modeEl.textContent = "break over — back to work ☕→🍅";
+              paintTime();
+            }
+          } else {
+            paintTime();
+          }
+        }, 1000);
+      }
+
+      function buildApp() {
+        stopTick();
+        mode = "focus"; remaining = 10; breakAdded = false; huge = false;
+        preview.innerHTML = "";
+        var box = document.createElement("div");
+        box.style.cssText = "text-align:center; width:100%; font-family:var(--sans);";
+        box.innerHTML =
+          '<div style="font-weight:800; font-size:0.74rem; letter-spacing:0.12em; color:var(--accent); margin-bottom:0.4rem;">🍅 POMODORO</div>' +
+          '<div id="vc-time" style="font-family:var(--mono); font-weight:700; font-size:2.4rem; color:var(--accent-bright); transition:font-size .5s ease; line-height:1.2;">0:10</div>' +
+          '<div id="vc-mode" style="font-size:0.76rem; color:var(--muted); margin:0.2rem 0 0.7rem;">focus round (10s demo)</div>' +
+          '<div id="vc-btnrow" style="display:flex; gap:6px; justify-content:center; flex-wrap:wrap;">' +
+          '<button class="wbtn" id="vc-start" style="border-color:var(--accent-bright); color:var(--accent);">▶ Start</button>' +
+          '<button class="wbtn" id="vc-reset2">↺ Reset</button>' +
+          "</div>";
+        preview.appendChild(box);
+        timeEl = document.getElementById("vc-time");
+        modeEl = document.getElementById("vc-mode");
+        startBtn = document.getElementById("vc-start");
+        resetBtn = document.getElementById("vc-reset2");
+        btnRow = document.getElementById("vc-btnrow");
+        startBtn.addEventListener("click", function () {
+          if (running) { stopTick(); } else { startTick(); }
+        });
+        resetBtn.addEventListener("click", function () {
+          stopTick();
+          mode = "focus";
+          remaining = 10;
+          modeEl.textContent = "focus round (10s demo)";
+          paintTime();
+        });
+      }
+
+      function addBreakBtn() {
+        breakAdded = true;
+        var b = document.createElement("button");
+        b.className = "wbtn";
+        b.textContent = "☕ Break (0:05)";
+        btnRow.insertBefore(b, resetBtn);
+        b.addEventListener("click", function () {
+          stopTick();
+          mode = "break";
+          remaining = 5;
+          modeEl.textContent = "break (5s) — stretch!";
+          paintTime();
+          startTick();
+        });
+      }
+
+      /* ---- build ---- */
+      buildBtn.addEventListener("click", function () {
+        if (busy) return;
+        busy = true;
+        var txt = promptEl.value.trim() || "A pomodoro timer, orange theme";
+        clearLog();
+        add('<span class="acc">→ prompt:</span> "' + esc(txt) + '"');
+        var lines = [];
+        if (txt.toLowerCase().indexOf("pomodoro") === -1) {
+          lines.push('<span class="dim">interpreting… closest dish this demo kitchen serves: a pomodoro timer 🍅</span>');
+        }
+        if (built) {
+          lines.push('<span class="dim">(rebuilding from the prompt — your refinements will vanish. In real life: save your work. See Git!)</span>');
+        }
+        lines.push("✍️ writing the HTML — one display, two buttons…");
+        lines.push("🎨 painting it orange…");
+        lines.push("⚡ wiring the countdown…");
+        lines.push('<span class="ok">✓ built in 4.1s — it\'s live. Press Start.</span>');
+        runLines(lines, function () {
+          buildApp();
+          built = true;
+          refineBtns.forEach(function (b) { b.disabled = false; });
+          buildBtn.textContent = "🔨 Rebuild ▶";
+          busy = false;
+        });
+      });
+
+      /* ---- refine ---- */
+      refineBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          if (busy || !built) return;
+          var kind = btn.getAttribute("data-refine");
+          if (kind === "break") {
+            if (breakAdded) {
+              add('<span class="dim">there\'s already a break button — it\'s a demo kitchen, not a buffet 😄</span>');
+              return;
+            }
+            busy = true;
+            add('<span class="acc">→ refine:</span> "Add a break button"');
+            runLines([
+              "🔧 reading the running app…",
+              "✍️ inserting ☕ Break + a 5-second break mode…",
+              '<span class="ok">✓ shipped — press it.</span>'
+            ], function () {
+              addBreakBtn();
+              busy = false;
+            });
+          } else {
+            if (huge) {
+              add('<span class="dim">any bigger and the numbers leave the screen 😄</span>');
+              return;
+            }
+            busy = true;
+            add('<span class="acc">→ refine:</span> "Make the numbers huge"');
+            runLines([
+              "🎨 font-size: 2.4rem → 4.2rem…",
+              '<span class="ok">✓ shipped — look at those numbers.</span>'
+            ], function () {
+              timeEl.style.fontSize = "4.2rem";
+              huge = true;
+              busy = false;
+            });
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

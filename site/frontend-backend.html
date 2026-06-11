@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Frontend &amp; Backend — Claude Club</title>
+  <meta name="description" content="Frontend &amp; backend, explained in plain English: what you see, and what does the work. With an interactive restaurant x-ray." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="frontend-backend" data-related="api,database,server,deploy">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Frontend &amp; Backend</h1>
+        <p class="tldr"><b>TLDR</b>What you see, and what does the work.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: restaurant x-ray ============ -->
+      <section class="widget" aria-label="Frontend and backend restaurant x-ray">
+        <div class="widget-bar"><span class="dot"></span> Try it — the restaurant x-ray</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Below is a tiny coffee app. Order like a normal customer — then flip on the x-ray
+            and order again to see what that one click actually sets in motion.
+          </p>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn" id="fb-xray">🩻 X-ray: <b>off</b> — show the backend</button>
+          </div>
+          <div style="display:flex; gap:0.8rem; align-items:stretch; flex-wrap:wrap;">
+            <!-- dining room / frontend -->
+            <div style="flex:1; min-width:230px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1rem; display:flex; flex-direction:column;">
+              <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Frontend — what the customer sees</div>
+              <div style="font-weight:800; font-size:1.05rem; margin-bottom:0.15rem;">☕ BrewBuddy</div>
+              <div style="font-size:0.85rem; color:var(--muted); margin-bottom:0.8rem;">Flat white — $4.50</div>
+              <button class="wbtn primary" id="fb-order">Order a coffee ☕</button>
+              <div id="fb-confirm" style="margin-top:0.8rem; font-size:0.88rem; min-height:48px; color:var(--ink-soft);"></div>
+            </div>
+            <!-- kitchen / backend -->
+            <div id="fb-kitchen" style="flex:1.2; min-width:250px; display:none; flex-direction:column;">
+              <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Backend — the kitchen log</div>
+              <div class="wlog" id="fb-log" style="flex:1;"><span class="dim">x-ray on. Order a coffee and watch the kitchen…</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="widget-hint">Same button, same click. The dining room shows you one pretty sentence — the kitchen ran four real steps.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>Walk into a nice restaurant. Warm light, a careful menu, a waiter who appears exactly when you need one. Calm, on purpose.</p>
+
+        <p>
+          Now push through the swinging door behind the bar. Heat. Shouting. Ticket printers
+          firing. Someone plating nine dishes at once. Same restaurant, completely different
+          world — and the whole trick of the place is that you never see this room.
+        </p>
+
+        <p><strong>Software is split the same way: the frontend is everything you see, the backend is everything that does the work.</strong></p>
+
+        <h2>The dining room: your frontend</h2>
+
+        <p>
+          The frontend is the part you can look at and touch. Buttons, colors, forms, the little
+          spinner, the "Order confirmed!" message. It runs on your device — in your browser or on
+          your phone — and its job is to take your order and keep you feeling good while the real
+          work happens somewhere else.
+        </p>
+
+        <p>
+          That coffee app in the x-ray widget? The pretty confirmation you got is pure frontend.
+          One friendly sentence, nicely formatted. It told you nothing about how the coffee
+          actually got made — by design.
+        </p>
+
+        <h2>The kitchen: your backend</h2>
+
+        <p>
+          Flip the x-ray on and look at what one click really triggered: check the stock in a
+          <a href="database.html">database</a>, charge the card, save order #1042, email the
+          receipt. Four real steps, zero of them visible from the dining room.
+        </p>
+
+        <p>
+          The backend doesn't run on your device. It runs on a <a href="server.html">server</a> —
+          a computer that never closes, which you'll meet two lessons from now. And between the
+          two rooms there's a waiter carrying orders in and answers out. You already met the
+          waiter: that's the <a href="api.html">API</a>.
+        </p>
+
+        <p>Frontend asks. Backend does. The API carries.</p>
+
+        <h2>Why naming the half matters</h2>
+
+        <p>
+          This is where it stops being trivia. When software breaks, it almost always breaks in
+          one half — and you can usually tell which from your seat:
+        </p>
+
+        <ul>
+          <li><strong>Looks broken, works fine</strong> — misaligned buttons, weird fonts, layout soup on your phone: frontend.</li>
+          <li><strong>Looks fine, acts wrong</strong> — beautiful page, but the order never saved or the card got charged twice: backend.</li>
+        </ul>
+
+        <div class="callout">
+          Pro tip: when you report a bug — to a developer or to Claude — name the half. "Backend
+          problem: the form submits but nothing lands in the database" gets fixed ten times faster
+          than "it's broken." You're not being more technical. You're being more useful.
+        </div>
+
+        <p>
+          The split also explains why some requests are cheap and some aren't. "Make the button
+          orange" is dining-room work — minutes. "Change how billing works" is kitchen work — the
+          database, the payment logic, and the receipts all move together. Same app, very
+          different surgery.
+        </p>
+
+        <p>
+          And when you ask Claude to build you an app, watch its plan: "I'll add a button" is the
+          dining room, "I'll create an endpoint to save orders" is the kitchen. Once you know the
+          split, AI plans read like plain English.
+        </p>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Describe bugs precisely, so your AI or your developer fixes them fast</li>
+          <li>Estimate effort: visible changes are usually small, invisible ones usually aren't</li>
+          <li>Follow along when Claude narrates what it's building, half by half</li>
+          <li>Decode job titles: frontend devs design the room, backend devs run the kitchen, "full-stack" devs do both</li>
+        </ul>
+
+        <p>
+          Next time an app feels effortless, remember the swinging door. Somebody built the calm
+          room you're standing in, and somebody built the fire behind it.
+        </p>
+
+        <p><strong>Every app is a restaurant: a room designed to be seen, and a kitchen built to work.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You hit "Buy", a lovely spinner plays, a green checkmark appears — but no charge ever hits your card and no email arrives. Which half failed?</p>
+            <div class="opts">
+              <button class="opt">The frontend — spinners are notoriously hard to build</button>
+              <button class="opt" data-correct>The backend — the visible parts worked, but the actual work never happened</button>
+              <button class="opt">Neither — that's just how online shopping works sometimes</button>
+            </div>
+            <div class="why">The spinner and checkmark are dining-room theater. Charging cards and sending emails is kitchen work — and the kitchen dropped the ticket.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You want the checkout page to "feel friendlier — softer colors, bigger button, nicer wording." Which half changes?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The frontend — look, layout, and wording live in the part users see</button>
+              <button class="opt">The backend — checkout involves money, so it must be backend</button>
+              <button class="opt">Both halves always change together, every time</button>
+            </div>
+            <div class="why">The money logic stays untouched; you're redecorating the dining room. That's why purely visual changes are usually fast and cheap.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. In the x-ray widget, your one click triggered a stock check, a card charge, and a database save. Where did those steps actually run?</p>
+            <div class="opts">
+              <button class="opt">Inside your browser tab, hidden behind the confirmation message</button>
+              <button class="opt">Nowhere — confirmation messages are decorative</button>
+              <button class="opt" data-correct>On a server, in the backend — invisible from the customer's seat</button>
+            </div>
+            <div class="why">The frontend sent one request through the API; the backend on a server did the four real steps and sent back one calm sentence.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* restaurant x-ray */
+    (function () {
+      var xray = false;
+      var busy = false;
+      var orderNo = 1041;
+      var xrayBtn = document.getElementById("fb-xray");
+      var kitchen = document.getElementById("fb-kitchen");
+      var orderBtn = document.getElementById("fb-order");
+      var confirmEl = document.getElementById("fb-confirm");
+      var log = document.getElementById("fb-log");
+
+      function add(html) {
+        if (!log.dataset.started) { log.dataset.started = "1"; log.innerHTML = html; }
+        else { log.innerHTML += "\n" + html; }
+        log.scrollTop = log.scrollHeight;
+      }
+
+      xrayBtn.addEventListener("click", function () {
+        xray = !xray;
+        kitchen.style.display = xray ? "flex" : "none";
+        xrayBtn.innerHTML = xray
+          ? "🩻 X-ray: <b>on</b> — hide the backend"
+          : "🩻 X-ray: <b>off</b> — show the backend";
+        xrayBtn.style.borderColor = xray ? "var(--accent-bright)" : "var(--border)";
+        if (xray) { log.scrollTop = log.scrollHeight; }
+      });
+
+      orderBtn.addEventListener("click", function () {
+        if (busy) return;
+        busy = true;
+        orderNo++;
+        var id = orderNo;
+        confirmEl.innerHTML = '<span style="color:var(--muted);">⏳ Placing your order…</span>';
+        add('<span class="acc">→ frontend:</span> POST /orders { item: "flat white" }');
+        setTimeout(function () { add('<span class="dim">backend:</span> request received — ticket #' + id); }, 250);
+        setTimeout(function () { add('<span class="dim">backend:</span> checking stock in the database… <span class="ok">✓ 14 left</span>'); }, 700);
+        setTimeout(function () { add('<span class="dim">backend:</span> charging card •••• 4242… <span class="ok">✓ $4.50</span>'); }, 1250);
+        setTimeout(function () { add('<span class="dim">backend:</span> saving order #' + id + ' + emailing receipt… <span class="ok">✓</span>'); }, 1700);
+        setTimeout(function () {
+          add('<span class="ok">← backend → frontend: 200 OK</span> { order: ' + id + ' }');
+          confirmEl.innerHTML = '<span style="color:var(--good); font-weight:700;">✓ Order confirmed!</span><br>Flat white #' + id + ' is on its way. ☕';
+          busy = false;
+        }, 2050);
+      });
+    })();
+  </script>
+</body>
+</html>

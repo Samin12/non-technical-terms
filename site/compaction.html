@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Compaction — Claude Club</title>
+  <meta name="description" content="Compaction, explained in plain English: summarizing the chat so it keeps fitting. With an interactive compact-o-meter." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="compaction" data-related="context-window,session,token,claude-md">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Compaction</h1>
+        <p class="tldr"><b>TLDR</b>Summarizing the chat so it keeps fitting.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: compact-o-meter ============ -->
+      <section class="widget" aria-label="Compact-o-meter">
+        <div class="widget-bar"><span class="dot"></span> Try it — the Compact-o-meter</div>
+        <div class="widget-body">
+          <style>
+            @keyframes cp-throb {
+              0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(217, 119, 87, 0.45); }
+              50% { transform: scale(1.05); box-shadow: 0 0 0 9px rgba(217, 119, 87, 0); }
+            }
+          </style>
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            You're two hours into a build session with Claude. Keep chatting and watch the context
+            fill up — then squeeze it.
+          </p>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="cp-chat">💬 Keep chatting (×5 messages)</button>
+            <button class="wbtn" id="cp-compact" disabled>🗜️ Compact</button>
+            <button class="wbtn" id="cp-reset" style="font-size:0.8rem;">↺ Reset</button>
+          </div>
+          <div style="font-family:var(--sans); font-size:0.8rem; font-weight:600; color:var(--ink-soft); display:flex; justify-content:space-between; margin-bottom:0.35rem;">
+            <span>Context used</span>
+            <span id="cp-count">0 / 16,000 tokens (0%)</span>
+          </div>
+          <div class="wmeter" id="cp-meter" style="margin-bottom:0.5rem;"><i></i></div>
+          <div id="cp-warn" style="display:none; font-family:var(--sans); font-size:0.8rem; font-weight:600; color:var(--bad); margin-bottom:0.6rem;"></div>
+          <div id="cp-log" style="display:flex; flex-direction:column; gap:6px; max-height:230px; overflow-y:auto; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:10px;">
+            <div id="cp-empty" style="text-align:center; color:var(--muted); font-family:var(--sans); font-size:0.8rem;">— the conversation so far will appear here —</div>
+          </div>
+          <div id="cp-result" style="display:none; font-family:var(--sans); font-size:0.85rem; color:var(--good); font-weight:600; margin-top:0.8rem;"></div>
+        </div>
+        <p class="widget-hint">Watch the meter: past 80% it goes red and the Compact button starts begging. Squeeze, then keep chatting.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Think about the last good meeting you were in. Two hours of talk — and what survived?
+          Nobody keeps the transcript. Someone writes notes: <em>what we decided, who owns what,
+          what's next.</em> The transcript was the meeting. The notes are what the meeting becomes.
+        </p>
+
+        <p>
+          <strong>Compaction is your AI doing exactly that to your own conversation: summarizing
+          the older messages into a short recap so the chat keeps fitting in its limited
+          memory.</strong>
+        </p>
+
+        <h2>Why it has to happen</h2>
+
+        <p>
+          Your AI's working memory — the <a href="context-window.html">context window</a> — is a
+          fixed budget of <a href="token.html">tokens</a>. Every message you send and every reply
+          it writes piles onto the same desk. A long <a href="session.html">session</a> will hit
+          the ceiling. Guaranteed. It's arithmetic, not bad luck.
+        </p>
+
+        <p>
+          At the ceiling there are exactly two options. Option one: the oldest messages silently
+          fall off the desk and are simply gone. Option two: squeeze the old stuff into a summary
+          first — keep the gist, free the space. Compaction is option two, and it's what Claude
+          does automatically when a conversation gets near the limit. That's the pulsing button you
+          just pressed in the widget: fifteen-odd messages of build talk collapsed into one summary
+          chip, the meter dropping from red back to nearly empty, and the conversation just… kept
+          going.
+        </p>
+
+        <p>
+          And no, compaction is not the same as starting over. A fresh session wipes the desk
+          completely — perfect between unrelated tasks. Compaction is for when you're mid-project
+          and the history still matters: it keeps a compressed thread of everything agreed so far,
+          so you don't have to re-negotiate it from scratch.
+        </p>
+
+        <h2>What survives the squeeze — and what doesn't</h2>
+
+        <p>
+          A good summary keeps decisions and current state: <em>orange theme, login bug fixed,
+          Stripe for payments, app renamed Brewlog.</em> That's why work can continue after a
+          compact as if nothing happened.
+        </p>
+
+        <p>
+          But summaries are lossy. By design. The exact hex code you mentioned once, the reasoning
+          behind rejecting an option, that offhand requirement from message #3 — any of those can
+          get smoothed away. Just like meeting notes: "we picked Stripe" survives; the twenty
+          minutes of <em>why not the alternative</em> usually doesn't.
+        </p>
+
+        <div class="callout">
+          After a compact, never assume every detail made it through. If something is critical —
+          an exact spec, a hard rule, a number — re-state it right after the squeeze. Better yet,
+          keep must-not-lose facts in a file like <a href="claude-md.html">CLAUDE.md</a> that gets
+          re-read fresh, outside the conversation entirely. Summaries trade detail for room. Know
+          which details you can't afford to trade.
+        </div>
+
+        <h2>How to work with it</h2>
+
+        <ul>
+          <li>
+            <strong>Compact at milestones, not in a panic.</strong> In Claude Code you can trigger
+            it yourself with <code>/compact</code>. Doing it right after finishing a feature — a
+            natural chapter break — produces a far better summary than an automatic squeeze
+            mid-task.
+          </li>
+          <li>
+            <strong>Watch the meter.</strong> Past roughly 80% full, answer quality starts slipping
+            before any compaction happens. The widget turned red for a reason.
+          </li>
+          <li>
+            <strong>Re-anchor after.</strong> One message — "quick recap: we're doing X, constraint
+            Y still applies" — re-plants anything fragile.
+          </li>
+        </ul>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>All-day working sessions that don't die when the window fills</li>
+          <li>An explanation for late-session amnesia: the AI is reading its own meeting notes now, not the transcript</li>
+          <li>Control — compact on purpose at clean break points instead of at the worst possible moment</li>
+          <li>A tighter, cheaper conversation: a 3,000-token recap beats 14,000 tokens of scroll-back</li>
+        </ul>
+
+        <p><strong>Keep the decisions, drop the transcript — that's compaction, and it's why a good conversation can run all day.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Three hours into a session, you see "compacting conversation…". What is actually happening?</p>
+            <div class="opts">
+              <button class="opt">The chat is being deleted and restarted from zero</button>
+              <button class="opt" data-correct>Older messages are being summarized into a short recap to free up space</button>
+              <button class="opt">The conversation is being moved to a bigger model</button>
+            </div>
+            <div class="why">Compaction trades the old transcript for a summary, so the session keeps fitting in the context window without starting over.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. After a compact, Claude forgets the exact hex code you gave it an hour ago — but still knows you're building a dark theme. Why?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Summaries keep decisions and drop fine details — the hex code got smoothed away</button>
+              <button class="opt">Compaction deletes everything older than an hour</button>
+              <button class="opt">The session silently restarted from zero</button>
+            </div>
+            <div class="why">That's the lossy trade: "dark theme" is a decision, six hex digits are a detail. Re-state critical specifics after a squeeze — or keep them in a file.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your context meter reads 85% and you have hours of work ahead. The smart move?</p>
+            <div class="opts">
+              <button class="opt">Push on to 100% — compaction will handle it whenever</button>
+              <button class="opt" data-correct>Compact now, at a natural break, while the conversation is still coherent</button>
+              <button class="opt">Paste the entire chat history back in so nothing gets forgotten</button>
+            </div>
+            <div class="why">A deliberate compact at a milestone produces a clean summary. Waiting for the emergency squeeze — or pasting more in — only makes the desk worse.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* compact-o-meter */
+    (function () {
+      var CAP = 16000;
+      var MSGS = [
+        ["you", "Can we make the header orange?"],
+        ["ai", "Done — switched the theme to orange."],
+        ["you", "The login button 404s on mobile."],
+        ["ai", "Found it. Typo in the route — fixed."],
+        ["you", "Add a pricing page, three tiers."],
+        ["ai", "Built it: Starter, Pro, Team."],
+        ["you", "Let's use Stripe for payments."],
+        ["ai", "Wired up Stripe checkout."],
+        ["you", "Rename the app to Brewlog."],
+        ["ai", "Renamed everywhere — 14 files."],
+        ["you", "Make the emails friendlier."],
+        ["ai", "Rewrote them in a warmer voice."],
+        ["you", "Add a dark mode toggle."],
+        ["ai", "Dark mode shipped."],
+        ["you", "Can we ship Friday?"],
+        ["ai", "Yes — everything's green."]
+      ];
+
+      var items = []; // { el, tokens, first, last, isSummary }
+      var used = 0, msgN = 0, msgPtr = 0, busy = false;
+
+      var elLog = document.getElementById("cp-log");
+      var elEmpty = document.getElementById("cp-empty");
+      var elMeter = document.querySelector("#cp-meter > i");
+      var elMeterBox = document.getElementById("cp-meter");
+      var elCount = document.getElementById("cp-count");
+      var elWarn = document.getElementById("cp-warn");
+      var elResult = document.getElementById("cp-result");
+      var btnChat = document.getElementById("cp-chat");
+      var btnCompact = document.getElementById("cp-compact");
+      var btnReset = document.getElementById("cp-reset");
+
+      function fmt(n) { return n.toLocaleString("en-US"); }
+
+      function row(who, text, tokens) {
+        var d = document.createElement("div");
+        d.style.cssText = "display:flex; justify-content:space-between; gap:10px; align-items:baseline; background:var(--card); border:1px solid var(--border-soft); border-radius:8px; padding:4px 10px; font-size:0.82rem; opacity:0; transition:all .4s ease;";
+        d.innerHTML =
+          "<span>" + (who === "you" ? "💬 <b>You:</b> " : '<span style="color:var(--accent-bright);">✳</span> <b>Claude:</b> ') + text + "</span>" +
+          '<span style="color:var(--muted); white-space:nowrap;">' + fmt(tokens) + "t</span>";
+        return d;
+      }
+
+      function render() {
+        var pct = Math.min(100, Math.round((used / CAP) * 100));
+        elMeter.style.width = pct + "%";
+        elMeterBox.classList.toggle("full", pct >= 80);
+        elCount.textContent = fmt(used) + " / " + fmt(CAP) + " tokens (" + pct + "%)";
+        elCount.style.color = pct >= 80 ? "var(--bad)" : "";
+
+        if (pct >= 80) {
+          elWarn.style.display = "block";
+          elWarn.textContent = used >= CAP
+            ? "⛔ Context full. Anything more falls off the desk — compact now."
+            : "⚠️ Past 80% — answers start degrading. The Compact button is begging.";
+        } else {
+          elWarn.style.display = "none";
+        }
+
+        btnChat.disabled = busy || used >= CAP;
+        btnChat.textContent = used >= CAP ? "⛔ Context full — compact first" : "💬 Keep chatting (×5 messages)";
+
+        var compactable = items.filter(function (it) { return !it.isSummary; }).length > 0;
+        btnCompact.disabled = busy || !compactable;
+        if (pct >= 80 && compactable && !busy) {
+          btnCompact.style.animation = "cp-throb 1.1s ease-in-out infinite";
+          btnCompact.style.borderColor = "var(--accent-bright)";
+          btnCompact.style.color = "var(--accent)";
+        } else {
+          btnCompact.style.animation = "";
+          btnCompact.style.borderColor = "";
+          btnCompact.style.color = "";
+        }
+      }
+
+      btnChat.addEventListener("click", function () {
+        if (busy || used >= CAP) return;
+        busy = true;
+        render();
+        elEmpty.style.display = "none";
+        var added = 0;
+        for (var i = 0; i < 5; i++) {
+          setTimeout(function () {
+            if (used < CAP) {
+              var spec = MSGS[msgPtr % MSGS.length];
+              msgPtr++;
+              msgN++;
+              var t = 820 + Math.floor(Math.random() * 160);
+              var el = row(spec[0], spec[1], t);
+              elLog.appendChild(el);
+              setTimeout(function () { el.style.opacity = "1"; }, 20);
+              items.push({ el: el, tokens: t, first: msgN, last: msgN, isSummary: false });
+              used += t;
+              elLog.scrollTop = elLog.scrollHeight;
+            }
+            added++;
+            if (added === 5) { busy = false; }
+            render();
+          }, i * 130);
+        }
+      });
+
+      btnCompact.addEventListener("click", function () {
+        if (busy || !items.length) return;
+        busy = true;
+        render();
+        var before = used;
+        var first = items[0].first;
+        var last = items[items.length - 1].last;
+
+        items.forEach(function (it, i) {
+          setTimeout(function () {
+            it.el.style.opacity = "0";
+            it.el.style.transform = "scale(0.92) translateY(-6px)";
+          }, i * 35);
+        });
+
+        setTimeout(function () {
+          items.forEach(function (it) { it.el.remove(); });
+          var summaryTokens = Math.max(400, Math.round((before * 0.22) / 50) * 50);
+          var sum = document.createElement("div");
+          sum.style.cssText = "display:flex; justify-content:space-between; gap:10px; align-items:baseline; background:var(--accent-faint); border:1px solid var(--accent-soft); border-radius:8px; padding:6px 10px; font-size:0.82rem; opacity:0; transition:all .4s ease;";
+          sum.innerHTML =
+            "<span>📋 <b>Summary of messages " + first + "–" + last + ":</b> decided on the orange theme, fixed the mobile login bug, built three-tier pricing on Stripe, renamed the app to Brewlog, shipped dark mode…</span>" +
+            '<span style="color:var(--muted); white-space:nowrap;">' + fmt(summaryTokens) + "t</span>";
+          elLog.insertBefore(sum, elLog.firstChild);
+          setTimeout(function () { sum.style.opacity = "1"; }, 20);
+
+          items = [{ el: sum, tokens: summaryTokens, first: first, last: last, isSummary: true }];
+          used = summaryTokens;
+
+          elResult.style.display = "block";
+          elResult.innerHTML = "🗜️ Compacted: <b>" + fmt(before) + " → " + fmt(summaryTokens) + " tokens.</b> " +
+            Math.round((1 - summaryTokens / before) * 100) + "% of the window reclaimed. Keep chatting.";
+
+          busy = false;
+          render();
+        }, items.length * 35 + 450);
+      });
+
+      btnReset.addEventListener("click", function () {
+        items.forEach(function (it) { it.el.remove(); });
+        items = [];
+        used = 0; msgN = 0; msgPtr = 0; busy = false;
+        elEmpty.style.display = "";
+        elResult.style.display = "none";
+        render();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Server — Claude Club</title>
+  <meta name="description" content="Server, explained in plain English: a computer that never closes. With an interactive uptime switchboard." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="server" data-related="localhost,deploy,headless,serverless,ssh">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Server</h1>
+        <p class="tldr"><b>TLDR</b>A computer that never closes.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: uptime switchboard ============ -->
+      <section class="widget" aria-label="Server uptime switchboard">
+        <div class="widget-bar"><span class="dot"></span> Try it — the uptime switchboard</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Your site lives on one of these two machines. Visitors don't care which — they just
+            knock. See who answers.
+          </p>
+          <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-bottom:0.9rem;">
+            <div style="flex:1; min-width:215px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.9rem; text-align:center;">
+              <div style="font-size:1.7rem;" id="sv-laptop-icon">💻</div>
+              <div style="font-weight:700; margin:0.2rem 0;">Your laptop</div>
+              <div id="sv-laptop-status" style="font-size:0.82rem; color:var(--good); font-weight:600; margin-bottom:0.6rem;">Lid open — awake</div>
+              <button class="wbtn" id="sv-lid">🔒 Close the lid</button>
+              <div style="font-size:0.78rem; color:var(--muted); margin-top:0.6rem;">served <b id="sv-laptop-ok">0</b> · missed <b id="sv-laptop-miss" style="color:var(--bad);">0</b></div>
+            </div>
+            <div style="flex:1; min-width:215px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.9rem; text-align:center;">
+              <div style="font-size:1.7rem;">🗄️</div>
+              <div style="font-weight:700; margin:0.2rem 0;">A server</div>
+              <div style="font-size:0.82rem; color:var(--good); font-weight:600; margin-bottom:0.6rem;">Always on · up <span id="sv-uptime" style="font-family:var(--mono);">41d 03:12:07</span></div>
+              <button class="wbtn" disabled>No lid. No off switch.</button>
+              <div style="font-size:0.78rem; color:var(--muted); margin-top:0.6rem;">served <b id="sv-server-ok">0</b> · missed <b style="color:var(--bad);">0</b></div>
+            </div>
+          </div>
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn primary" id="sv-visit">🌍 Someone visits your site at 3am</button>
+            <button class="wbtn" id="sv-auto">▶ Auto-visitors: off</button>
+          </div>
+          <div class="wlog" id="sv-log"><span class="dim">Two machines, one job: answer when somebody knocks.</span></div>
+        </div>
+        <p class="widget-hint">Close the lid, switch on auto-visitors, and watch the missed counter climb. Every miss is a person who now thinks your site is dead.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Your house is lovely, but it's a terrible shop. Sometimes you're out. Sometimes you're
+          asleep. Sometimes the doorbell rings and you just… don't answer. Nobody builds a
+          business on "knock and hope."
+        </p>
+
+        <p>
+          So the world invented a building that never closes: lights always on, somebody always
+          at the counter. On the internet, that building is a server.
+        </p>
+
+        <p><strong>A server is a computer whose only job is to stay on and answer requests — every second, forever.</strong></p>
+
+        <p>
+          You just watched the difference. The laptop with the closed lid missed visitor after
+          visitor. The server answered every knock, 3 a.m. included, uptime ticking the whole
+          time. Each miss on the laptop was a real person concluding your site doesn't exist.
+        </p>
+
+        <h2>It's literally just a computer</h2>
+
+        <p>
+          No magic. A server is an ordinary computer — usually without a screen or a keyboard,
+          racked with thousands of others in a warehouse called a data center, with backup power,
+          fast internet, and somebody paid to keep it humming. Running with no screen attached
+          even has a name: <a href="headless.html">headless</a>. Later lesson.
+        </p>
+
+        <p>
+          Could your laptop be a server? Technically, yes. The widget shows why it's a bad one:
+          lids close, batteries die, wifi drops, and you keep carrying it to cafés. "Always on"
+          is a discipline, and your laptop has other plans.
+        </p>
+
+        <h2>What "serving" actually means</h2>
+
+        <p>
+          The job description is one sentence: wait for a request, send back a response. A
+          browser knocks — "GET me the homepage" — and the server hands it over with a
+          <code>200 OK</code>, exactly like the log above. A modest server does this thousands of
+          times a minute, for thousands of strangers, simultaneously, without a coffee break.
+        </p>
+
+        <p>
+          Right now your projects probably run on <a href="localhost.html">localhost</a> — your
+          own machine, reachable by you alone. The day you <a href="deploy.html">deploy</a>,
+          you're doing one simple thing: moving your site from a computer that closes to a
+          computer that doesn't.
+        </p>
+
+        <h2>"The cloud" = other people's servers</h2>
+
+        <p>
+          Here's the demystifying part: you almost never buy a server. You rent one — a few
+          dollars a month from AWS, Google, Hetzner, Railway. That's all "the cloud" is. Not
+          weather, not magic: warehouses full of computers for rent, plus very good marketing.
+          So when Claude sets up a project for you and says "provisioning a server on Railway,"
+          this is everything that's happening: a rented computer waking up with your name on it.
+        </p>
+
+        <p>
+          And the renting keeps getting more granular. You can rent a whole machine, a slice of
+          one, or — with <a href="serverless.html">serverless</a> — just the milliseconds your
+          code actually runs. Same building, smaller bill. You'll get there in Level 6.
+        </p>
+
+        <div class="callout">
+          The first question of all website debugging: "is it down for everyone, or just me?"
+          Down for everyone → the server's problem. Fine for everyone else → your laptop, your
+          wifi, your connection. There's literally a website named after this question — that's
+          how often it's the right one to ask.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Know where your project physically lives once it's live</li>
+          <li>Read a hosting bill without flinching: you're renting a computer, that's the whole product</li>
+          <li>Understand status pages, outages, and what "the server is down" really means</li>
+          <li>Ask Claude to rent and set one up for you — genuinely a ten-minute job now</li>
+        </ul>
+
+        <p>
+          Once you see it, you can't unsee it: every site, every app, every AI you've ever used
+          is a machine in a warehouse, answering knocks in the dark.
+        </p>
+
+        <p><strong>The internet is just other people's computers that never close.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You host your site on your laptop and close the lid for the night. At 3 a.m., someone in Tokyo tries to visit. What do they get?</p>
+            <div class="opts">
+              <button class="opt">The page loads anyway — the internet keeps a copy of every site</button>
+              <button class="opt" data-correct>Nothing — a "can't connect" error, because a sleeping machine can't answer</button>
+              <button class="opt">It loads slowly, because the laptop has to wake up first</button>
+            </div>
+            <div class="why">There's no automatic copy of your site "out there." If the machine it lives on is asleep, the site is down — that's the entire reason servers exist.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Which of these is closest to what a server actually is?</p>
+            <div class="opts">
+              <button class="opt">A special program that only big tech companies are allowed to run</button>
+              <button class="opt">A backup copy of the internet stored by your internet provider</button>
+              <button class="opt" data-correct>A normal computer in a data center, kept on 24/7, whose job is answering requests</button>
+            </div>
+            <div class="why">No magic hardware, no license required. It's a computer like yours — minus the screen, plus the discipline of never turning off.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your friend says their app "runs in the cloud." What's physically happening?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Their code runs on someone else's server — a rented computer in a data center</button>
+              <button class="opt">Their code is distributed across satellites so it never touches the ground</button>
+              <button class="opt">Their code runs on every user's device at the same time</button>
+            </div>
+            <div class="why">The cloud is a business model, not a place: other people's computers, rented by the month — or, with serverless, by the millisecond.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* uptime switchboard */
+    (function () {
+      var lidOpen = true;
+      var auto = false;
+      var autoIv = null;
+      var laptopOk = 0, laptopMiss = 0, serverOk = 0;
+      var uptime = 41 * 86400 + 3 * 3600 + 12 * 60 + 7;
+
+      var CITIES = ["Tokyo", "Berlin", "São Paulo", "Sydney", "Lagos", "Toronto", "Mumbai", "London", "Seoul", "Austin"];
+
+      var lidBtn = document.getElementById("sv-lid");
+      var laptopIcon = document.getElementById("sv-laptop-icon");
+      var laptopStatus = document.getElementById("sv-laptop-status");
+      var elUptime = document.getElementById("sv-uptime");
+      var elLOk = document.getElementById("sv-laptop-ok");
+      var elLMiss = document.getElementById("sv-laptop-miss");
+      var elSOk = document.getElementById("sv-server-ok");
+      var visitBtn = document.getElementById("sv-visit");
+      var autoBtn = document.getElementById("sv-auto");
+      var log = document.getElementById("sv-log");
+
+      function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+      function tick() {
+        uptime++;
+        var d = Math.floor(uptime / 86400);
+        var h = Math.floor((uptime % 86400) / 3600);
+        var m = Math.floor((uptime % 3600) / 60);
+        var s = uptime % 60;
+        elUptime.textContent = d + "d " + pad(h) + ":" + pad(m) + ":" + pad(s);
+      }
+      setInterval(tick, 1000);
+      tick();
+
+      function add(html) {
+        if (!log.dataset.started) { log.dataset.started = "1"; log.innerHTML = html; }
+        else { log.innerHTML += "\n" + html; }
+        log.scrollTop = log.scrollHeight;
+      }
+
+      lidBtn.addEventListener("click", function () {
+        lidOpen = !lidOpen;
+        laptopIcon.textContent = lidOpen ? "💻" : "😴";
+        laptopStatus.textContent = lidOpen ? "Lid open — awake" : "Lid closed — asleep";
+        laptopStatus.style.color = lidOpen ? "var(--good)" : "var(--bad)";
+        lidBtn.textContent = lidOpen ? "🔒 Close the lid" : "🔓 Open the lid";
+        add(lidOpen
+          ? '<span class="ok">💻 lid opened — the laptop is awake (for now).</span>'
+          : '<span class="err">💻 lid closed — the laptop is asleep.</span>');
+      });
+
+      function visit() {
+        var city = CITIES[Math.floor(Math.random() * CITIES.length)];
+        var t = "3:" + pad(Math.floor(Math.random() * 60)) + " AM";
+        add('<span class="acc">🌍 ' + t + " — visitor from " + city + " requests your site…</span>");
+        setTimeout(function () {
+          if (lidOpen) {
+            laptopOk++;
+            add('<span class="ok">💻 laptop: 200 OK</span> <span class="dim">— served (you got lucky: the lid was open)</span>');
+          } else {
+            laptopMiss++;
+            add('<span class="err">💻 laptop: no answer — request failed.</span> <span class="dim">To them, your site is just… down.</span>');
+          }
+          serverOk++;
+          add('<span class="ok">🗄️ server: 200 OK in ' + (18 + Math.floor(Math.random() * 42)) + 'ms</span> <span class="dim">— like always</span>');
+          elLOk.textContent = laptopOk;
+          elLMiss.textContent = laptopMiss;
+          elSOk.textContent = serverOk;
+        }, 380);
+      }
+
+      visitBtn.addEventListener("click", visit);
+
+      autoBtn.addEventListener("click", function () {
+        auto = !auto;
+        autoBtn.textContent = auto ? "⏸ Auto-visitors: on" : "▶ Auto-visitors: off";
+        if (auto) {
+          add('<span class="dim">auto-visitors on — the internet does not sleep.</span>');
+          autoIv = setInterval(visit, 3200);
+        } else {
+          clearInterval(autoIv);
+          add('<span class="dim">auto-visitors off.</span>');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

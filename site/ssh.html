@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SSH — Claude Club</title>
+  <meta name="description" content="SSH, explained in plain English: drive one computer from another. With an interactive remote control terminal." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="ssh" data-related="cli,server,deploy,env-file">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>SSH</h1>
+        <p class="tldr"><b>TLDR</b>Drive one computer from another.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: remote control terminal ============ -->
+      <section class="widget" aria-label="SSH remote control terminal">
+        <div class="widget-bar"><span class="dot"></span> Try it — remote control terminal</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            It's 11 PM in Brooklyn. Your app — on a server 6,700 miles away in Tokyo — just
+            crashed. Type commands on the laptop (or tap the chips) and watch where they actually run.
+          </p>
+
+          <div style="display:flex; gap:0.4rem; flex-wrap:wrap; align-items:stretch; margin-bottom:0.85rem;">
+            <div style="flex:1 1 230px; min-width:0;">
+              <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">💻 Your laptop <span style="color:var(--muted); font-weight:600;">— Brooklyn</span></div>
+              <div class="wlog" id="ssh-local" data-started="1" style="min-height:175px; max-height:205px;"><span class="dim">11:04 PM. The Tokyo server isn't answering.
+Start with:</span> <span class="acc">ssh samin@server-tokyo</span></div>
+            </div>
+            <div style="flex:0 0 88px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; padding:0 4px;">
+              <span id="ssh-lock" style="font-size:1.15rem; opacity:0.18; transition:all 0.45s ease;">🔒</span>
+              <i id="ssh-line" style="display:block; width:100%; height:3px; border-radius:3px; background:var(--border); transition:background 0.45s ease;"></i>
+              <span id="ssh-tlabel" style="font-family:var(--sans); font-size:0.6rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); text-align:center; transition:color 0.45s ease;">no connection</span>
+            </div>
+            <div style="flex:1 1 230px; min-width:0;">
+              <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">🖥️ Server <span style="color:var(--muted); font-weight:600;">— Tokyo</span></div>
+              <div class="wlog" id="ssh-remote" data-started="1" style="min-height:175px; max-height:205px;"><span class="dim">— idle — nobody connected.
+The crashed app blinks sadly. ▌</span></div>
+            </div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.7rem;">
+            <button class="wbtn primary ssh-chip" data-cmd="ssh samin@server-tokyo" style="font-family:var(--mono); font-size:0.78rem;">ssh samin@server-tokyo</button>
+            <button class="wbtn ssh-chip" data-cmd="ls" style="font-family:var(--mono); font-size:0.78rem;">ls</button>
+            <button class="wbtn ssh-chip" data-cmd="restart app" style="font-family:var(--mono); font-size:0.78rem;">restart app</button>
+            <button class="wbtn ssh-chip" data-cmd="check logs" style="font-family:var(--mono); font-size:0.78rem;">check logs</button>
+            <button class="wbtn danger ssh-chip" data-cmd="exit" style="font-family:var(--mono); font-size:0.78rem;">exit</button>
+          </div>
+
+          <div style="display:flex; gap:0.55rem; align-items:center;">
+            <span id="ssh-prompt" style="font-family:var(--mono); font-size:0.8rem; color:var(--ink-soft); white-space:nowrap; transition:color 0.3s ease;">samin@laptop ~ %</span>
+            <input class="winput" id="ssh-input" style="font-family:var(--mono); font-size:0.85rem; flex:1;" placeholder="type a command, hit Enter" autocomplete="off" spellcheck="false" />
+          </div>
+        </div>
+        <p class="widget-hint">Run ls before connecting and after. Same command, different computer — that's the whole trick. exit brings you home.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Think of a secure walkie-talkie wired to a building on the other side of the
+          world. You speak in your kitchen in Brooklyn — and the work happens in Tokyo.
+          Lights flip on, machines restart, and the confirmation crackles back to you.
+        </p>
+
+        <p>
+          That's what you just did in the widget. You typed <code>restart app</code> on the
+          laptop, and the <em>server's</em> screen did the restarting. The command traveled;
+          the work stayed put. Then <code>exit</code> dropped the tunnel, and the same
+          <code>ls</code> suddenly showed your vacation photos instead of the app — proof of
+          which machine you were really driving.
+        </p>
+
+        <p>
+          <strong>SSH — Secure Shell — lets you sit at one computer and drive another one,
+          through an encrypted tunnel.</strong>
+        </p>
+
+        <h2>"SSH into the box," decoded</h2>
+
+        <p>
+          When a builder says that, they mean: open a terminal — the
+          <a href="cli.html">CLI</a> you already know — type
+          <code>ssh you@your-server</code>, prove who you are, and from that moment every
+          command you type runs on the distant machine. Your keystrokes go out encrypted,
+          the output streams back encrypted, and nobody in between can read either.
+          It's a screen-share for a computer that has no screen. And because you're only
+          sending keystrokes and text — not video — it works fine over hotel Wi-Fi that
+          can barely load a photo.
+        </p>
+
+        <p>
+          And that's the point: the machine running your site is a
+          <a href="server.html">server</a> in a warehouse somewhere — no monitor, no
+          keyboard, no chair. SSH is the door. App crashed at 11 PM? Nobody drives to a
+          data center. You SSH in from the couch, restart it, read a log or two, close the
+          tunnel, and go back to your evening. This is also how a hands-on
+          <a href="deploy.html">deploy</a> works on a plain server: SSH in, pull the new
+          code, restart.
+        </p>
+
+        <h2>Keys, not passwords</h2>
+
+        <p>
+          That "key check" in the handshake was real. SSH normally skips passwords in favor
+          of a <em>key pair</em>: a public key that sits on the server like a lock, and a
+          private key that stays on your laptop like the only key ever cut for it. Think of
+          SSH keys as API keys for machines — and guard the private one at least as hard as
+          anything in your <a href="env-file.html">env file</a>. Whoever holds it <em>is</em>
+          you, on every server that trusts it.
+        </p>
+
+        <div class="callout">
+          Never paste your private SSH key into a chat, an email, or a code repo — and never
+          let an app "just borrow" it. If it ever leaks, don't debate: generate a new pair
+          and remove the old lock from every server, immediately. A leaked private key isn't
+          a vulnerability; it's a spare you, walking around with your wallet.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li><strong>Rescue from anywhere</strong> — restart a crashed app from a coffee shop, an airport, your phone</li>
+          <li><strong>Live eyes</strong> — tail the server's logs in real time while users are on the site</li>
+          <li><strong>Real maintenance</strong> — install updates, check disk space, move files, no plane ticket required</li>
+          <li><strong>Agent hands</strong> — when Claude manages real infrastructure for you, SSH is often the tunnel it uses: same commands, same keys, same rules</li>
+        </ul>
+
+        <p>
+          Once you've felt the prompt change from <code>samin@laptop</code> to
+          <code>samin@server-tokyo</code>, the phrase "I'm on the server" stops being
+          mysterious. You're not <em>on</em> anything. You're in your kitchen, holding the
+          walkie-talkie, and Tokyo is doing exactly what you say.
+        </p>
+
+        <p><strong>The server has no screen. SSH is how you become its keyboard.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. It's 11 PM and your app — on a server in another country — just crashed. What do builders actually do?</p>
+            <div class="opts">
+              <button class="opt">Book a flight to the data center first thing tomorrow</button>
+              <button class="opt" data-correct>SSH in from their laptop and restart the app remotely</button>
+              <button class="opt">Rebuild the whole website from scratch on a new server</button>
+            </div>
+            <div class="why">The server has no screen or keyboard — SSH is the door. Connect, restart, check the logs, disconnect. Five minutes, zero travel.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You're connected over SSH and type ls. Whose files do you see?</p>
+            <div class="opts">
+              <button class="opt">Your laptop's files — that's where you typed the command</button>
+              <button class="opt" data-correct>The server's files — commands execute on the remote machine, and only the output streams back</button>
+              <button class="opt">Both machines' files, merged into one list</button>
+            </div>
+            <div class="why">Inside the tunnel, your keyboard belongs to the server. You proved it in the widget: app/ and logs/ while connected, vacation photos after exit.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. A handy-looking tool asks you to paste your private SSH key so it can "manage your servers." What's the move?</p>
+            <div class="opts">
+              <button class="opt">Paste it — that's what keys are for</button>
+              <button class="opt">Paste it, but only over Wi-Fi you trust</button>
+              <button class="opt" data-correct>Don't. The private key is your identity on every server that trusts it — it never leaves your machine</button>
+            </div>
+            <div class="why">Anyone holding your private key is you. Legit tools use safer setups (their own keys, scoped access) — and if a key ever leaks, you replace the pair immediately.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* remote control terminal */
+    (function () {
+      var connected = false, busy = false;
+
+      var elLocal = document.getElementById("ssh-local");
+      var elRemote = document.getElementById("ssh-remote");
+      var elLock = document.getElementById("ssh-lock");
+      var elLine = document.getElementById("ssh-line");
+      var elTLabel = document.getElementById("ssh-tlabel");
+      var elPrompt = document.getElementById("ssh-prompt");
+      var elInput = document.getElementById("ssh-input");
+
+      var LOCAL = {
+        "ls": "resume.docx   vacation-photos/   taxes-2025.pdf",
+        "restart app": '<span class="err">no app here — this is your personal laptop.</span> <span class="dim">The app lives in Tokyo. Try ssh first.</span>',
+        "check logs": '<span class="dim">no server logs in Brooklyn. The kitchen is in Tokyo.</span>'
+      };
+      var REMOTE = {
+        "ls": "app/   logs/   .env   restart.sh",
+        "restart app": ["stopping app… ✓", "starting app… ✓", '<span class="ok">app restarted ✓ — uptime 0:00:01</span>'],
+        "check logs": ["09:12 GET /          200 ✓", "09:12 POST /signup   200 ✓", '<span class="ok">09:13 GET /pricing   200 ✓ — back in business</span>']
+      };
+
+      function esc(s) {
+        return String(s).replace(/[&<>]/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c];
+        });
+      }
+
+      function print(el, html) {
+        el.innerHTML += (el.dataset.started ? "\n" : "");
+        el.dataset.started = "1";
+        el.innerHTML += html;
+        el.scrollTop = el.scrollHeight;
+      }
+
+      function setTunnel(on) {
+        elLine.style.background = on ? "var(--accent-bright)" : "var(--border)";
+        elLock.style.opacity = on ? "1" : "0.18";
+        elLock.style.transform = on ? "scale(1.18)" : "scale(1)";
+        elTLabel.textContent = on ? "encrypted tunnel" : "no connection";
+        elTLabel.style.color = on ? "var(--accent)" : "var(--muted)";
+        elPrompt.textContent = on ? "samin@server-tokyo ~ $" : "samin@laptop ~ %";
+        elPrompt.style.color = on ? "var(--accent)" : "var(--ink-soft)";
+      }
+
+      function run(cmdRaw) {
+        var cmd = String(cmdRaw).trim();
+        if (!cmd || busy) return;
+        var lc = cmd.toLowerCase();
+        print(elLocal, '<span class="acc">' + (connected ? "samin@server-tokyo $" : "samin@laptop %") + "</span> " + esc(cmd));
+
+        // connect
+        if (lc.indexOf("ssh") === 0) {
+          if (connected) {
+            print(elLocal, '<span class="dim">already connected to server-tokyo.</span>');
+            return;
+          }
+          busy = true;
+          setTimeout(function () { print(elLocal, '<span class="dim">→ connecting to server-tokyo (6,700 miles away)…</span>'); }, 250);
+          setTimeout(function () { print(elLocal, '🔑 key check… <span class="ok">key accepted</span>'); }, 950);
+          setTimeout(function () {
+            print(elLocal, '<span class="ok">🔒 encrypted tunnel established.</span> <span class="dim">You are now typing in Tokyo.</span>');
+            print(elRemote, '<span class="ok">● samin connected</span> <span class="dim">from Brooklyn (key auth)</span>');
+            connected = true;
+            setTunnel(true);
+            busy = false;
+          }, 1700);
+          return;
+        }
+
+        // disconnect
+        if (lc === "exit") {
+          if (!connected) {
+            print(elLocal, '<span class="dim">you\'re already home — nothing to exit.</span>');
+            return;
+          }
+          connected = false;
+          setTunnel(false);
+          print(elRemote, '<span class="dim">○ samin disconnected. — idle —</span>');
+          print(elLocal, '<span class="dim">tunnel closed — back on your laptop.</span>');
+          return;
+        }
+
+        if (connected) {
+          // command executes on the Tokyo machine
+          var r = REMOTE[lc];
+          busy = true;
+          setTimeout(function () {
+            print(elRemote, '<span class="acc">▶ ' + esc(cmd) + '</span> <span class="dim">(received through the tunnel)</span>');
+          }, 220);
+          if (!r) {
+            setTimeout(function () {
+              print(elRemote, '<span class="err">command not found: ' + esc(cmd) + "</span>");
+              print(elLocal, '<span class="err">← command not found: ' + esc(cmd) + "</span>");
+              busy = false;
+            }, 750);
+            return;
+          }
+          var lines = Array.isArray(r) ? r : [r];
+          lines.forEach(function (ln, i) {
+            setTimeout(function () { print(elRemote, ln); }, 620 + i * 430);
+          });
+          setTimeout(function () {
+            print(elLocal, '<span class="ok">←</span> ' + lines[lines.length - 1] + ' <span class="dim">(ran in Tokyo, streamed back)</span>');
+            busy = false;
+          }, 620 + lines.length * 430 + 160);
+        } else {
+          // command runs locally
+          var l = LOCAL[lc];
+          busy = true;
+          setTimeout(function () {
+            print(elLocal, l || '<span class="err">command not found: ' + esc(cmd) + '</span> <span class="dim">try: ssh samin@server-tokyo</span>');
+            busy = false;
+          }, 240);
+        }
+      }
+
+      [].slice.call(document.querySelectorAll(".ssh-chip")).forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          run(btn.getAttribute("data-cmd"));
+          elInput.focus();
+        });
+      });
+
+      elInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          run(elInput.value);
+          elInput.value = "";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

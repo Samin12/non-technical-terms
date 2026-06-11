@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DNS — Claude Club</title>
+  <meta name="description" content="DNS, explained in plain English: the internet's phone book. With an interactive name lookup." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="dns" data-related="server,cdn,deploy,cache">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>DNS</h1>
+        <p class="tldr"><b>TLDR</b>The internet's phone book.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: name lookup ============ -->
+      <section class="widget" aria-label="DNS name lookup">
+        <div class="widget-bar"><span class="dot"></span> Try it — the name lookup</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Pick a site. Watch your browser ask the internet's phone book who that name
+            actually is — then try living without the phone book.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn dns-site" data-d="claudeclub.com">✳ claudeclub.com</button>
+            <button class="wbtn dns-site" data-d="yoursite.com">🌐 yoursite.com</button>
+            <button class="wbtn dns-site" data-d="bakery.api.com">🥐 bakery.api.com</button>
+            <button class="wbtn danger" id="dns-hard">🌍 A world without DNS</button>
+          </div>
+
+          <div id="dns-chain" style="display:flex; flex-direction:column; gap:7px; min-height:138px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:11px 13px; font-size:0.86rem;">
+            <span style="color:var(--muted);">The phone book is open. Pick a name to look up…</span>
+          </div>
+
+          <div id="dns-hardbox" style="display:none; margin-top:0.9rem;">
+            <p style="font-size:0.88rem; color:var(--ink-soft); margin-bottom:0.55rem;">
+              DNS is gone. You want <b id="dns-target">claudeclub.com</b>, which lives at
+              <b id="dns-ip-show" style="font-family:var(--mono); color:var(--accent);">76.76.21.21</b>.
+              Names mean nothing now — type the raw IP, digit for digit:
+            </p>
+            <div class="wrow">
+              <input class="winput" id="dns-ip-input" style="max-width:240px;" placeholder="type the IP address…" autocomplete="off" />
+              <button class="wbtn primary" id="dns-go">Go</button>
+            </div>
+            <div id="dns-hard-result" style="font-size:0.86rem; margin-top:0.6rem; min-height:1.3em;"></div>
+          </div>
+        </div>
+        <p class="widget-hint">Look up all three names (try one twice — notice the cache), then try the world without DNS. You'll never complain about typing a URL again.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Open your phone and call your mom. You tapped "Mom." You did not dial
+          +1-555-867-5309 from memory — you don't know that number. Your contacts app knows it,
+          and it dialed for you.
+        </p>
+
+        <p>
+          Here's the thing: you pull the same trick hundreds of times a day on the internet
+          without realizing. Every site you visit lives on a <a href="server.html">server</a>,
+          and every server's real address is a number — an IP address like 76.76.21.21. You
+          never type those. You type names.
+        </p>
+
+        <p><strong>DNS is the internet's phone book: it turns the names humans remember into the numbers machines actually dial.</strong></p>
+
+        <h2>Names are for you. Numbers are for machines.</h2>
+
+        <p>
+          That's the entire division of labor. claudeclub.com is for your brain; 76.76.21.21 is
+          for your browser. The lookup chain you just watched runs every time you visit somewhere
+          new: your browser asks "who is this name?", a DNS resolver checks the phone book, the
+          number comes back, and only then does the site load — from the number, never from the
+          name. The whole dance takes a few dozen milliseconds.
+        </p>
+
+        <p>
+          And you felt the alternative. The "world without DNS" mode — squinting at digits,
+          typing them exactly, getting one wrong and reaching a stranger's server — that's the
+          job DNS quietly does for you on every single click. Forever.
+        </p>
+
+        <p>
+          One more thing you may have noticed: look the same name up twice, and the second answer
+          comes back in about a millisecond. Your computer keeps recent answers instead of asking
+          again — that's a <a href="cache.html">cache</a>, and it matters in a moment.
+        </p>
+
+        <h2>"Point your domain": what launching a site really means</h2>
+
+        <p>
+          When you <a href="deploy.html">deploy</a> a site — say, the one Claude just built with
+          you — it lands on a server with some IP address. When you buy mybakery.com, you've
+          bought a name: an empty contact card. "Changing your DNS" or "pointing your domain"
+          just means writing the entry — <em>mybakery.com → 84.19.7.220</em>. That one line in
+          the phone book is what connects the name people type to the machine you shipped to.
+          Move to a better host next year? Update the entry. The name follows you, and visitors
+          never notice a thing.
+        </p>
+
+        <h2>Why DNS changes take time to spread</h2>
+
+        <p>
+          There isn't one phone book. There are thousands of copies cached all over the planet —
+          your laptop keeps one, your wifi router keeps one, your internet provider keeps a big
+          one. When you update your entry, the copies don't all refresh instantly; each waits for
+          its stored answer to expire before asking again. That's why a brand-new domain can work
+          on your laptop while a friend across the ocean gets nothing for a few hours. Registrars
+          call it "propagation." Nothing is broken. It's just a lot of phone books updating on
+          their own schedules.
+        </p>
+
+        <div class="callout">
+          Launch-day pro tip: if your new domain works for you but not for a friend, do not
+          panic-redeploy. Nine times out of ten your site is fine and their phone book is simply
+          stale. Give it a few hours before you touch anything.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Buy a domain and point it at anything you've deployed — site, store, app</li>
+          <li>Switch hosts without changing your name or losing a single visitor</li>
+          <li>Decode registrar emails: "propagation" is just phone books syncing</li>
+          <li>Diagnose "works for me, not for them" like someone who's seen it before</li>
+        </ul>
+
+        <p>
+          Next lesson, the phone book gets a twist: what if the name pointed you to a copy of
+          the site sitting in your own city? That's the <a href="cdn.html">CDN</a>.
+        </p>
+
+        <p><strong>You remember one good name. DNS remembers the numbers. That handshake runs the entire internet.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You buy mybakery.com and your new site lives on a server at 84.19.7.220. What does "updating your DNS" actually do?</p>
+            <div class="opts">
+              <button class="opt">Re-uploads your site files to the domain</button>
+              <button class="opt" data-correct>Writes the phone book entry pointing mybakery.com to 84.19.7.220</button>
+              <button class="opt">Renames the server to "mybakery"</button>
+            </div>
+            <div class="why">The name and the server are two separate things. The DNS record is the one line that connects them — name on one side, number on the other.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Launch day: the site loads on your laptop, but your friend abroad gets "site not found" for a few more hours. Most likely cause?</p>
+            <div class="opts">
+              <button class="opt">Their country blocks new websites by default</button>
+              <button class="opt">Your server only allows one visitor at a time</button>
+              <button class="opt" data-correct>The DNS copies near them are stale — your new entry hasn't spread that far yet</button>
+            </div>
+            <div class="why">Thousands of cached phone books refresh on their own schedules. That delay is "propagation" — annoying, normal, and temporary.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You hit enter on claudeclub.com. What does your browser ultimately use to connect to the server?</p>
+            <div class="opts">
+              <button class="opt">The name itself, letter by letter</button>
+              <button class="opt" data-correct>The IP address that DNS returned for that name</button>
+              <button class="opt">A web search for the closest match</button>
+            </div>
+            <div class="why">Names are for humans. The machine dials the number it got from the phone book — exactly like your phone dialing "Mom."</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* name lookup */
+    (function () {
+      var SITES = {
+        "claudeclub.com": { ip: "76.76.21.21" },
+        "yoursite.com": { ip: "104.21.48.7" },
+        "bakery.api.com": { ip: "172.67.190.44" }
+      };
+      var chain = document.getElementById("dns-chain");
+      var chips = [].slice.call(document.querySelectorAll(".dns-site"));
+      var hardBtn = document.getElementById("dns-hard");
+      var hardBox = document.getElementById("dns-hardbox");
+      var targetEl = document.getElementById("dns-target");
+      var ipShow = document.getElementById("dns-ip-show");
+      var ipInput = document.getElementById("dns-ip-input");
+      var goBtn = document.getElementById("dns-go");
+      var resultEl = document.getElementById("dns-hard-result");
+      var busy = false, hard = false, hardSite = null;
+      var seen = {};
+
+      function rnd(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+
+      function note(text, color) {
+        chain.innerHTML = "";
+        var d = document.createElement("div");
+        d.style.cssText = "color:" + color + "; font-weight:600;";
+        d.textContent = text;
+        chain.appendChild(d);
+      }
+
+      function step(icon, html, ms, delay) {
+        setTimeout(function () {
+          var d = document.createElement("div");
+          d.style.cssText = "display:flex; align-items:center; gap:0.55rem; opacity:0; transform:translateY(5px); transition:all .35s ease;";
+          d.innerHTML = '<span style="flex:none;">' + icon + '</span><span style="flex:1;">' + html + "</span>" +
+            (ms == null ? "" : '<span style="font-family:var(--mono); font-size:0.72rem; color:var(--muted); white-space:nowrap;">+' + ms + " ms</span>");
+          chain.appendChild(d);
+          requestAnimationFrame(function () {
+            d.style.opacity = "1";
+            d.style.transform = "translateY(0)";
+          });
+        }, delay);
+      }
+
+      function fin(after) {
+        setTimeout(function () {
+          busy = false;
+          if (!hard) { chips.forEach(function (c) { c.disabled = false; }); }
+        }, after);
+      }
+
+      function lookup(domain) {
+        if (busy || hard) { return; }
+        busy = true;
+        chips.forEach(function (c) { c.disabled = true; });
+        chain.innerHTML = "";
+        var ip = SITES[domain].ip;
+        if (seen[domain]) {
+          var ct = rnd(8, 14);
+          step("🧠", 'your computer: "I remember this one — <b>' + domain + "</b> = <b>" + ip + '</b>."', 1, 80);
+          step("✅", "<b>" + domain + "</b> loads from " + ip + ".", ct, 700);
+          step("⚡", '<span style="color:var(--good); font-weight:600;">total: ~' + (ct + 1) + ' ms.</span> <span style="color:var(--muted);">cached — the phone book never even got opened.</span>', null, 1350);
+          fin(1700);
+          return;
+        }
+        var t1 = rnd(9, 18), t2 = rnd(14, 30), t3 = rnd(8, 16);
+        step("🧑‍💻", 'your browser: "who is <b>' + domain + '</b>?"', null, 80);
+        step("📖", 'DNS resolver: "checking the phone book…"', t1, 750);
+        step("📍", 'answer: "<b>' + domain + "</b> lives at <b>" + ip + '</b>. Go there."', t2, 1500);
+        step("✅", "<b>" + domain + "</b> loads from " + ip + ".", t3, 2250);
+        step("⚡", '<span style="color:var(--good); font-weight:600;">total: ' + (t1 + t2 + t3) + ' ms</span> <span style="color:var(--muted);">— your computer keeps the answer. Try this name again.</span>', null, 2950);
+        seen[domain] = true;
+        fin(3300);
+      }
+
+      chips.forEach(function (c) {
+        c.addEventListener("click", function () { lookup(c.getAttribute("data-d")); });
+      });
+
+      hardBtn.addEventListener("click", function () {
+        if (busy) { return; }
+        hard = !hard;
+        if (hard) {
+          var names = Object.keys(SITES);
+          hardSite = names[Math.floor(Math.random() * names.length)];
+          targetEl.textContent = hardSite;
+          ipShow.textContent = SITES[hardSite].ip;
+          hardBox.style.display = "block";
+          hardBtn.innerHTML = "📖 Bring DNS back";
+          chips.forEach(function (c) { c.disabled = true; });
+          note("🌍 DNS is offline. Names mean nothing now. Numbers only.", "var(--bad)");
+          ipInput.value = "";
+          resultEl.innerHTML = "";
+          ipInput.focus();
+        } else {
+          hardBox.style.display = "none";
+          hardBtn.innerHTML = "🌍 A world without DNS";
+          chips.forEach(function (c) { c.disabled = false; });
+          note("📖 The phone book is back. Civilization restored. Pick a name…", "var(--muted)");
+        }
+      });
+
+      function tryIp() {
+        var v = ipInput.value.trim();
+        if (!v || !hard) { return; }
+        if (v === SITES[hardSite].ip) {
+          resultEl.innerHTML = '<span style="color:var(--good); font-weight:700;">✓ ' + hardSite + " loaded.</span> Congrats — you just did DNS's job. For one site. Once. Now imagine typing numbers for every link you click today.";
+        } else {
+          resultEl.innerHTML = '<span style="color:var(--bad); font-weight:700;">✗ ' + v.replace(/[&<>"]/g, "") + " is not it.</span> Wrong number — that's a stranger's server, or nothing at all. Every digit matters.";
+        }
+      }
+      goBtn.addEventListener("click", tryIp);
+      ipInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") { tryIp(); }
+      });
+    })();
+  </script>
+</body>
+</html>

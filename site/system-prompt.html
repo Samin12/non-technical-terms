@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>System Prompt — Claude Club</title>
+  <meta name="description" content="System prompt, explained in plain English: the standing instructions your AI always follows. With an interactive personality switcher." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="system-prompt" data-related="claude-md,context-window,agent,slash-command">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>System Prompt</h1>
+        <p class="tldr"><b>TLDR</b>The standing instructions your AI always follows.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: personality switcher ============ -->
+      <section class="widget" aria-label="System prompt personality switcher">
+        <div class="widget-bar"><span class="dot"></span> Try it — personality switcher</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            One customer, one fixed question, one model. The only thing you control is the handbook
+            the AI read before the chat started. Switch it.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn sp-card" data-i="0">🎩 Formal support agent</button>
+            <button class="wbtn sp-card" data-i="1">🏴‍☠️ Pirate</button>
+            <button class="wbtn sp-card" data-i="2">✂️ Minimalist (max 5 words)</button>
+          </div>
+
+          <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.86rem; font-weight:600; margin-bottom:0.9rem; cursor:pointer;">
+            <input type="checkbox" id="sp-rule" /> Add rule: “always end by offering next steps”
+          </label>
+
+          <div style="font-family:var(--mono); font-size:0.76rem; background:var(--bg-deep); border:1px dashed var(--border); border-radius:10px; padding:0.7rem 0.9rem; margin-bottom:0.9rem; color:var(--ink-soft);">
+            <b style="display:block; font-family:var(--sans); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.35rem;">System prompt — invisible to the customer</b>
+            <span id="sp-sys"></span>
+          </div>
+
+          <div style="font-weight:600; background:var(--accent-faint); border:1px solid var(--accent-soft); border-radius:12px; padding:0.6rem 0.9rem; margin-bottom:0.6rem;">
+            💬 CUSTOMER: “My order hasn’t arrived.”
+          </div>
+
+          <div id="sp-reply" style="font-size:0.95rem; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:0.8rem 1rem; min-height:64px; line-height:1.55; transition:opacity .3s ease;"></div>
+        </div>
+        <p class="widget-hint">Same model, same question — the only thing that changed was the standing orders. That’s the entire trick behind most “AI personalities.”</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Before a single guest walks in, every employee at a good hotel has read the handbook.
+          How to greet. What tone to use. What never to say. Guests never see the handbook —
+          they just experience the staff behaving in a very particular way.
+        </p>
+
+        <p>
+          Your AI has a handbook too. You just played with it: same model, same complaint about a
+          missing order — and three completely different employees showed up, depending on which
+          standing orders were active.
+        </p>
+
+        <p><strong>The system prompt is the set of standing instructions an AI receives before the conversation starts — and follows for all of it.</strong></p>
+
+        <h2>Invisible, and always on</h2>
+
+        <p>
+          Two things make system prompts special. First: the end user never sees them. When you
+          chat with a support bot, you see your messages and its answers — not the page of
+          instructions sitting behind the curtain telling it to stay cheerful, never discuss
+          competitors, and always mention the warranty.
+        </p>
+
+        <p>
+          Second: it never leaves. The system prompt sits in the
+          <a href="context-window.html">context window</a> — the AI’s desk — for the entire
+          conversation. Your chat messages can fall off as the desk fills up, but the standing
+          orders stay pinned, shaping the first reply and the five-hundredth exactly the same way.
+        </p>
+
+        <p>
+          That checkbox you ticked — “always end by offering next steps” — wasn’t a new feature or
+          a smarter model. It was one sentence added to the standing orders, and every persona’s
+          behavior changed instantly. That’s the leverage.
+        </p>
+
+        <h2>The first place to look when AI acts “off”</h2>
+
+        <p>
+          When an AI product behaves strangely — refuses harmless requests, answers in a weird
+          tone, keeps pushing one product — non-builders blame “the AI.” Builders check the system
+          prompt first. Nine times out of ten the odd behavior was written down somewhere: an
+          instruction that’s too broad, two rules quietly contradicting each other, a persona
+          fighting the task.
+        </p>
+
+        <p>
+          This is also why the same model feels different across apps. Claude inside a coding tool
+          and Claude inside a writing app share a brain — they’re reading different handbooks. The
+          same goes for any <a href="agent.html">agent</a> you build: its judgment, caution, and
+          voice all start from the standing orders you give it. And in Claude Code, you get to
+          write part of the handbook yourself — that’s <a href="claude-md.html">CLAUDE.md</a>,
+          coming up next.
+        </p>
+
+        <h2>Writing one is half the product</h2>
+
+        <p>
+          Here’s the open secret about a lot of AI products: there is no secret. Plenty of “AI
+          apps” are a system prompt and a payment form. The model is the same one anyone can use —
+          the differentiation is a tightly written handbook nobody else can see: tone, rules,
+          output format, edge cases, what to do when the user is angry. If you can write a great
+          employee handbook, you can build a great AI product.
+        </p>
+
+        <div class="callout">
+          Write system prompts for an employee who takes everything literally. “Be concise” is
+          mush. “Answer in 3 bullets or fewer unless asked for detail” is a rule. If your AI’s
+          behavior feels vague, read your own orders — you probably wrote vague ones.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Build a support bot with your refund policy and tone baked in — no training required</li>
+          <li>Make every assistant on your team answer in the company voice</li>
+          <li>Change “the personality” in one place instead of editing a thousand conversations</li>
+          <li>Debug weird AI behavior by reading the orders instead of guessing at the model</li>
+        </ul>
+
+        <p><strong>The model is the actor. The system prompt is the role — and you’re the casting director.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your team’s support bot suddenly starts recommending competitor products to everyone. Where does a builder look first?</p>
+            <div class="opts">
+              <button class="opt">The model’s mood that day</button>
+              <button class="opt" data-correct>The system prompt — the standing instructions every conversation starts from</button>
+              <button class="opt">Each customer’s spelling and grammar</button>
+            </div>
+            <div class="why">Behavior that shows up across all conversations usually traces back to the standing orders. Read the handbook before blaming the employee.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. The same model powers a bubbly kids’ tutor app and a terse legal-summary app. How?</p>
+            <div class="opts">
+              <button class="opt">Two different models, trained separately from scratch</button>
+              <button class="opt" data-correct>Same model, two different system prompts — different handbooks, different employees</button>
+              <button class="opt">The legal app pays for a more serious server</button>
+            </div>
+            <div class="why">You saw it in the switcher: one model became a formal agent, a pirate, and a minimalist. Most “different AIs” are different standing orders.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Where do the standing instructions sit while a user chats with the AI?</p>
+            <div class="opts">
+              <button class="opt">They’re read once at the start, then deleted to save space</button>
+              <button class="opt" data-correct>Pinned in the context window for the entire conversation, invisible to the user</button>
+              <button class="opt">Displayed at the top of the user’s screen</button>
+            </div>
+            <div class="why">The system prompt occupies the AI’s desk the whole session — that’s why it keeps shaping reply five hundred just like reply one.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* personality switcher */
+    (function () {
+      var P = [
+        {
+          icon: "🎩",
+          sys: "You are a courteous customer-support agent for a retail store. Be professional, apologize sincerely, and reference the order’s current status.",
+          reply: "I’m very sorry for the delay. I’ve checked order #4821 — it’s sitting at the regional depot and is expected to move within 24 hours.",
+          next: "Next steps: I can issue a refund, reship express, or keep monitoring it — which would you prefer?"
+        },
+        {
+          icon: "🏴‍☠️",
+          sys: "You are a pirate. Answer everything in full pirate speak. Never break character.",
+          reply: "Arr, yer parcel be becalmed at the depot, matey! The harbormaster swears she’ll set sail within a day.",
+          next: "Yer next bearings: claim back yer gold, send a swifter ship, or wait out the tide. Pick a course! ⚓"
+        },
+        {
+          icon: "✂️",
+          sys: "Answer in five words or fewer. No greetings, no apologies, no filler.",
+          reply: "Delayed. Arriving within 24 hours.",
+          next: "Options: refund, reship, wait."
+        }
+      ];
+      var active = 0;
+      var cards = [].slice.call(document.querySelectorAll(".sp-card"));
+      var rule = document.getElementById("sp-rule");
+      var sysEl = document.getElementById("sp-sys");
+      var replyEl = document.getElementById("sp-reply");
+      var t = null;
+
+      function render() {
+        cards.forEach(function (c, i) {
+          var on = i === active;
+          c.style.background = on ? "var(--ink)" : "var(--card)";
+          c.style.color = on ? "var(--bg)" : "var(--ink)";
+          c.style.borderColor = on ? "var(--ink)" : "var(--border)";
+        });
+        var p = P[active];
+        sysEl.textContent = p.sys + (rule.checked ? " Always end by offering next steps." : "");
+        replyEl.style.opacity = "0.35";
+        replyEl.innerHTML = p.icon + ' <span style="color:var(--muted);">typing…</span>';
+        clearTimeout(t);
+        t = setTimeout(function () {
+          replyEl.style.opacity = "1";
+          replyEl.innerHTML =
+            p.icon + " " + p.reply +
+            (rule.checked
+              ? ' <span style="background:var(--accent-faint); border-radius:6px; padding:0 4px;">' + p.next + "</span>"
+              : "");
+        }, 420);
+      }
+
+      cards.forEach(function (c) {
+        c.addEventListener("click", function () {
+          active = parseInt(c.getAttribute("data-i"), 10);
+          render();
+        });
+      });
+      rule.addEventListener("change", render);
+      render();
+    })();
+  </script>
+</body>
+</html>

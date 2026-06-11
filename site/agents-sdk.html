@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agents SDK — Claude Club</title>
+  <meta name="description" content="Agents SDK, explained in plain English: a starter kit for building your own AI worker. With an interactive assemble-an-agent builder." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="agents-sdk" data-related="agent,harness,mcp,sdk,api">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Agents SDK</h1>
+        <p class="tldr"><b>TLDR</b>A starter kit for building your own AI worker.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: assemble an agent ============ -->
+      <section class="widget" aria-label="Assemble an agent kit">
+        <div class="widget-bar"><span class="dot"></span> Try it — assemble an agent</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Three parts bins, one agent. Pick a model, at least two tools, and a goal —
+            then assemble it and watch it run with exactly the parts you chose.
+          </p>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px; margin-bottom:0.9rem;">
+            <div style="background:var(--bg-deep); border:1px dashed var(--border); border-radius:10px; padding:0.7rem;">
+              <div style="font-size:0.66rem; font-weight:800; letter-spacing:0.12em; color:var(--muted); margin-bottom:0.5rem;">1 · MODEL</div>
+              <button class="wbtn as-pick" data-kind="model" data-id="claude" style="width:100%;">✳ Claude</button>
+            </div>
+            <div style="background:var(--bg-deep); border:1px dashed var(--border); border-radius:10px; padding:0.7rem;">
+              <div style="font-size:0.66rem; font-weight:800; letter-spacing:0.12em; color:var(--muted); margin-bottom:0.5rem;">2 · TOOLS (PICK 2+)</div>
+              <div style="display:grid; gap:6px;">
+                <button class="wbtn as-pick" data-kind="tool" data-id="search">🔍 Web search</button>
+                <button class="wbtn as-pick" data-kind="tool" data-id="files">📂 File reader</button>
+                <button class="wbtn as-pick" data-kind="tool" data-id="calc">🧮 Calculator</button>
+                <button class="wbtn as-pick" data-kind="tool" data-id="email">✉️ Email sender</button>
+              </div>
+            </div>
+            <div style="background:var(--bg-deep); border:1px dashed var(--border); border-radius:10px; padding:0.7rem;">
+              <div style="font-size:0.66rem; font-weight:800; letter-spacing:0.12em; color:var(--muted); margin-bottom:0.5rem;">3 · INSTRUCTIONS</div>
+              <div style="display:grid; gap:6px;">
+                <button class="wbtn as-pick" data-kind="goal" data-id="research">🕵️ Research competitors</button>
+                <button class="wbtn as-pick" data-kind="goal" data-id="inbox">📥 Tidy my inbox</button>
+              </div>
+            </div>
+          </div>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="as-build">🔧 Assemble ▶</button>
+            <button class="wbtn" id="as-reset">↺ Reset</button>
+          </div>
+          <div id="as-card" style="display:none; opacity:0; transform:scale(0.94); transition:all .45s ease; background:var(--card); border:2px solid var(--accent-bright); border-radius:10px; padding:0.8rem 1rem; margin-bottom:0.9rem; font-size:0.85rem;">
+            <b style="display:block; margin-bottom:0.4rem;">🤖 Your agent</b>
+            <div id="as-card-parts" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+          </div>
+          <div class="wlog" id="as-log"><span class="dim">Empty workbench. Pick your parts…</span></div>
+        </div>
+        <p class="widget-hint">Try the inbox goal without the email sender — watch it improvise. The tools you pick decide what your agent can actually do.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          An IKEA wardrobe and a pile of raw lumber can become the same piece of furniture.
+          One takes an afternoon and an Allen key. The other takes a workshop, power tools,
+          and a few weekends of expensive mistakes.
+        </p>
+
+        <p>
+          Building an AI agent used to be the lumber version. You'd hand-build the loop, the
+          retries, the tool wiring, the safety stops — months of plumbing before your agent did
+          anything useful. Most people never got past the sawdust.
+        </p>
+
+        <p>
+          <strong>An Agents SDK is a starter kit for building your own AI worker: the loop, the
+          plumbing, and the safety screws come pre-drilled — you just choose the parts.</strong>
+        </p>
+
+        <p>
+          That's what the widget had you do. Model, tools, instructions — snap, snap, snap —
+          and a working agent ran a real task with exactly the parts you gave it. Real SDKs,
+          like Anthropic's Claude Agent SDK, feel remarkably close to that.
+        </p>
+
+        <h2>What's in the box</h2>
+
+        <p>The flat-packed parts you get for free:</p>
+
+        <ul>
+          <li><strong>The agent loop</strong> — plan, act, check, repeat — the engine of every <a href="agent.html">agent</a>, already assembled and debugged</li>
+          <li><strong>Tool plumbing</strong> — a standard socket for handing the model tools and routing results back; it's also where <a href="mcp.html">MCP</a> connectors plug in</li>
+          <li><strong>Context management</strong> — long sessions get trimmed automatically so the agent doesn't lose the plot mid-task</li>
+          <li><strong>Retries and seatbelts</strong> — failed steps retry, dangerous steps pause for permission</li>
+        </ul>
+
+        <p>
+          Notice something? That list is a <a href="harness.html">harness</a>. An Agents SDK is
+          a harness in kit form — the whole car, flat-packed, with the engine mount already
+          welded. Under the hood it talks to the model through the <a href="api.html">API</a>,
+          but you never touch that wiring.
+        </p>
+
+        <h2>What you bring</h2>
+
+        <p>
+          Your job is the three decisions from the widget. Which model — the engine. Which
+          tools — the hands. What instructions — the job description. And the tools matter more
+          than people expect: you watched the inbox agent improvise a to-do list when you
+          withheld the email sender. It didn't fail loudly or fake the send. It worked with what
+          it had — because an agent's real capabilities are exactly its tool list, nothing more.
+        </p>
+
+        <p>
+          This is the part no SDK can do for you: knowing what's worth automating, which tools
+          the job truly needs, and what "done" looks like. The kit handles the engineering.
+          You supply the judgment.
+        </p>
+
+        <p>
+          That ratio is the unlock. The plumbing used to be 80% of the project and 100% of the
+          reason people quit. Now it ships in the box, and your afternoon goes into the 20%
+          that was always the actual product.
+        </p>
+
+        <div class="callout">
+          Start embarrassingly small. Two tools, one narrow goal, supervised runs. Every tool
+          you add is a new way for your agent to wander off-script — capability and chaos rise
+          together. The best first agent is the smallest one that's actually useful.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>A competitor-watcher that searches the web weekly and emails you a digest</li>
+          <li>An inbox triager that reads, sorts, and flags the bills before you wake up</li>
+          <li>A report bot that pulls your files, does the math, and drafts the summary</li>
+          <li>Your own idea — assembled from the same handful of parts you just used</li>
+        </ul>
+
+        <p>
+          A custom AI worker used to be a research project with a team attached. With an SDK
+          it's an afternoon: pick parts, write instructions, run, refine. The hard part left is
+          the thinking — which was always the part worth doing yourself.
+        </p>
+
+        <p><strong>The kit is flat-packed and the screws are pre-drilled. The only missing part is your idea.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You're building a research agent with an Agents SDK. Which part do you NOT have to build yourself?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The agent loop — plan, act, check, repeat — it ships in the box</button>
+              <button class="opt">The choice of which tools the agent gets</button>
+              <button class="opt">The instructions that define what the job actually is</button>
+            </div>
+            <div class="why">The SDK's whole pitch: loop, plumbing, retries, and seatbelts come pre-built. You bring the parts list and the job description.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. In the widget, you gave the inbox agent no email sender — but the goal needed email. What happened, and what's the lesson?</p>
+            <div class="opts">
+              <button class="opt">It sent the email anyway — smart models can improvise access</button>
+              <button class="opt" data-correct>It noted the missing tool and drafted a to-do list instead — an agent's abilities are exactly its tool list</button>
+              <button class="opt">It crashed — agents can't proceed unless every tool is present</button>
+            </div>
+            <div class="why">No tool, no action — a well-built agent adapts and tells you. Tools aren't accessories; they are the agent's entire reach into the world.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your assembled agent keeps doing weird extra stuff during runs. Best first fix?</p>
+            <div class="opts">
+              <button class="opt">Add more tools so it has better options</button>
+              <button class="opt" data-correct>Trim it: fewer tools, tighter instructions — every extra part is a new way to wander</button>
+              <button class="opt">Swap in a bigger model and hope</button>
+            </div>
+            <div class="why">Capability and chaos rise together. Shrinking the toolset and sharpening the goal is the boring fix that almost always works first.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* assemble an agent */
+    (function () {
+      var picks = { model: null, tool: {}, goal: null };
+      var busy = false;
+      var log = document.getElementById("as-log");
+      var card = document.getElementById("as-card");
+      var cardParts = document.getElementById("as-card-parts");
+      var buildBtn = document.getElementById("as-build");
+      var resetBtn = document.getElementById("as-reset");
+      var btns = [].slice.call(document.querySelectorAll(".as-pick"));
+
+      var NAMES = {
+        claude: "✳ Claude",
+        search: "🔍 Web search",
+        files: "📂 File reader",
+        calc: "🧮 Calculator",
+        email: "✉️ Email sender",
+        research: "🕵️ Research competitors",
+        inbox: "📥 Tidy my inbox"
+      };
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function clearLog() {
+        log.innerHTML = "";
+        delete log.dataset.started;
+      }
+
+      function paint(btn, on) {
+        btn.style.borderColor = on ? "var(--accent-bright)" : "var(--border)";
+        btn.style.background = on ? "var(--accent-faint)" : "var(--card)";
+        btn.style.fontWeight = on ? "700" : "600";
+      }
+
+      btns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          if (busy) return;
+          var kind = btn.getAttribute("data-kind");
+          var id = btn.getAttribute("data-id");
+          if (kind === "tool") {
+            picks.tool[id] = !picks.tool[id];
+            paint(btn, picks.tool[id]);
+          } else {
+            picks[kind] = picks[kind] === id ? null : id;
+            btns.forEach(function (b) {
+              if (b.getAttribute("data-kind") === kind) {
+                paint(b, picks[kind] === b.getAttribute("data-id"));
+              }
+            });
+          }
+        });
+      });
+
+      function toolList() {
+        return Object.keys(picks.tool).filter(function (k) { return picks.tool[k]; });
+      }
+
+      buildBtn.addEventListener("click", function () {
+        if (busy) return;
+        var tools = toolList();
+        clearLog();
+        if (!picks.model) {
+          add('<span class="err">no model.</span> Every agent needs an engine — pick Claude.');
+          return;
+        }
+        if (tools.length < 2) {
+          add('<span class="err">only ' + tools.length + " tool" + (tools.length === 1 ? "" : "s") + ".</span> Pick at least two — an agent with no hands is just a chatbot.");
+          return;
+        }
+        if (!picks.goal) {
+          add('<span class="err">no instructions.</span> What should it do? Pick a goal.');
+          return;
+        }
+
+        busy = true;
+        cardParts.innerHTML = "";
+        [NAMES[picks.model]].concat(tools.map(function (t) { return NAMES[t]; })).concat([NAMES[picks.goal]]).forEach(function (n) {
+          var chip = document.createElement("span");
+          chip.style.cssText = "font-size:0.74rem;font-weight:600;background:var(--card-raise);border:1px solid var(--border);border-radius:999px;padding:3px 9px;";
+          chip.textContent = n;
+          cardParts.appendChild(chip);
+        });
+        card.style.display = "block";
+        setTimeout(function () {
+          card.style.opacity = "1";
+          card.style.transform = "scale(1)";
+        }, 30);
+
+        add('<span class="ok">⚙️ assembled.</span> <span class="dim">Loop, retries, and seatbelts came pre-drilled. Running…</span>');
+
+        function has(t) { return tools.indexOf(t) !== -1; }
+        var lines = [];
+        if (picks.goal === "research") {
+          lines.push('<span class="acc">🧭 plan:</span> find top competitors, compare pricing, report back');
+          lines.push(has("search")
+            ? '🔍 web search: "AI scheduling tools 2026" → 3 strong results'
+            : '<span class="err">⚠ no web search tool</span> — working from memory. Could be stale.');
+          lines.push(has("files")
+            ? "📂 file reader: pulled your old pricing notes for comparison"
+            : '<span class="dim">(no file reader — skipping your local notes)</span>');
+          lines.push(has("calc")
+            ? "🧮 calculator: average competitor price = $39/mo"
+            : '<span class="dim">(no calculator — eyeballing it: "about forty bucks")</span>');
+          lines.push(has("email")
+            ? '✉️ email sender: report emailed to you <span class="ok">✓</span>'
+            : '📝 <span class="acc">no email tool</span> — drafting the report as text instead');
+        } else {
+          lines.push('<span class="acc">🧭 plan:</span> sort unread, archive the noise, flag the bills');
+          lines.push(has("files")
+            ? "📂 file reader: scanned the inbox export — 142 unread"
+            : '<span class="err">⚠ no file reader</span> — asking you to paste the emails in by hand.');
+          lines.push(has("calc")
+            ? "🧮 calculator: 23 subscriptions are costing you $412/mo"
+            : '<span class="dim">(no calculator — "lots of subscriptions, probably pricey")</span>');
+          lines.push(has("search")
+            ? "🔍 web search: looked up 3 mystery senders — all newsletters"
+            : '<span class="dim">(no web search — mystery senders stay mysterious)</span>');
+          lines.push(has("email")
+            ? '✉️ email sender: 9 unsubscribe requests sent <span class="ok">✓</span>'
+            : '📝 <span class="acc">no email tool</span> — wrote you a to-do list instead');
+        }
+        lines.push('<span class="ok">✓ done — using only the parts you picked.</span>');
+
+        lines.forEach(function (line, i) {
+          setTimeout(function () {
+            add(line);
+            if (i === lines.length - 1) { busy = false; }
+          }, 650 * (i + 1));
+        });
+      });
+
+      resetBtn.addEventListener("click", function () {
+        if (busy) return;
+        picks = { model: null, tool: {}, goal: null };
+        btns.forEach(function (b) { paint(b, false); });
+        card.style.display = "none";
+        card.style.opacity = "0";
+        card.style.transform = "scale(0.94)";
+        clearLog();
+        add('<span class="dim">Workbench cleared. Try a different combo…</span>');
+      });
+    })();
+  </script>
+</body>
+</html>

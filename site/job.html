@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Job — Claude Club</title>
+  <meta name="description" content="Job, explained in plain English: one ticket on the rail. With an interactive job lifecycle simulator." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="job" data-related="queue,worker,cron-job,async">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Job</h1>
+        <p class="tldr"><b>TLDR</b>One ticket on the rail.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: job lifecycle ============ -->
+      <section class="widget" aria-label="Job lifecycle simulator">
+        <div class="widget-bar"><span class="dot"></span> Try it — the job lifecycle</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Submit a job and watch its whole life: queued, running, maybe a failure, automatic
+            retries — and once in a while, a one-way trip to the dead-letter shelf.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="jb-submit">📨 Submit a job</button>
+          </div>
+
+          <div style="background:var(--card); border:1px solid var(--border-soft); border-radius:10px; padding:0.9rem 1rem; margin-bottom:0.9rem;">
+            <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap; margin-bottom:0.55rem;">
+              <b id="jb-name" style="font-size:0.9rem;">no job yet</b>
+              <span id="jb-phase" style="font-size:0.8rem; font-weight:600; color:var(--muted);">—</span>
+              <span id="jb-attempt" style="margin-left:auto; font-size:0.74rem; font-weight:700; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:999px; padding:2px 9px; color:var(--ink-soft);">attempt 0 / 3</span>
+            </div>
+            <div class="wmeter" id="jb-meter" style="margin-bottom:0.7rem;"><i></i></div>
+            <div class="wlog" id="jb-log" style="min-height:70px; max-height:160px;"><span class="dim">Submit a job to watch its lifecycle…</span></div>
+          </div>
+
+          <div style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:0.35rem;">Job history</div>
+          <table style="width:100%; border-collapse:collapse; font-size:0.78rem;">
+            <thead>
+              <tr style="text-align:left; color:var(--muted);">
+                <th style="padding:4px 6px; font-weight:600;">job</th>
+                <th style="padding:4px 6px; font-weight:600;">status</th>
+                <th style="padding:4px 6px; font-weight:600;">attempts</th>
+                <th style="padding:4px 6px; font-weight:600;">duration</th>
+                <th style="padding:4px 6px;"></th>
+              </tr>
+            </thead>
+            <tbody id="jb-tbody"></tbody>
+          </table>
+        </div>
+        <p class="widget-hint">Submit a handful — most failures heal themselves on retry. Sooner or later one dies for good: that's your cue to be the human and press retry.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Drop a shirt at the dry cleaner and you get a ticket. From that moment the shirt has
+          a little life of its own: waiting on the rack, being cleaned, ready for pickup. You
+          don't watch any of it happen. The ticket is your claim on the outcome.
+        </p>
+
+        <p>
+          And once in a while, the phone rings: "We tried twice — this stain is stubborn.
+          Come take a look."
+        </p>
+
+        <p><strong>That's a job: one unit of work with a lifecycle — queued, running, then succeeded… or failed, retried, and finally parked for a human.</strong></p>
+
+        <h2>One ticket, one little life</h2>
+
+        <p>
+          When you click "export" in an app, it doesn't just do the export. It writes a job:
+          what to do, which data, who asked. That job waits in a <a href="queue.html">queue</a>,
+          a <a href="worker.html">worker</a> picks it up, the status flips to running, and —
+          usually — it ends at succeeded. You watched the card above walk through exactly that
+          machine, timestamps and all.
+        </p>
+
+        <p>
+          Real systems log every hop the same way, which is why a good engineer can answer
+          "where's my export?" in ten seconds. They don't guess. They read the ticket's history:
+          queued at 11:02, started at 11:04, failed once, retried, succeeded at 11:05. Those
+          timestamps are the receipt trail for everything your software ever promised to do.
+        </p>
+
+        <h2>Retries are the superpower</h2>
+
+        <p>
+          Here's the mindset shift: failure is normal. Networks blip. An API times out for two
+          seconds and then is perfectly fine. In the simulator, roughly a third of your jobs
+          died mid-run — and almost every one healed itself, because the system simply tried
+          again. Attempt 2, sometimes attempt 3, done. No alarm, no human, no drama.
+        </p>
+
+        <p>
+          Engineers call these transient failures — temporary weather, not broken machinery —
+          and packaging work as retryable jobs makes them disappear on their own. It's the same
+          ticket structure that lets a <a href="cron-job.html">cron job</a> rerun safely every
+          morning: same job, fresh attempt.
+        </p>
+
+        <h2>Design for the job that fails twice</h2>
+
+        <p>
+          So what about the job that fails, and fails, and fails? You don't retry forever —
+          that's hammering a broken thing and clogging the line behind it. And you never delete
+          it — that's somebody's invoice, somebody's video. You park it. Engineers call it the
+          dead-letter queue: the shelf for stubborn tickets, where a human takes a look.
+        </p>
+
+        <p>
+          You pressed retry on a dead job and watched it sail straight through — which,
+          honestly, is how half of all dead-letter stories end. The blip passed. The human just
+          had to push the button.
+        </p>
+
+        <div class="callout">
+          Pro-tip: when an automation "didn't work," don't declare it broken yet. Ask the
+          lifecycle questions: did it retry? Which attempt did it die on? Is it parked somewhere
+          with a retry button? Zapier, GitHub, AI batch tools — they all have that button.
+          Finding it makes you the calmest person in the room.
+        </div>
+
+        <h2>Once you see jobs everywhere</h2>
+
+        <ul>
+          <li>"Export started" means a ticket was written — not that the work is done</li>
+          <li>Progress bars are just a job's running phase wearing a costume</li>
+          <li>"We'll email you when it's ready" = the job will finish on its own time, like <a href="async.html">async</a> work everywhere</li>
+          <li>A red "failed" stops scaring you — your first question becomes "what attempt?"</li>
+        </ul>
+
+        <p>
+          One ticket, a clear lifecycle, and a plan for the stubborn stain.
+        </p>
+
+        <p><strong>Software that ships its work as jobs doesn't avoid failure. It absorbs it — one retry at a time.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your "export report" job failed at 11:02 with "network timeout," then completed fine at 11:03 — and you never touched anything. What happened?</p>
+            <div class="opts">
+              <button class="opt">An engineer at the company spotted it and fixed it within a minute</button>
+              <button class="opt" data-correct>Auto-retry: the failure was transient, so the job system tried again and the second attempt landed</button>
+              <button class="opt">The first failure corrupted the report, so the success is fake</button>
+            </div>
+            <div class="why">That's the retry superpower. Transient failures — network blips, brief timeouts — heal themselves when the same job simply runs a second attempt.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. A job has now failed all 3 of its attempts. What should a well-designed system do with it?</p>
+            <div class="opts">
+              <button class="opt">Keep retrying forever until it eventually works</button>
+              <button class="opt" data-correct>Park it on a dead-letter shelf so a human can inspect it and re-run it later</button>
+              <button class="opt">Delete it to keep the queue clean</button>
+            </div>
+            <div class="why">Retrying forever hammers a broken thing, and deleting loses someone's work. Dead-lettering keeps the ticket safe until a human decides what's next.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your overnight automation "didn't run." What's the best first question to ask?</p>
+            <div class="opts">
+              <button class="opt" data-correct>What's the job's status and attempt history — did it fail, retry, or get parked?</button>
+              <button class="opt">Which developer broke the platform?</button>
+              <button class="opt">How fast can we rebuild the automation from scratch?</button>
+            </div>
+            <div class="why">The ticket's history tells you where it died and on which attempt. Very often the answer is a parked job and one click of the retry button — not a rebuild.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* job lifecycle */
+    (function () {
+      var NAMES = [
+        { icon: "🎬", name: "render video" },
+        { icon: "📊", name: "export report" },
+        { icon: "✉️", name: "email 2,000 receipts" },
+        { icon: "🗂️", name: "back up photos" }
+      ];
+      var jobN = 0;
+      var running = false;
+
+      var elName = document.getElementById("jb-name");
+      var elPhase = document.getElementById("jb-phase");
+      var elAttempt = document.getElementById("jb-attempt");
+      var elBar = document.querySelector("#jb-meter > i");
+      var elLog = document.getElementById("jb-log");
+      var elTbody = document.getElementById("jb-tbody");
+      var btnSubmit = document.getElementById("jb-submit");
+
+      function stamp() {
+        return new Date().toTimeString().slice(0, 8);
+      }
+      function log(html) {
+        if (!elLog.dataset.started) { elLog.innerHTML = ""; elLog.dataset.started = "1"; }
+        else { elLog.innerHTML += "\n"; }
+        elLog.innerHTML += '<span class="dim">' + stamp() + "</span>  " + html;
+        elLog.scrollTop = elLog.scrollHeight;
+      }
+      function setPhase(txt, color) {
+        elPhase.textContent = txt;
+        elPhase.style.color = color;
+      }
+      function bar(pct, ms) {
+        if (ms) { elBar.style.transition = "width " + Math.round(ms) + "ms linear"; }
+        else { elBar.style.transition = "none"; }
+        elBar.style.width = pct + "%";
+      }
+
+      function makeRow(job) {
+        var tr = document.createElement("tr");
+        function td() {
+          var c = document.createElement("td");
+          c.style.cssText = "padding:6px;border-top:1px solid var(--border-soft);";
+          tr.appendChild(c);
+          return c;
+        }
+        var name = td();
+        name.textContent = job.icon + " " + job.name + " #" + job.id;
+        var r = { tr: tr, stEl: td(), atEl: td(), duEl: td(), acEl: td() };
+        elTbody.insertBefore(tr, elTbody.firstChild);
+        return r;
+      }
+
+      function runJob(job, row) {
+        running = true;
+        btnSubmit.disabled = true;
+        var runStart = Date.now();
+        var attempt = 0;
+
+        elName.textContent = job.icon + " " + job.name + " #" + job.id;
+        elAttempt.textContent = "attempt 0 / 3";
+        setPhase("⏳ queued", "var(--muted)");
+        bar(0);
+        log('<span class="acc">' + job.name + " #" + job.id + "</span> submitted → <b>queued</b>");
+        setTimeout(attemptRun, 700);
+
+        function failChance() {
+          if (job.doomed) return 1;
+          var table = job.redrive ? [0.3, 0.15, 0] : [0.35, 0.25, 0];
+          return table[attempt - 1];
+        }
+
+        function attemptRun() {
+          attempt++;
+          job.attempts++;
+          elAttempt.textContent = "attempt " + attempt + " / 3";
+          setPhase("🔁 running", "var(--accent)");
+          log('running… <span class="dim">(attempt ' + attempt + ")</span>");
+          var willFail = Math.random() < failChance();
+          var dur = 1400;
+
+          if (willFail) {
+            var at = 0.3 + Math.random() * 0.4;
+            bar(0);
+            void elBar.offsetWidth;
+            bar(Math.round(at * 100), dur * at);
+            setTimeout(function () {
+              setPhase("❌ failed", "var(--bad)");
+              log('<span class="err">✗ network blip — connection dropped mid-run</span>');
+              if (attempt < 3) {
+                setTimeout(function () {
+                  log('<span class="dim">auto-retry scheduled…</span>');
+                  setTimeout(attemptRun, 500);
+                }, 450);
+              } else {
+                setTimeout(function () {
+                  setPhase("💀 dead-letter", "var(--bad)");
+                  log('<span class="err">all 3 attempts failed → 💀 parked for a human (dead-letter)</span>');
+                  finish("dead");
+                }, 450);
+              }
+            }, dur * at);
+          } else {
+            bar(0);
+            void elBar.offsetWidth;
+            bar(100, dur);
+            setTimeout(function () {
+              setPhase("✅ succeeded", "var(--good)");
+              log('<span class="ok">✓ succeeded — result delivered</span>');
+              finish("ok");
+            }, dur);
+          }
+        }
+
+        function finish(status) {
+          var durTxt = ((Date.now() - runStart) / 1000).toFixed(1) + "s";
+          if (job.doomed) { job.doomed = false; job.redrive = true; }
+          if (!row) { row = makeRow(job); }
+          row.stEl.innerHTML = status === "ok"
+            ? '<b style="color:var(--good);">✅ succeeded</b>'
+            : '<b style="color:var(--bad);">💀 dead-letter</b>';
+          row.atEl.textContent = job.attempts;
+          row.duEl.textContent = durTxt;
+          row.acEl.innerHTML = "";
+          if (status === "dead") {
+            var b = document.createElement("button");
+            b.className = "wbtn";
+            b.style.cssText = "font-size:0.7rem;padding:0.25rem 0.6rem;";
+            b.textContent = "↻ retry";
+            b.addEventListener("click", function () {
+              if (running) return;
+              runJob(job, row);
+            });
+            row.acEl.appendChild(b);
+          }
+          running = false;
+          btnSubmit.disabled = false;
+        }
+      }
+
+      btnSubmit.addEventListener("click", function () {
+        if (running) return;
+        jobN++;
+        var k = NAMES[Math.floor(Math.random() * NAMES.length)];
+        var job = {
+          id: jobN,
+          name: k.name,
+          icon: k.icon,
+          attempts: 0,
+          doomed: jobN % 5 === 0,
+          redrive: false
+        };
+        runJob(job, null);
+      });
+    })();
+  </script>
+</body>
+</html>

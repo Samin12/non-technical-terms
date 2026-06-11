@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Object Storage — Claude Club</title>
+  <meta name="description" content="Object storage, explained in plain English: a giant bucket for files on the internet. With an interactive drop-it-in-the-bucket simulator." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="object-storage" data-related="cdn,server,deploy,database">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Object Storage</h1>
+        <p class="tldr"><b>TLDR</b>A giant bucket for files on the internet.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: drop it in the bucket ============ -->
+      <section class="widget" aria-label="Object storage bucket simulator">
+        <div class="widget-bar"><span class="dot"></span> Try it — drop it in the bucket</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Four files need a home. Pick a destination, then upload them.
+            One of these destinations is about to have a very bad night.
+          </p>
+
+          <div style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem;">1 · Choose a destination</div>
+          <div class="wrow" style="margin-bottom:0.85rem;">
+            <button class="wbtn primary" id="os-dest-disk">💽 Your server's disk</button>
+            <button class="wbtn" id="os-dest-bucket">🪣 The bucket</button>
+          </div>
+
+          <div style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem;">2 · Upload files</div>
+          <div class="wrow" style="margin-bottom:0.95rem;">
+            <button class="wbtn os-file" data-icon="🖼️" data-name="photo.jpg" data-mb="2">🖼️ photo.jpg · 2 MB</button>
+            <button class="wbtn os-file" data-icon="🎙️" data-name="podcast.mp3" data-mb="80">🎙️ podcast.mp3 · 80 MB</button>
+            <button class="wbtn os-file" data-icon="🎬" data-name="video.mp4" data-mb="900">🎬 video.mp4 · 900 MB</button>
+            <button class="wbtn os-file" data-icon="🗜️" data-name="backup.zip" data-mb="4096">🗜️ backup.zip · 4 GB</button>
+            <button class="wbtn danger" id="os-reset">↺ Reset</button>
+          </div>
+
+          <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-bottom:0.95rem;">
+            <div id="os-disk-panel" style="flex:1 1 240px; border:1px solid var(--border); border-radius:10px; padding:0.75rem 0.85rem; background:var(--card); transition:border-color 0.3s ease;">
+              <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.45rem;">💽 Server disk <span style="color:var(--muted); font-weight:600;">· 1 GB, shared with your app</span></div>
+              <div class="wmeter" id="os-disk-meter" style="margin-bottom:0.4rem;"><i></i></div>
+              <div style="font-size:0.78rem; color:var(--muted); margin-bottom:0.5rem;"><span id="os-disk-used">0 MB</span> / 1 GB · site: <b id="os-site" style="color:var(--good); transition:color 0.3s;">online 🟢</b></div>
+              <div id="os-disk-list" style="display:flex; flex-direction:column; gap:4px; font-size:0.78rem; color:var(--ink-soft);"></div>
+            </div>
+            <div style="flex:1 1 240px; border:1px solid var(--border); border-radius:10px; padding:0.75rem 0.85rem; background:var(--card);">
+              <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.45rem;">🪣 The bucket <span style="color:var(--muted); font-weight:600;">· object storage</span></div>
+              <div style="display:flex; align-items:center; gap:7px; margin-bottom:0.4rem;">
+                <div class="wmeter" style="flex:1;"><i id="os-bucket-meter"></i></div>
+                <b style="font-size:1rem; line-height:1;">∞</b>
+              </div>
+              <div style="font-size:0.78rem; color:var(--muted); margin-bottom:0.5rem;"><span id="os-bucket-stored">0 MB</span> stored · <b id="os-cost" style="color:var(--accent);">$0.0000/mo</b> at $0.02/GB</div>
+              <div id="os-bucket-list" style="display:flex; flex-direction:column; gap:4px; font-size:0.78rem; color:var(--ink-soft);"></div>
+            </div>
+          </div>
+
+          <div class="wlog" id="os-log"><span class="dim">Destination set to the server's disk. Upload something…</span></div>
+        </div>
+        <p class="widget-hint">Kill the disk first — it won't take long. Then reset, send everything to the bucket, and check the monthly bill.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          You don't buy a bigger garage every time you buy a kayak. You rent a storage
+          unit — the magic kind that grows whenever you show up with more stuff, where
+          every box gets its own labeled spot so you can find it again in two years.
+        </p>
+
+        <p>
+          That's the choice you just made in the widget. The server's disk was the garage:
+          three files in, it was full — and because your app lives in that same garage,
+          the whole site went down with it. The bucket didn't flinch. It swallowed a 4 GB
+          backup and handed you back an address.
+        </p>
+
+        <p>
+          <strong>Object storage is a giant, effectively bottomless bucket on the internet:
+          you drop a file in, and it gets kept — with its own URL — for as long as you want.</strong>
+        </p>
+
+        <h2>Objects and addresses, not folders</h2>
+
+        <p>
+          Every file in the bucket is called an <em>object</em>: the file, its name, and its
+          address. No drive letters, no nested folder maze, no "which machine did I save that
+          on?" The video simply lives at <code>bucket.club/video.mp4</code>, and anything that
+          knows the address can fetch it — your website, your app, your AI.
+        </p>
+
+        <p>
+          Compare that to the disk inside a <a href="server.html">server</a>. It's a fixed
+          size, and your app, your logs, and your operating system are all elbowing for room
+          on it. When uploads fill it, nothing else fits — and the site dies, exactly like the
+          meter you just maxed out. Worse: on many modern hosts, that disk gets wiped clean
+          every time you <a href="deploy.html">deploy</a>. Files you "saved" there last week
+          quietly vanish with the next ship.
+        </p>
+
+        <h2>What belongs in the bucket</h2>
+
+        <p>Short answer: everything heavy that isn't code.</p>
+
+        <ul>
+          <li><strong>User uploads</strong> — profile photos, receipts, attachments</li>
+          <li><strong>Media</strong> — podcast audio, video files, every image on your site</li>
+          <li><strong>Backups</strong> — database snapshots, exports, just-in-case copies</li>
+          <li><strong>AI output</strong> — when Claude generates fifty carousel images for you, they belong in a bucket, not on your laptop</li>
+        </ul>
+
+        <p>
+          The pattern is always the same: your app stays small. Code lives on the server,
+          structured records live in the <a href="database.html">database</a> — and the
+          database stores only the file's URL, a short string, while the actual 900 MB video
+          sits in the bucket. Skinny app, heavy bucket.
+        </p>
+
+        <div class="callout">
+          Pro tip: never store user uploads on the same disk your app runs on. It's one of the
+          most common ways small projects die — the disk fills silently for months, then one
+          Tuesday the site is down and the server can't even write the error log, because that
+          needs disk too. Buckets cost a few cents a month. Downtime costs you trust.
+        </div>
+
+        <h2>Cheap, and built to be fetched</h2>
+
+        <p>
+          You watched the cost ticker: at roughly $0.02 per GB per month, all four files —
+          nearly 5 GB — totaled about a dime. That's the other superpower of object storage:
+          it's absurdly cheap, so you never have to think about deleting things to make room.
+        </p>
+
+        <p>
+          And buckets are built to serve, not just store. Pair one with a
+          <a href="cdn.html">CDN</a>, which keeps copies of your most-fetched objects close to
+          every visitor, and that video starts instantly in Tokyo and São Paulo alike — while
+          your server does nothing at all. That's the standard setup behind almost every site
+          you use: small app, big bucket, fast copies everywhere.
+        </p>
+
+        <p><strong>Keep your app skinny. Let the bucket carry everything heavy.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your app lets customers upload receipts, and you're saving them to the server's own disk. What happens as the business grows?</p>
+            <div class="opts">
+              <button class="opt">Nothing — disks make room automatically</button>
+              <button class="opt" data-correct>The disk eventually fills, and when it does, the whole site can go down with it</button>
+              <button class="opt">Old receipts automatically move themselves into the database</button>
+            </div>
+            <div class="why">A server disk is finite and shared with the app itself — you watched it die at three files. Uploads belong in a bucket that grows forever.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. A 900 MB launch video sits in your bucket at bucket.club/launch.mp4. How does your website show it to visitors?</p>
+            <div class="opts">
+              <button class="opt">The server downloads the whole video first, then forwards it to each visitor</button>
+              <button class="opt" data-correct>The page just points at the file's URL — visitors fetch it straight from the bucket, often through a CDN</button>
+              <button class="opt">It can't — buckets are for backups only</button>
+            </div>
+            <div class="why">Every object has its own address. Your page embeds that URL, the bucket (plus a CDN) serves the bytes, and your server never touches the video.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Claude just generated 300 product images for your store. Where should they live?</p>
+            <div class="opts">
+              <button class="opt">Inside the database, as image files</button>
+              <button class="opt">On the server disk, right next to the code</button>
+              <button class="opt" data-correct>In the bucket — with the database keeping each image's URL</button>
+            </div>
+            <div class="why">Heavy files go in the bucket; the database stores only the short address strings. Your app stays small, and 300 images cost you about a penny a month.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* drop it in the bucket */
+    (function () {
+      var DISK_CAP = 1024; // MB
+      var dest = "disk";
+      var busy = false;
+      var diskUsed = 0, diskDown = false;
+      var bucket = {}, bucketMB = 0;
+      var costShown = 0, costTarget = 0, costTimer = null;
+
+      var elLog = document.getElementById("os-log");
+      var elDestDisk = document.getElementById("os-dest-disk");
+      var elDestBucket = document.getElementById("os-dest-bucket");
+      var elDiskPanel = document.getElementById("os-disk-panel");
+      var elDiskMeterBox = document.getElementById("os-disk-meter");
+      var elDiskMeter = document.querySelector("#os-disk-meter > i");
+      var elDiskUsed = document.getElementById("os-disk-used");
+      var elDiskList = document.getElementById("os-disk-list");
+      var elSite = document.getElementById("os-site");
+      var elBucketMeter = document.getElementById("os-bucket-meter");
+      var elBucketStored = document.getElementById("os-bucket-stored");
+      var elBucketList = document.getElementById("os-bucket-list");
+      var elCost = document.getElementById("os-cost");
+
+      function log(html) {
+        elLog.innerHTML += (elLog.dataset.started ? "\n" : "");
+        elLog.dataset.started = "1";
+        elLog.innerHTML += html;
+        elLog.scrollTop = elLog.scrollHeight;
+      }
+      function clearIfFirst() {
+        if (!elLog.dataset.started) { elLog.innerHTML = ""; }
+      }
+      function fmt(mb) {
+        return mb >= 1024 ? (Math.round(mb / 102.4) / 10) + " GB" : mb + " MB";
+      }
+
+      function renderDisk() {
+        var pct = Math.min(100, Math.round((diskUsed / DISK_CAP) * 100));
+        elDiskMeter.style.width = pct + "%";
+        elDiskMeterBox.classList.toggle("full", diskDown);
+        elDiskUsed.textContent = fmt(diskUsed);
+        elSite.textContent = diskDown ? "DOWN 💥" : "online 🟢";
+        elSite.style.color = diskDown ? "var(--bad)" : "var(--good)";
+        elDiskPanel.style.borderColor = diskDown ? "var(--bad)" : "var(--border)";
+      }
+
+      function setCost(target) {
+        costTarget = target;
+        if (costTimer) clearInterval(costTimer);
+        costTimer = setInterval(function () {
+          var diff = costTarget - costShown;
+          if (Math.abs(diff) < 0.00004) {
+            costShown = costTarget;
+            clearInterval(costTimer);
+            costTimer = null;
+          } else {
+            costShown += diff * 0.22;
+          }
+          elCost.textContent = "$" + costShown.toFixed(4) + "/mo";
+        }, 50);
+      }
+
+      function renderBucket() {
+        elBucketStored.textContent = fmt(bucketMB);
+        elBucketMeter.style.width = Math.min(6, (bucketMB / 1024) * 1.2) + "%";
+        setCost((bucketMB / 1024) * 0.02);
+      }
+
+      function addDiskRow(icon, name, mb) {
+        var d = document.createElement("div");
+        d.innerHTML = icon + " " + name + ' <span style="color:var(--muted);">' + fmt(mb) + "</span>";
+        elDiskList.appendChild(d);
+      }
+
+      function addBucketRow(icon, name, mb) {
+        var d = document.createElement("div");
+        d.style.cssText = "display:flex; align-items:center; gap:6px; flex-wrap:wrap;";
+        d.innerHTML = icon + " " + name + ' <span style="color:var(--muted);">' + fmt(mb) + '</span> <code style="font-family:var(--mono); font-size:0.7rem; background:var(--accent-faint); border:1px solid var(--accent-soft); border-radius:5px; padding:1px 6px; color:var(--accent);">bucket.club/' + name + "</code>";
+        elBucketList.appendChild(d);
+      }
+
+      function setDest(d) {
+        dest = d;
+        elDestDisk.classList.toggle("primary", d === "disk");
+        elDestBucket.classList.toggle("primary", d === "bucket");
+        clearIfFirst();
+        log('<span class="dim">destination → ' + (d === "disk" ? "💽 the server's disk" : "🪣 the bucket") + "</span>");
+      }
+
+      function upload(icon, name, mb) {
+        if (busy) return;
+        busy = true;
+        clearIfFirst();
+        log('<span class="acc">→ uploading ' + name + " (" + fmt(mb) + ") to " + (dest === "disk" ? "the server's disk…" : "the bucket…") + "</span>");
+        setTimeout(function () {
+          if (dest === "disk") {
+            if (diskDown) {
+              log('<span class="err">✗ rejected — disk is full and the site is still down.</span> <span class="dim">The bucket has room. The bucket always has room.</span>');
+            } else {
+              diskUsed += mb;
+              addDiskRow(icon, name, mb);
+              if (diskUsed > DISK_CAP) {
+                diskDown = true;
+                renderDisk();
+                log('<span class="err">💥 disk full — site down.</span> The app and the uploads shared one disk. Visitors now see errors.');
+              } else {
+                renderDisk();
+                var pct = Math.round((diskUsed / DISK_CAP) * 100);
+                log('<span class="ok">✓ saved to disk.</span> <span class="dim">' + pct + "% full" + (pct >= 90 ? " — this is fine 🔥" : "") + "</span>");
+              }
+            }
+          } else {
+            if (bucket[name]) {
+              log('<span class="ok">↻ overwritten in place.</span> <span class="dim">bucket.club/' + name + " already existed — same address, fresh file. The URL never changes.</span>");
+            } else {
+              bucket[name] = mb;
+              bucketMB += mb;
+              addBucketRow(icon, name, mb);
+              renderBucket();
+              log('<span class="ok">✓ stored.</span> object URL: <span class="acc">bucket.club/' + name + "</span>" + (diskDown ? ' <span class="dim">(see how easy that was?)</span>' : ""));
+            }
+          }
+          busy = false;
+        }, 480);
+      }
+
+      elDestDisk.addEventListener("click", function () { setDest("disk"); });
+      elDestBucket.addEventListener("click", function () { setDest("bucket"); });
+
+      [].slice.call(document.querySelectorAll(".os-file")).forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          upload(btn.getAttribute("data-icon"), btn.getAttribute("data-name"), parseInt(btn.getAttribute("data-mb"), 10));
+        });
+      });
+
+      document.getElementById("os-reset").addEventListener("click", function () {
+        diskUsed = 0; diskDown = false; bucket = {}; bucketMB = 0;
+        elDiskList.innerHTML = ""; elBucketList.innerHTML = "";
+        if (costTimer) { clearInterval(costTimer); costTimer = null; }
+        costShown = 0; costTarget = 0;
+        elCost.textContent = "$0.0000/mo";
+        elBucketMeter.style.width = "0%";
+        elBucketStored.textContent = "0 MB";
+        renderDisk();
+        elLog.innerHTML = '<span class="dim">Fresh start. The disk is empty, the bucket is empty, the site is back up.</span>';
+        delete elLog.dataset.started;
+      });
+
+      renderDisk();
+    })();
+  </script>
+</body>
+</html>

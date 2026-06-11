@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cache — Claude Club</title>
+  <meta name="description" content="Cache, explained in plain English: keep the garlic on the counter. With an interactive speed race." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="cache" data-related="prompt-caching,cdn,dns,state">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Cache</h1>
+        <p class="tldr"><b>TLDR</b>Keep the garlic on the counter.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: speed race ============ -->
+      <section class="widget" aria-label="Cache speed race">
+        <div class="widget-bar"><span class="dot"></span> Try it — the speed race</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            You're the chef. Garlic lives in the walk-in fridge, a 2-second round trip away.
+            Request it over and over — first with no counter space, then with the cache turned on.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn primary" id="ca-get">🧄 Get garlic</button>
+            <button class="wbtn" id="ca-mode">🧊 Cache: OFF</button>
+            <button class="wbtn danger" id="ca-stale">🤢 Garlic went stale</button>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.8rem; gap:1rem; font-size:0.8rem; font-weight:600; color:var(--ink-soft);">
+            <span>✓ Hits: <b id="ca-hits" style="color:var(--good);">0</b></span>
+            <span>✗ Misses: <b id="ca-misses" style="color:var(--bad);">0</b></span>
+            <span>⏱ Time saved: <b id="ca-saved" style="color:var(--accent);">0.0s</b></span>
+            <span>👣 Distance walked: <b id="ca-dist">0 m</b></span>
+          </div>
+
+          <div style="position:relative; height:36px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:999px; margin-bottom:0.3rem;">
+            <span style="position:absolute; left:8px; top:50%; transform:translateY(-50%); font-size:0.95rem;">👨‍🍳</span>
+            <span id="ca-runner" style="position:absolute; left:28px; top:5px; font-size:1.15rem;">🏃</span>
+            <span style="position:absolute; right:8px; top:50%; transform:translateY(-50%); font-size:0.95rem;">🧊</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--muted); margin-bottom:0.9rem;">
+            <span>the counter</span>
+            <span>walk-in fridge — 9 m away</span>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem; align-items:center;">
+            <span style="font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted);">Counter (the cache):</span>
+            <span id="ca-slot" style="font-size:0.8rem; font-weight:600; border:1px dashed var(--border); border-radius:8px; padding:5px 10px; background:var(--bg-deep); color:var(--muted); transition:all .3s ease;">✕ no counter (cache off)</span>
+          </div>
+
+          <div class="wlog" id="ca-log"><span class="dim">The fridge is 9 m away. Ask for garlic…</span></div>
+        </div>
+        <p class="widget-hint">Make three requests with the cache off, then turn it on and make three more. Then hit the stale button and watch the walk come back.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          A chef is cooking forty dishes tonight, and thirty of them need garlic. The walk-in
+          fridge is nine meters away. The first trip is unavoidable — but a chef who walks nine
+          meters for every single clove doesn't last the week. The good ones take one trip,
+          prep the garlic, and keep it on the counter.
+        </p>
+
+        <p>
+          You just ran that kitchen. Cache off: every request was a full round trip, and the
+          distance tally got embarrassing. Cache on: one slow miss, then instant hit after
+          instant hit.
+        </p>
+
+        <p><strong>A cache is a copy of something expensive to fetch, kept close, so the next request is nearly free.</strong></p>
+
+        <h2>Caches are everywhere — including right now</h2>
+
+        <p>
+          Your browser cached this page's fonts and styles the first time you visited, which is
+          why the second load feels instant. <a href="dns.html">DNS</a> answers get cached so
+          the internet's phone book isn't re-read for every click. A
+          <a href="cdn.html">CDN</a> is caching at planetary scale — whole copies of a site
+          parked near every city. And in the AI world,
+          <a href="prompt-caching.html">prompt caching</a> is Claude reading your giant
+          instructions once at full price, then re-serving them for cents. Different layers,
+          one identical move: the garlic is expensive to get, so keep some on the counter.
+        </p>
+
+        <h2>The hard part: stale garlic</h2>
+
+        <p>
+          There's an old joke engineers never stop telling: "There are only two hard things in
+          computer science — cache invalidation and naming things." It's funny because it's
+          true, and invalidation is the genuinely hard one.
+        </p>
+
+        <p>
+          The moment the real thing changes, your counter copy becomes a lie. Stale. And stale
+          prep is worse than no prep: wrong prices, last month's profile photo, the classic
+          "I fixed the typo but the site still shows it." You pressed the stale button and saw
+          the only honest fix — throw the copy out, walk to the fridge once, cache the fresh
+          version. Easy in a demo. In real systems, knowing <em>when</em> to throw the copy out
+          is where engineers earn their pay.
+        </p>
+
+        <h2>The rule: expensive, and rarely changing</h2>
+
+        <p>
+          Cache the logo, not the bank balance. Before caching anything, ask two questions: how
+          expensive is it to fetch, and how often does it change? Expensive and stable — fonts,
+          images, a 50-page system prompt — is a perfect candidate. Cheap or constantly
+          changing — live scores, your account balance — should be fetched fresh, because a
+          stale answer there isn't slow. It's wrong. A cache is a kind of
+          <a href="state.html">state</a>, after all, and state you forget to update will
+          happily lie to you at full speed.
+        </p>
+
+        <div class="callout">
+          Next time something "won't update" — your edit isn't showing, the site looks old —
+          suspect the cache before you suspect the code. Hard-refresh the page, clear the
+          cache, or just wait it out. Half of all "it's broken!" reports are a perfectly good
+          fix hiding behind stale garlic.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Second visits being faster stops being a mystery</li>
+          <li>Hard refresh becomes a tool you reach for on purpose, not a ritual</li>
+          <li>You'll know why prompt caching slashes AI bills on repeated context</li>
+          <li>When a developer says "we'll cache that," you hear the exact trade: speed now, staleness risk later</li>
+        </ul>
+
+        <p>
+          Slow but right beats fast but wrong — and cached-and-fresh beats them both.
+        </p>
+
+        <p><strong>Keep the garlic on the counter. Throw it out the second it turns.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. A page loads slowly on your first visit and almost instantly the second time. What most likely happened?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Your browser cached the heavy parts — the second visit grabbed them from the counter instead of walking to the fridge</button>
+              <button class="opt">The site's server got faster between your visits</button>
+              <button class="opt">Browsers skip loading images on repeat visits</button>
+            </div>
+            <div class="why">First visit = cache miss, full trip. The fonts, images, and styles got kept close, so visit two was hit after hit.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You fixed a typo on your website ten minutes ago, but visitors still see the old version. Most likely suspect?</p>
+            <div class="opts">
+              <button class="opt">The fix didn't actually save</button>
+              <button class="opt" data-correct>A cache — browser or CDN — is still serving the stale copy until it expires or gets invalidated</button>
+              <button class="opt">Website changes take 24 hours to appear on the internet</button>
+            </div>
+            <div class="why">Classic stale garlic. The real thing changed, but a copy somewhere is still being served. Invalidation — throwing the old copy out — is the famously hard part.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your developer wants to add caching. Which item is the best candidate?</p>
+            <div class="opts">
+              <button class="opt">A customer's live account balance</button>
+              <button class="opt">Live sports scores on a match page</button>
+              <button class="opt" data-correct>The site's logo image — costly to refetch, and it basically never changes</button>
+            </div>
+            <div class="why">The rule: cache what's expensive and changes rarely. Balances and live scores change constantly — serving a stale copy there isn't slow, it's wrong.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* speed race */
+    (function () {
+      var cacheOn = false;
+      var slot = null; /* null | "fresh" | "stale" */
+      var trips = 0, hits = 0, misses = 0, saved = 0;
+      var walking = false;
+
+      var runner = document.getElementById("ca-runner");
+      var btnGet = document.getElementById("ca-get");
+      var btnStale = document.getElementById("ca-stale");
+      var btnMode = document.getElementById("ca-mode");
+      var elSlot = document.getElementById("ca-slot");
+      var elHits = document.getElementById("ca-hits");
+      var elMisses = document.getElementById("ca-misses");
+      var elSaved = document.getElementById("ca-saved");
+      var elDist = document.getElementById("ca-dist");
+      var elLog = document.getElementById("ca-log");
+
+      function addLog(html) {
+        if (!elLog.dataset.started) { elLog.innerHTML = ""; elLog.dataset.started = "1"; }
+        else { elLog.innerHTML += "\n"; }
+        elLog.innerHTML += html;
+        elLog.scrollTop = elLog.scrollHeight;
+      }
+
+      function paintStats() {
+        elHits.textContent = hits;
+        elMisses.textContent = misses;
+        elSaved.textContent = saved.toFixed(1) + "s";
+        elDist.textContent = (trips * 18) + " m";
+      }
+
+      function paintSlot() {
+        if (!cacheOn) {
+          elSlot.textContent = "✕ no counter (cache off)";
+          elSlot.style.borderColor = "var(--border)";
+          elSlot.style.background = "var(--bg-deep)";
+          elSlot.style.color = "var(--muted)";
+        } else if (slot === "fresh") {
+          elSlot.textContent = "🧄 garlic — fresh ✓";
+          elSlot.style.borderColor = "var(--good)";
+          elSlot.style.background = "var(--good-soft)";
+          elSlot.style.color = "var(--ink)";
+        } else if (slot === "stale") {
+          elSlot.textContent = "🧄 garlic — stale 🤢";
+          elSlot.style.borderColor = "var(--bad)";
+          elSlot.style.background = "var(--bad-soft)";
+          elSlot.style.color = "var(--ink)";
+        } else {
+          elSlot.textContent = "empty — next request will fill it";
+          elSlot.style.borderColor = "var(--border)";
+          elSlot.style.background = "var(--card)";
+          elSlot.style.color = "var(--muted)";
+        }
+        btnStale.disabled = !(cacheOn && slot === "fresh") || walking;
+      }
+
+      function walk(cb) {
+        walking = true;
+        btnGet.disabled = true;
+        btnMode.disabled = true;
+        btnStale.disabled = true;
+        runner.style.transition = "left 950ms ease-in-out";
+        runner.style.left = "calc(100% - 30px)";
+        setTimeout(function () { runner.style.left = "28px"; }, 1000);
+        setTimeout(function () {
+          walking = false;
+          btnGet.disabled = false;
+          btnMode.disabled = false;
+          cb();
+        }, 2000);
+      }
+
+      function request() {
+        if (walking) return;
+        if (cacheOn && slot === "fresh") {
+          hits++;
+          saved += 1.95;
+          addLog('<span class="ok">HIT ✓</span> garlic grabbed off the counter in <b>0.05s</b>.');
+          elSlot.style.boxShadow = "0 0 0 4px var(--good-soft)";
+          setTimeout(function () { elSlot.style.boxShadow = "none"; }, 350);
+          paintStats();
+          return;
+        }
+        misses++;
+        trips++;
+        var reason = !cacheOn ? "cache off" : (slot === "stale" ? "stale copy — refusing to serve it" : "counter empty");
+        addLog('<span class="err">MISS</span> (' + reason + ') → trip #' + trips + " to the walk-in… <b>2.0s</b>");
+        paintStats();
+        walk(function () {
+          if (cacheOn) {
+            slot = "fresh";
+            addLog('<span class="ok">✓ served.</span> fresh garlic — and a copy now sits on the counter.');
+          } else {
+            addLog('<span class="ok">✓ served.</span> <span class="dim">nothing kept. next request walks again.</span>');
+          }
+          paintSlot();
+          paintStats();
+        });
+      }
+
+      btnGet.addEventListener("click", request);
+
+      btnMode.addEventListener("click", function () {
+        if (walking) return;
+        cacheOn = !cacheOn;
+        if (!cacheOn) slot = null;
+        btnMode.textContent = cacheOn ? "🔥 Cache: ON" : "🧊 Cache: OFF";
+        addLog(cacheOn
+          ? '<span class="ok">cache on.</span> <span class="dim">first request still walks (miss) — then the counter takes over.</span>'
+          : '<span class="dim">cache off. every single request walks the full 18 m round trip.</span>');
+        paintSlot();
+      });
+
+      btnStale.addEventListener("click", function () {
+        if (walking || slot !== "fresh") return;
+        slot = "stale";
+        addLog('<span class="err">🤢 the garlic on the counter went stale</span> <span class="dim">(the real data changed — the copy is now wrong)</span>');
+        paintSlot();
+      });
+
+      paintSlot();
+      paintStats();
+    })();
+  </script>
+</body>
+</html>

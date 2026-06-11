@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vector Database — Claude Club</title>
+  <meta name="description" content="Vector database, explained in plain English: search by meaning, not exact words. With an interactive vibe search." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="vector-database" data-related="embedding,database,agent,hallucination">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Vector Database</h1>
+        <p class="tldr"><b>TLDR</b>Search by meaning, not exact words.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: vibe search ============ -->
+      <section class="widget" aria-label="Vector database vibe search">
+        <div class="widget-bar"><span class="dot"></span> Try it — vibe search</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.8rem; color:var(--ink-soft);">
+            Eight support tickets are stored below. Search them two ways: as a literal robot
+            (keyword) and as a librarian who understands what you <em>meant</em> (meaning).
+          </p>
+
+          <div style="background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:0.6rem 0.75rem; margin-bottom:0.85rem;">
+            <div style="font-family:var(--sans); font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:0.45rem;">📥 Stored tickets (8)</div>
+            <div id="vd-tickets" style="display:flex; flex-wrap:wrap; gap:5px;"></div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.6rem;">
+            <input class="winput" id="vd-q" placeholder="Search the tickets…" style="flex:1; min-width:180px;" />
+            <button class="wbtn" id="vd-go">Search</button>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.55rem;">
+            <span style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">mode</span>
+            <button class="wbtn primary" id="vd-kw">🔤 Keyword search</button>
+            <button class="wbtn" id="vd-sem">🧠 Meaning search</button>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <span style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">try</span>
+            <button class="wbtn vd-preset" data-q="refund complaint">“refund complaint”</button>
+            <button class="wbtn vd-preset" data-q="unable to sign in">“unable to sign in”</button>
+            <button class="wbtn vd-preset" data-q="password reset">“password reset”</button>
+          </div>
+
+          <div id="vd-out" style="min-height:110px; font-family:var(--sans);"><span style="font-size:0.88rem; color:var(--muted);">Hit a preset (or type a search), then run the same query in both modes.</span></div>
+        </div>
+        <p class="widget-hint">Run “refund complaint” in both modes. Keyword: zero results. Meaning: the furious customer at 91% similar. Same pile, different librarian.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Ask a bad librarian for "books about getting your money back" and they scan the titles
+          for those exact words, find none, and shrug. Ask a great librarian and you walk out
+          with the consumer-rights shelf and a refund-letter template — because they understood
+          the request, not just the words in it.
+        </p>
+
+        <p>
+          You just met both. Keyword mode was the bad librarian: "refund complaint" found
+          nothing, because no ticket contains either word. Meaning mode surfaced the furious
+          customer demanding money back at 91% similarity — instantly.
+        </p>
+
+        <p>
+          <strong>A vector database stores embeddings and finds the closest ones fast — so your
+          software can search by meaning instead of exact words.</strong>
+        </p>
+
+        <h2>Why keyword search keeps failing you</h2>
+
+        <p>
+          A normal <a href="database.html">database</a> is painfully literal. It matches
+          characters, not ideas. Your customer types "getting charged twice", your help article
+          says "duplicate billing", and the search comes back empty — even though it's a perfect
+          answer sitting right there. People almost never use your words. Keyword search makes
+          that the customer's problem. Vector search makes it the computer's problem.
+        </p>
+
+        <p>
+          To be fair, keyword search isn't useless — you saw "password reset" nail the right
+          ticket instantly, because the words happened to match. The problem is betting your
+          whole search experience on customers guessing your vocabulary. A vector database
+          doesn't replace your regular database; it sits beside it and handles the fuzzy,
+          human side of finding things.
+        </p>
+
+        <h2>The pipeline</h2>
+
+        <p>Here's the whole machine, end to end:</p>
+
+        <ol>
+          <li>Every document — ticket, page, paragraph — gets turned into an <a href="embedding.html">embedding</a>: a point on the meaning map</li>
+          <li>Those points get stored in the vector database</li>
+          <li>Your search query gets embedded too, onto the same map</li>
+          <li>The database returns the nearest neighbors, ranked by distance</li>
+        </ol>
+
+        <p>
+          The similarity bars you watched fill up are just that distance, flipped into a
+          percentage. Nothing in the pile matched the word "refund". Something sat very close to
+          its meaning. That's the entire trick — and it stays fast even with millions of
+          documents stored.
+        </p>
+
+        <h2>This is the engine behind "chat with your docs"</h2>
+
+        <p>
+          When an AI answers questions from your PDFs, contracts, or help center, this is what's
+          running underneath: your question gets embedded, the vector database fetches the most
+          relevant chunks, those chunks get pasted into the prompt, and Claude answers from
+          them. The pattern has a name — RAG, retrieval-augmented generation — and it's how an
+          <a href="agent.html">agent</a> works with knowledge far too big to fit in one prompt.
+        </p>
+
+        <p>
+          Bonus: because the answer is grounded in your real documents instead of the model's
+          memory, you get far fewer <a href="hallucination.html">hallucinations</a> on facts
+          that actually matter.
+        </p>
+
+        <div class="callout">
+          When "chat with your docs" confidently gets something wrong, don't blame the model
+          first. Nine times out of ten, retrieval fetched the wrong or outdated chunks and the
+          AI faithfully answered from bad material. Check what got retrieved before you switch
+          models.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Support search that finds the answer no matter how the customer phrases it</li>
+          <li>"Have we seen this ticket before?" — instant duplicate detection</li>
+          <li>Chat with your own notes, contracts, or company wiki</li>
+          <li>"More like this" for products, posts, and videos</li>
+          <li>Memory-ish recall for agents: store everything, retrieve only what's relevant right now</li>
+        </ul>
+
+        <p>
+          None of this needed a smarter model. It needed a better filing system — one organized
+          by meaning instead of spelling, like the one you just searched.
+        </p>
+
+        <p><strong>Keyword search finds your words. Vector search finds your meaning.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. A customer searches your help center for "getting charged twice". Your article is titled "Duplicate billing". Keyword search returns nothing. What actually fixes this?</p>
+            <div class="opts">
+              <button class="opt">Train customers to use the official terms from your docs</button>
+              <button class="opt" data-correct>Vector search — both phrases embed to nearby points, so the article surfaces anyway</button>
+              <button class="opt">Rename every article to contain every possible phrasing</button>
+            </div>
+            <div class="why">"Charged twice" and "duplicate billing" share no words but sit next to each other on the meaning map. Vector search matches the meaning, so nobody has to guess your vocabulary.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You ask an AI assistant a question about your company wiki and it answers correctly. What most likely happened under the hood?</p>
+            <div class="opts">
+              <button class="opt">The entire wiki was pasted into the prompt, in full, every time</button>
+              <button class="opt" data-correct>Your question was embedded, the vector database returned the closest chunks, and those chunks were added to the prompt</button>
+              <button class="opt">The model was retrained on your wiki overnight</button>
+            </div>
+            <div class="why">That's RAG: embed the question, fetch the nearest neighbors, paste them in, answer. The wiki is far too big for one prompt — retrieval picks the relevant slice.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your "chat with your docs" bot confidently states the wrong price. According to this lesson, what do you check first?</p>
+            <div class="opts">
+              <button class="opt">Nothing — AI is random and this can't be debugged</button>
+              <button class="opt" data-correct>What the retrieval step fetched — wrong or outdated chunks usually cause this</button>
+              <button class="opt">The database size — vector databases struggle with numbers</button>
+            </div>
+            <div class="why">The model answers from whatever chunks retrieval hands it. Garbage chunks in, confident nonsense out. Inspect the fetched chunks before blaming the model.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* vibe search */
+    (function () {
+      var TICKETS = [
+        "Customer furious, demands money back",
+        "Love the app, five stars!",
+        "Password reset link never arrives",
+        "Where is my package?",
+        "App crashes every time I open settings",
+        "How do I cancel my subscription?",
+        "Shipping took three weeks, very unhappy",
+        "Can't log in on my new phone"
+      ];
+
+      /* precomputed "embeddings" for the preset queries */
+      var MEANING = {
+        "refund complaint": [[0, 91], [6, 82], [3, 74], [5, 70]],
+        "unable to sign in": [[7, 89], [2, 81], [4, 55]],
+        "password reset": [[2, 95], [7, 72], [4, 48]]
+      };
+
+      /* word-level vibes so free typing works too */
+      var VIBES = {
+        refund: [[0, 88], [5, 70]], money: [[0, 86]], angry: [[0, 90], [6, 68]],
+        furious: [[0, 95]], mad: [[0, 87]], upset: [[0, 82], [6, 72]],
+        complaint: [[0, 84], [6, 77]], complain: [[0, 84], [6, 77]],
+        unhappy: [[6, 90], [0, 74]], hate: [[0, 78]],
+        package: [[3, 94], [6, 76]], parcel: [[3, 90]], order: [[3, 85], [6, 70]],
+        delivery: [[3, 88], [6, 86]], deliver: [[3, 88], [6, 86]],
+        shipping: [[6, 93], [3, 82]], ship: [[6, 93], [3, 82]],
+        late: [[6, 84], [3, 72]], slow: [[6, 78]], track: [[3, 86]],
+        login: [[7, 90], [2, 74]], signin: [[7, 88]], sign: [[7, 85], [2, 60]],
+        account: [[7, 72], [5, 66]], password: [[2, 95], [7, 68]], reset: [[2, 90]],
+        email: [[2, 72]], link: [[2, 80]],
+        crash: [[4, 94]], crashes: [[4, 94]], broken: [[4, 86]], bug: [[4, 82]],
+        freeze: [[4, 80]], error: [[4, 76], [2, 60]],
+        cancel: [[5, 95]], subscription: [[5, 90]], unsubscribe: [[5, 88]],
+        billing: [[5, 74], [0, 70]], charge: [[0, 80], [5, 72]], charged: [[0, 80], [5, 72]],
+        love: [[1, 92]], great: [[1, 85]], awesome: [[1, 88]], happy: [[1, 84]],
+        stars: [[1, 90]], review: [[1, 76]], phone: [[7, 70]]
+      };
+
+      var STOP = {
+        the: 1, and: 1, for: 1, with: 1, that: 1, this: 1, was: 1, are: 1, has: 1,
+        have: 1, how: 1, can: 1, you: 1, your: 1, not: 1, but: 1, all: 1, out: 1,
+        get: 1, its: 1, very: 1, will: 1, would: 1, into: 1, about: 1, what: 1,
+        does: 1, did: 1, dont: 1, wont: 1, just: 1, need: 1, want: 1, please: 1
+      };
+
+      var input = document.getElementById("vd-q");
+      var out = document.getElementById("vd-out");
+      var kwBtn = document.getElementById("vd-kw");
+      var semBtn = document.getElementById("vd-sem");
+      var mode = "kw";
+
+      function esc(s) {
+        return String(s).replace(/[&<>"]/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+        });
+      }
+      function norm(q) {
+        return q.toLowerCase().replace(/[^a-z0-9\s]/g, "").replace(/\s+/g, " ").trim();
+      }
+
+      /* tickets shelf */
+      var shelf = document.getElementById("vd-tickets");
+      TICKETS.forEach(function (t, i) {
+        var s = document.createElement("span");
+        s.style.cssText = "font-family:var(--sans);font-size:0.72rem;font-weight:600;background:var(--card);border:1px solid var(--border-soft);border-radius:7px;padding:3px 8px;color:var(--ink-soft);";
+        s.textContent = "#" + (i + 1) + " " + t;
+        shelf.appendChild(s);
+      });
+
+      function keywordSearch(q) {
+        var words = norm(q).split(" ").filter(function (w) { return w.length >= 3 && !STOP[w]; });
+        var results = [];
+        TICKETS.forEach(function (t, i) {
+          var lt = t.toLowerCase();
+          var hits = words.filter(function (w) { return lt.indexOf(w) !== -1; });
+          if (hits.length) results.push({ i: i, hits: hits });
+        });
+        results.sort(function (a, b) { return b.hits.length - a.hits.length; });
+        return { words: words, results: results };
+      }
+
+      function meaningSearch(q) {
+        var key = norm(q);
+        if (MEANING[key]) return MEANING[key];
+        var best = {};
+        key.split(" ").forEach(function (w) {
+          if (w.length < 3) return;
+          var hit = VIBES[w] || VIBES[w.replace(/s$/, "")] || VIBES[w.replace(/(ing|ed)$/, "")];
+          if (!hit) return;
+          hit.forEach(function (p) {
+            if (!best[p[0]] || best[p[0]] < p[1]) best[p[0]] = p[1];
+          });
+        });
+        var arr = Object.keys(best).map(function (k) { return [Number(k), best[k]]; });
+        arr.sort(function (a, b) { return b[1] - a[1]; });
+        return arr.slice(0, 4);
+      }
+
+      function head(q) {
+        return '<div style="font-size:0.74rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">' +
+          (mode === "kw" ? "🔤 keyword results" : "🧠 meaning results") + " for “" + esc(q) + "”</div>";
+      }
+
+      function reveal() {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            [].forEach.call(out.querySelectorAll(".vd-card"), function (c) {
+              c.style.opacity = "1";
+              c.style.transform = "translateY(0)";
+            });
+            [].forEach.call(out.querySelectorAll(".wmeter > i[data-w]"), function (b) {
+              b.style.width = b.getAttribute("data-w") + "%";
+            });
+          });
+        });
+      }
+
+      function card(inner, delay) {
+        return '<div class="vd-card" style="background:var(--card);border:1px solid var(--border-soft);border-radius:10px;padding:0.65rem 0.85rem;margin-bottom:0.5rem;opacity:0;transform:translateY(5px);transition:all .3s ease;transition-delay:' + delay + 'ms;">' + inner + "</div>";
+      }
+
+      function nudgeSem() {
+        semBtn.style.boxShadow = "0 0 0 4px var(--accent-soft)";
+        semBtn.style.borderColor = "var(--accent-bright)";
+        setTimeout(function () {
+          semBtn.style.boxShadow = "none";
+          semBtn.style.borderColor = "";
+        }, 1600);
+      }
+
+      function run() {
+        var q = input.value.trim();
+        if (!q) {
+          out.innerHTML = '<span style="font-size:0.88rem;color:var(--muted);">Type something — or hit a preset above.</span>';
+          return;
+        }
+        var html = head(q);
+
+        if (mode === "kw") {
+          var kw = keywordSearch(q);
+          if (!kw.results.length) {
+            var quoted = kw.words.map(function (w) { return "“" + esc(w) + "”"; }).join(" or ");
+            html += '<div style="background:var(--bad-soft);border:1px solid var(--bad);border-radius:10px;padding:0.8rem 1rem;font-size:0.92rem;"><b>0 results.</b> No ticket contains ' + (quoted || "those words") + " — keyword search needs your exact words.</div>";
+            html += '<div style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">The answer is sitting right there in the pile. Switch to 🧠 Meaning search and run it again.</div>';
+            out.innerHTML = html;
+            nudgeSem();
+            return;
+          }
+          kw.results.forEach(function (r, idx) {
+            var tags = r.hits.map(function (h) {
+              return '<span style="font-size:0.72rem;font-weight:700;background:var(--accent-faint);border:1px solid var(--accent-soft);color:var(--accent);border-radius:999px;padding:2px 8px;">matched “' + esc(h) + "”</span>";
+            }).join(" ");
+            html += card('<div style="display:flex;justify-content:space-between;gap:0.6rem;align-items:center;flex-wrap:wrap;"><span style="font-size:0.9rem;">🎫 #' + (r.i + 1) + " — " + TICKETS[r.i] + "</span>" + tags + "</div>", idx * 90);
+          });
+          html += '<div style="font-size:0.82rem;color:var(--muted);margin-top:0.3rem;">Found by exact spelling only. Same words, or nothing.</div>';
+          out.innerHTML = html;
+          reveal();
+          return;
+        }
+
+        var sem = meaningSearch(q);
+        if (!sem.length) {
+          html += '<div style="background:var(--accent-faint);border:1px solid var(--accent-soft);border-radius:10px;padding:0.8rem 1rem;font-size:0.92rem;">🤷 My demo brain only knows a few phrases — a real vector database embeds <em>anything</em>. Try a preset, or words like “angry”, “crash”, “delivery”, “password”.</div>';
+          out.innerHTML = html;
+          return;
+        }
+        sem.forEach(function (r, idx) {
+          html += card(
+            '<div style="display:flex;justify-content:space-between;gap:0.6rem;align-items:baseline;margin-bottom:0.4rem;"><span style="font-size:0.9rem;">🎫 #' + (r[0] + 1) + " — " + TICKETS[r[0]] + '</span><b style="font-size:0.85rem;color:var(--accent);white-space:nowrap;">' + r[1] + '% similar</b></div>' +
+            '<div class="wmeter" style="height:8px;"><i data-w="' + r[1] + '" style="width:0%"></i></div>',
+            idx * 90
+          );
+        });
+        html += '<div style="font-size:0.82rem;color:var(--muted);margin-top:0.3rem;">Ranked by distance on the meaning map — no shared words required.</div>';
+        out.innerHTML = html;
+        reveal();
+      }
+
+      function setMode(m) {
+        mode = m;
+        kwBtn.classList.toggle("primary", m === "kw");
+        semBtn.classList.toggle("primary", m === "sem");
+        if (input.value.trim()) run();
+      }
+
+      kwBtn.addEventListener("click", function () { setMode("kw"); });
+      semBtn.addEventListener("click", function () { setMode("sem"); });
+      document.getElementById("vd-go").addEventListener("click", run);
+      input.addEventListener("keydown", function (e) { if (e.key === "Enter") run(); });
+      [].forEach.call(document.querySelectorAll(".vd-preset"), function (b) {
+        b.addEventListener("click", function () {
+          input.value = b.getAttribute("data-q");
+          run();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>API — Claude Club</title>
+  <meta name="description" content="API, explained in plain English: how your AI talks to other apps. With an interactive drive-thru simulator." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="api" data-related="cli,endpoint,rest-api,env-file,mcp">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>API</h1>
+        <p class="tldr"><b>TLDR</b>How your AI talks to other apps.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: drive-thru simulator ============ -->
+      <section class="widget" aria-label="API drive-thru simulator">
+        <div class="widget-bar"><span class="dot"></span> Try it — the API drive-thru</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            You're the AI. The window below is another app's API. Order something off the menu —
+            but you'll need your key first.
+          </p>
+          <div class="wrow" style="margin-bottom:0.7rem;">
+            <button class="wbtn" id="api-key-btn">🔑 API key: <b>missing</b></button>
+          </div>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn api-order" data-name="fetch my Shopify orders" data-res='3 orders found. Total: $432.50. Top product: "Focus Journal".'>📦 Fetch my orders</button>
+            <button class="wbtn api-order" data-name="send the weekly email" data-res="Email queued to 1,204 subscribers. Send time: 9:00 AM.">✉️ Send an email</button>
+            <button class="wbtn api-order" data-name="post update to Slack" data-res='Posted to #general: "Site is live ✳". 3 reactions already.'>💬 Post to Slack</button>
+            <button class="wbtn danger api-order" data-name="delete every customer" data-danger="1">🗑️ Delete every customer</button>
+          </div>
+          <div class="wlog" id="api-log"><span class="dim">The window is open. Place an order…</span></div>
+        </div>
+        <p class="widget-hint">Notice: no key → rejected. Not on the menu → rejected. That's the entire security model of the modern internet.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>If you've ever used a drive-thru, you already understand APIs.</p>
+
+        <p>
+          Your AI doesn't have hands. It can't log into your apps, click around, or fill out
+          forms. It doesn't need to. Shopify has an API. Slack, Stripe, Gmail, Notion — almost
+          every app you use has one. The API is how your AI actually gets things done in the
+          real world.
+        </p>
+
+        <p>So picture the drive-thru.</p>
+
+        <p>
+          Your AI pulls up to the window. There's a menu bolted to the wall: <em>fetch these
+          orders, send this email, post this message, update this product.</em> It reads the
+          menu, places an order, and the kitchen does the work. Your AI never walks inside.
+          It never sees the kitchen. It just orders off what's posted, and the food comes out.
+        </p>
+
+        <p><strong>That's an API: the window between your AI and somebody else's software.</strong></p>
+
+        <h2>The menu is the whole point — and the safety</h2>
+
+        <p>
+          The only things your AI can do are the things printed on that menu. If "delete every
+          customer" isn't on the menu, it literally cannot be ordered. You just saw this in the
+          simulator: the window doesn't take requests that aren't listed.
+        </p>
+
+        <p>
+          So an API isn't just a way in. It's a fence. The app decides exactly what's on offer,
+          and everything else stays locked in the back where nobody at the window can reach it.
+          That's why companies are comfortable opening a window at all — they're not handing you
+          keys to the kitchen, they're handing you a menu they wrote.
+        </p>
+
+        <h2>Every window needs a key</h2>
+
+        <p>
+          To order, your AI has to prove it's allowed at the window. That proof is the
+          <strong>API key</strong>: a long random string that says "this order comes from my
+          account — let it through, bill it to me." No key, no service. You saw that too:
+          the 401 rejection until you attached the key.
+        </p>
+
+        <div class="callout">
+          Never paste your API key directly into your code. Code ends up on GitHub, much of
+          GitHub is public, and bots scan it for leaked keys around the clock. A leaked key is
+          your credit card taped to the drive-thru window. Keys live in a separate hidden file —
+          that's the <a href="env-file.html">Env File</a> lesson, coming up.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <p>Once you see the window, "how does AI actually do stuff" clicks into place. With APIs, your AI can:</p>
+
+        <ul>
+          <li>Pull last week's orders out of Shopify and summarize them</li>
+          <li>Add a new subscriber to your email list the second they sign up</li>
+          <li>Drop a message in Slack when something breaks</li>
+          <li>Create calendar events, send emails, update prices — while you sleep</li>
+        </ul>
+
+        <p>
+          None of that is the AI being clever with words. It's the AI placing orders at windows
+          that were already open. Without APIs, you've got a really good talker — it can write a
+          beautiful email and then sit there, unable to send it. With APIs, it walks up to the
+          window, orders "send this," and it's gone.
+        </p>
+
+        <p><strong>Without APIs you've got a chatbot. With them, you've got an employee.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your AI needs to add a row to your Notion database. What does it actually do?</p>
+            <div class="opts">
+              <button class="opt">Logs into notion.so with your password and clicks around</button>
+              <button class="opt" data-correct>Sends a request to Notion's API — an order off the posted menu</button>
+              <button class="opt">It can't touch other apps; it can only write text</button>
+            </div>
+            <div class="why">AI doesn't have hands — it places orders at the window. Notion's API lists "add a row" on its menu, so your AI orders exactly that.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Why is an API also a safety fence?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Only the actions printed on the menu exist — anything else can't even be ordered</button>
+              <button class="opt">Because all APIs block delete operations</button>
+              <button class="opt">Because APIs require a human to approve each request</button>
+            </div>
+            <div class="why">The app's owner decides what's on the menu. If "delete every customer" isn't listed, no request — however clever — can make the kitchen cook it.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Where should your API key live?</p>
+            <div class="opts">
+              <button class="opt">Pasted right into the code, so it's easy to find</button>
+              <button class="opt" data-correct>In a separate hidden file, out of the code entirely</button>
+              <button class="opt">In the public README so teammates can grab it</button>
+            </div>
+            <div class="why">Keys in code leak to GitHub, and bots find them in minutes. They belong in a hidden env file — full lesson on that in Level 5.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* drive-thru simulator */
+    (function () {
+      var hasKey = false;
+      var keyBtn = document.getElementById("api-key-btn");
+      var log = document.getElementById("api-log");
+      var busy = false;
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function clearIfFirst() {
+        if (!log.dataset.started) { log.innerHTML = ""; }
+      }
+
+      keyBtn.addEventListener("click", function () {
+        hasKey = !hasKey;
+        keyBtn.innerHTML = hasKey ? "🔑 API key: <b>attached ✓</b>" : "🔑 API key: <b>missing</b>";
+        keyBtn.style.borderColor = hasKey ? "var(--good)" : "var(--border)";
+        clearIfFirst();
+        add(hasKey
+          ? '<span class="ok">🔑 key attached.</span> <span class="dim">Orders will now be accepted.</span>'
+          : '<span class="dim">🔑 key removed.</span>');
+      });
+
+      [].slice.call(document.querySelectorAll(".api-order")).forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          if (busy) return;
+          clearIfFirst();
+          var name = btn.getAttribute("data-name");
+          add('<span class="acc">→ YOU:</span> "' + name + '"');
+
+          if (!hasKey) {
+            setTimeout(function () {
+              add('<span class="err">← WINDOW: 401 — who is this?</span> No API key on the order. <span class="dim">(attach your key above)</span>');
+            }, 350);
+            return;
+          }
+          if (btn.getAttribute("data-danger")) {
+            setTimeout(function () {
+              add('<span class="err">← WINDOW: 403 — that\'s not on the menu.</span> The fence holds. Nothing outside the menu can ever be ordered.');
+            }, 350);
+            return;
+          }
+          busy = true;
+          setTimeout(function () { add('<span class="dim">… kitchen working …</span>'); }, 320);
+          setTimeout(function () {
+            add('<span class="ok">← KITCHEN: 200 OK.</span> ' + btn.getAttribute("data-res"));
+            busy = false;
+          }, 1000);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

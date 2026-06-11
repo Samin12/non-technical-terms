@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cron Job — Claude Club</title>
+  <meta name="description" content="Cron job, explained in plain English: an alarm clock for tasks. With an interactive schedule builder." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="cron-job" data-related="agent,server,headless,daemon">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Cron Job</h1>
+        <p class="tldr"><b>TLDR</b>An alarm clock for tasks.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: schedule builder ============ -->
+      <section class="widget" aria-label="Cron schedule builder">
+        <div class="widget-bar"><span class="dot"></span> Try it — the schedule builder</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Build a schedule in plain English and watch it compile to cron — the five-field
+            alarm-clock language servers have spoken since the 1970s. Then fast-forward a week.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn cj-freq" data-f="day">📅 Every day</button>
+            <button class="wbtn cj-freq" data-f="mon">🗓️ Every Monday</button>
+            <button class="wbtn cj-freq" data-f="hour">🕐 Every hour</button>
+            <button class="wbtn cj-freq" data-f="min">⚡ Every minute</button>
+            <label style="display:flex; align-items:center; gap:0.4rem; font-size:0.85rem; font-weight:600; color:var(--ink-soft);">at
+              <select class="winput" id="cj-hour" style="width:auto; padding:0.4rem 0.6rem;"></select>
+            </label>
+          </div>
+
+          <div style="font-family:var(--sans); font-size:0.95rem; margin-bottom:0.6rem;">🗣️ <b id="cj-human">Every day at 9:00 AM</b></div>
+
+          <div id="cj-cron" style="display:flex; gap:6px; margin-bottom:0.9rem;"></div>
+
+          <div class="wrow" style="margin-bottom:0.7rem;">
+            <button class="wbtn primary" id="cj-ff">⏩ Fast-forward one week</button>
+          </div>
+
+          <div id="cj-week" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; margin-bottom:0.9rem;"></div>
+
+          <div class="wlog" id="cj-log"><span class="dim">Build a schedule, then fast-forward the week…</span></div>
+        </div>
+        <p class="widget-hint">Now pick "every minute" and fast-forward. This is the most-made cron mistake on the internet — enjoy it safely in here.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          A coffee maker with a timer is a tiny miracle. You load it at night, set 7:00 AM,
+          and go to bed. It doesn't ask if you're awake. It doesn't wait for permission. The
+          clock hits 7:00 — it brews.
+        </p>
+
+        <p>
+          Computers have had this exact feature since the 1970s. It's called cron, and a cron
+          job is one task you've put on the timer: a script, a backup, a report — anything —
+          set to fire at the times you choose, forever.
+        </p>
+
+        <p><strong>A cron job is a task that runs itself on a schedule. You set the alarm once; the work happens without you.</strong></p>
+
+        <h2>Reading the five stars</h2>
+
+        <p>
+          The schedule language looks like someone fell asleep on the keyboard:
+          <code>0 9 * * 1</code>. But you just built these in the widget, so you already know
+          the secret — it's five slots, read left to right: minute, hour, day of month, month,
+          weekday. A star means "every." Hover the five cells in the builder and each slot
+          tells you what it accepts.
+        </p>
+
+        <p>
+          So <code>0 9 * * 1</code> says: minute 0, hour 9, any day, any month, weekday 1 —
+          every Monday at 9:00 AM. And the infamous <code>* * * * *</code>, every slot wide
+          open, fires every single minute. 1,440 times a day. You watched it flood the week
+          with ten thousand runs. Every builder makes that mistake exactly once for real — be
+          the one who made it in a widget instead.
+        </p>
+
+        <h2>The machine has to be on</h2>
+
+        <p>
+          Cron isn't magic — it's a little <a href="daemon.html">daemon</a> that wakes up
+          every minute, checks the schedule, and fires whatever matches. Which means the alarm
+          clock only rings if the machine is awake. A cron job on your laptop dies the moment
+          you close the lid.
+        </p>
+
+        <p>
+          That's why real schedules live on a <a href="server.html">server</a> — a computer
+          that never closes — and run <a href="headless.html">headless</a>, because nothing
+          about a 4 AM backup needs a screen. It's also why cloud schedulers exist: someone
+          else's always-awake machine, running your timers. Laptop for building, server for
+          running. This whole trio of lessons is really one sentence.
+        </p>
+
+        <h2>Cron + agent = an employee</h2>
+
+        <p>
+          Backups and reports are the classics. But here's the 2026 version: put an AI
+          <a href="agent.html">agent</a> on the timer. Every evening at 9 PM, one of my agents
+          reads the day's AI news and drafts content. Every morning, another one checks
+          what shipped overnight and writes me a briefing. I didn't hire anyone. I wrote a
+          schedule.
+        </p>
+
+        <p>
+          The pattern scales as far as you want: cron fires the trigger, the agent does the
+          judgment work, and you read the output with your coffee. The schedule is the shift;
+          the agent is the employee. And it fires whether or not you remember it exists —
+          that's the entire value: consistency you don't have to supply.
+        </p>
+
+        <p>Worth scheduling this week:</p>
+
+        <ul>
+          <li>A nightly backup of anything you'd cry about losing</li>
+          <li>A Monday-morning report that writes itself before you wake up</li>
+          <li>An agent that drafts tomorrow's content every evening — mine do</li>
+          <li>A weekly "is anything broken?" check on your site</li>
+        </ul>
+
+        <div class="callout">
+          Warning: cron is dumb on purpose. It fires on schedule whether the last run finished,
+          failed, or set something on fire — no retries, no memory, no apology. Silent failure
+          is cron's specialty, so make every scheduled task log somewhere you'll actually look,
+          or better, message you when it fails.
+        </div>
+
+        <p><strong>Set the alarm once. The work shows up forever.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You set a 2 AM nightly backup as a cron job on your laptop, but it only runs some nights. Most likely culprit?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The laptop was closed at 2 AM — cron only fires on a machine that's awake</button>
+              <button class="opt">Cron randomly skips nights by design to save power</button>
+              <button class="opt">Backups are too large to be scheduled</button>
+            </div>
+            <div class="why">Cron checks the clock on a running machine. Lid closed, no alarm. That's why scheduled work belongs on a server that never sleeps.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. A teammate's schedule reads <code>0 9 * * 1</code>. When does their report actually run?</p>
+            <div class="opts">
+              <button class="opt">Every day at 9:00 AM</button>
+              <button class="opt" data-correct>Every Monday at 9:00 AM</button>
+              <button class="opt">Every minute between 9:00 and 9:01 on the 1st of the month</button>
+            </div>
+            <div class="why">Left to right: minute 0, hour 9, any day of month, any month, weekday 1 — and weekday 1 is Monday.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You want an AI agent to draft a content digest every evening while you're at dinner. What's the right wiring?</p>
+            <div class="opts">
+              <button class="opt">Keep a chat window open and remember to ask it every night</button>
+              <button class="opt" data-correct>A cron job on a server fires the agent at 9 PM — headless, nobody watching</button>
+              <button class="opt">Agents can only run while you're actively online</button>
+            </div>
+            <div class="why">Cron is the trigger, the agent is the worker, the server keeps it all on. That's an automated employee — the exact stack the last three lessons built up to.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* schedule builder */
+    (function () {
+      var FIELDS = [
+        { label: "minute", color: "#f0b27a", title: "minute (0–59) — 0 means 'at minute zero'" },
+        { label: "hour", color: "#9ece8c", title: "hour (0–23) — 9 means 9 AM" },
+        { label: "day", color: "#e89084", title: "day of month (1–31) — * means every day" },
+        { label: "month", color: "#9ec7e8", title: "month (1–12) — * means every month" },
+        { label: "weekday", color: "#d3a7e0", title: "weekday (0–6) — 1 means Monday" }
+      ];
+      var DAYNAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+      var freq = "day";
+      var hour = 9;
+      var busy = false;
+      var booted = false;
+
+      var log = document.getElementById("cj-log");
+      var humanEl = document.getElementById("cj-human");
+      var cronBox = document.getElementById("cj-cron");
+      var weekBox = document.getElementById("cj-week");
+      var hourSel = document.getElementById("cj-hour");
+      var ffBtn = document.getElementById("cj-ff");
+      var chips = [].slice.call(document.querySelectorAll(".cj-freq"));
+
+      function addLog(html) {
+        if (!log.dataset.started) { log.innerHTML = ""; log.dataset.started = "1"; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      /* hour dropdown */
+      for (var h = 0; h < 24; h++) {
+        var o = document.createElement("option");
+        o.value = h;
+        o.textContent = (h < 10 ? "0" : "") + h + ":00";
+        if (h === 9) o.selected = true;
+        hourSel.appendChild(o);
+      }
+
+      /* cron field cells */
+      var cells = FIELDS.map(function (f) {
+        var c = document.createElement("div");
+        c.title = f.title;
+        c.style.cssText = "flex:1; background:var(--code-bg); border-radius:8px; padding:8px 4px; text-align:center; cursor:help;";
+        c.innerHTML =
+          '<b class="cj-val" style="font-family:var(--mono); font-size:1.25rem; color:' + f.color + ';">*</b>' +
+          '<div style="font-family:var(--sans); font-size:0.62rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:#8d897f; margin-top:2px;">' + f.label + "</div>";
+        cronBox.appendChild(c);
+        return c.querySelector(".cj-val");
+      });
+
+      /* week timeline cells */
+      var weekCells = DAYNAMES.map(function (d) {
+        var c = document.createElement("div");
+        c.style.cssText = "border:1px solid var(--border-soft); border-radius:8px; padding:6px 2px; text-align:center; background:var(--bg-deep); transition:all .25s ease;";
+        c.innerHTML =
+          '<div style="font-family:var(--sans); font-size:0.64rem; font-weight:700; color:var(--muted); text-transform:uppercase;">' + d + "</div>" +
+          '<div class="cj-mark" style="font-size:1rem; min-height:22px; line-height:22px;"></div>' +
+          '<div class="cj-sub" style="font-family:var(--sans); font-size:0.58rem; color:var(--muted); min-height:12px;"></div>';
+        weekBox.appendChild(c);
+        return { box: c, mark: c.querySelector(".cj-mark"), sub: c.querySelector(".cj-sub") };
+      });
+
+      function h12(hr) {
+        var ap = hr < 12 ? "AM" : "PM";
+        var v = hr % 12;
+        if (v === 0) v = 12;
+        return v + ":00 " + ap;
+      }
+
+      function cronParts() {
+        if (freq === "day") return ["0", String(hour), "*", "*", "*"];
+        if (freq === "mon") return ["0", String(hour), "*", "*", "1"];
+        if (freq === "hour") return ["0", "*", "*", "*", "*"];
+        return ["*", "*", "*", "*", "*"];
+      }
+      function cronString() { return cronParts().join(" "); }
+      function human() {
+        if (freq === "day") return "Every day at " + h12(hour);
+        if (freq === "mon") return "Every Monday at " + h12(hour);
+        if (freq === "hour") return "Every hour, on the hour";
+        return "Every single minute (1,440 times a day)";
+      }
+
+      function resetWeek() {
+        weekCells.forEach(function (c) {
+          c.box.style.borderColor = "var(--border-soft)";
+          c.box.style.background = "var(--bg-deep)";
+          c.mark.textContent = "";
+          c.sub.textContent = "";
+        });
+      }
+
+      function update() {
+        var parts = cronParts();
+        cells.forEach(function (c, i) { c.textContent = parts[i]; });
+        humanEl.textContent = human();
+        var timed = freq === "day" || freq === "mon";
+        hourSel.disabled = !timed;
+        hourSel.style.opacity = timed ? "1" : "0.45";
+        resetWeek();
+        if (booted) {
+          addLog('<span class="acc">compiled:</span> ' + cronString() + ' <span class="dim">— ' + human() + "</span>");
+        }
+      }
+
+      function setActive(btn) {
+        chips.forEach(function (b) {
+          var on = b === btn;
+          b.style.borderColor = on ? "var(--accent-bright)" : "";
+          b.style.background = on ? "var(--accent-faint)" : "";
+          b.style.color = on ? "var(--accent)" : "";
+        });
+      }
+
+      chips.forEach(function (b) {
+        b.addEventListener("click", function () {
+          if (busy) return;
+          freq = b.getAttribute("data-f");
+          setActive(b);
+          update();
+        });
+      });
+      hourSel.addEventListener("change", function () {
+        if (busy) { hourSel.value = hour; return; }
+        hour = parseInt(hourSel.value, 10);
+        update();
+      });
+
+      /* fast-forward one week */
+      function flood(name, di) {
+        var lines = ["00:00 backup ran", "00:01 backup ran", "00:02 backup ran", "00:03 backup ran", "00:04 backup ran"];
+        lines.forEach(function (l, i) {
+          setTimeout(function () { addLog('<span class="dim">' + name + " " + l + "</span>"); }, i * 55);
+        });
+        setTimeout(function () {
+          addLog(name + ': <span class="err">…+1,435 more runs today.</span>');
+          if (di === 0) addLog('<span class="err">60 backups in the first hour. your inbox: 👹</span>');
+        }, 330);
+      }
+
+      ffBtn.addEventListener("click", function () {
+        if (busy) return;
+        busy = true;
+        ffBtn.disabled = true;
+        resetWeek();
+        addLog('<span class="acc">⏩ fast-forwarding one week — schedule: ' + cronString() + "</span>");
+        var di = 0;
+
+        function summary() {
+          if (freq === "day") addLog('<span class="ok">week complete: 7 runs.</span> <span class="dim">it brewed every morning. you slept.</span>');
+          else if (freq === "mon") addLog('<span class="ok">week complete: 1 run.</span> <span class="dim">fired Monday, ignored the other six days. that\'s precision.</span>');
+          else if (freq === "hour") addLog('<span class="ok">week complete: 168 runs.</span> <span class="dim">every hour, all week, no human involved.</span>');
+          else addLog('<span class="err">week complete: 10,080 runs.</span> <span class="acc">maybe… not every minute, then.</span>');
+          busy = false;
+          ffBtn.disabled = false;
+        }
+
+        function day() {
+          if (di >= 7) { summary(); return; }
+          var cell = weekCells[di];
+          var name = DAYNAMES[di];
+          cell.box.style.borderColor = "var(--accent-bright)";
+          cell.box.style.background = "var(--card-raise)";
+          var fires = freq !== "mon" || di === 0;
+          if (!fires) {
+            cell.mark.textContent = "·";
+            cell.mark.style.color = "var(--muted)";
+          } else if (freq === "day" || freq === "mon") {
+            cell.mark.textContent = "✓";
+            cell.mark.style.color = "var(--good)";
+            cell.sub.textContent = h12(hour);
+            addLog('<span class="ok">✓ ' + name + " " + h12(hour) + "</span> — backup ran · report sent");
+          } else if (freq === "hour") {
+            cell.mark.textContent = "✓";
+            cell.mark.style.color = "var(--good)";
+            cell.sub.textContent = "×24";
+            addLog('<span class="ok">✓ ' + name + "</span> — 24 runs, one every hour on the hour");
+          } else {
+            cell.mark.textContent = "👹";
+            cell.sub.textContent = "×1,440";
+            flood(name, di);
+          }
+          di++;
+          setTimeout(day, freq === "min" ? 640 : 430);
+        }
+        day();
+      });
+
+      /* boot */
+      setActive(chips[0]);
+      update();
+      booted = true;
+    })();
+  </script>
+</body>
+</html>

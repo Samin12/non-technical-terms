@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CLI — Claude Club</title>
+  <meta name="description" content="CLI, explained in plain English: talk straight to the computer, no clicking. With an interactive type-it-yourself terminal." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="cli" data-related="api,ssh,headless,slash-command">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>CLI</h1>
+        <p class="tldr"><b>TLDR</b>Talk straight to the computer. No clicking.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: type-it-yourself terminal ============ -->
+      <section class="widget" aria-label="Type-it-yourself terminal">
+        <div class="widget-bar"><span class="dot"></span> Try it — a type-it-yourself terminal</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            This is a terminal. No buttons to hunt for — you type, it does. Start with
+            <span style="font-family:var(--mono); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:5px; padding:0.05em 0.35em;">help</span>.
+          </p>
+          <div class="wlog" id="cli-log" style="min-height:170px; max-height:260px; margin-bottom:0.7rem;"><span class="dim">claude-club shell — type "help" and press Enter, or click a shortcut below.</span></div>
+          <div class="wrow" style="margin-bottom:0.8rem; flex-wrap:nowrap;">
+            <span style="font-family:var(--mono); font-weight:700; color:var(--accent);">$</span>
+            <input class="winput" id="cli-in" type="text" autocomplete="off" spellcheck="false" placeholder='type a command — try "help"' style="flex:1; font-family:var(--mono);" />
+            <button class="wbtn primary" id="cli-run">Run</button>
+          </div>
+          <div class="wrow" style="margin-bottom:1rem;">
+            <span style="font-size:0.78rem; color:var(--muted); font-weight:600;">Shortcuts:</span>
+            <button class="wbtn cli-chip" data-cmd="ls">ls</button>
+            <button class="wbtn cli-chip" data-cmd="open report.txt">open report.txt</button>
+            <button class="wbtn cli-chip" data-cmd="make coffee">make coffee</button>
+            <button class="wbtn cli-chip" data-cmd="deploy">deploy</button>
+          </div>
+          <div style="display:flex; gap:0.8rem; flex-wrap:wrap; font-size:0.82rem;">
+            <div style="flex:1; min-width:210px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:0.7rem 0.9rem;">
+              <b>GUI way:</b> open the app → find your project → open the menu → click "Publish" → confirm → wait
+              <span style="color:var(--bad); font-weight:700; display:block; margin-top:0.25rem;">6 clicks</span>
+            </div>
+            <div style="flex:1; min-width:210px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:0.7rem 0.9rem;">
+              <b>CLI way:</b> <span style="font-family:var(--mono);">deploy</span>
+              <span style="color:var(--good); font-weight:700; display:block; margin-top:0.25rem;">1 line</span>
+            </div>
+          </div>
+        </div>
+        <p class="widget-hint">Tip: the up arrow repeats your last command — the second-best feature of every terminal.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          There are two ways to order food. You can point at the picture on the menu and hope the
+          kitchen figures it out. Or you can walk up and say exactly what you want, in the
+          kitchen's own shorthand, and get exactly that.
+        </p>
+
+        <p>
+          Pointing at pictures is the GUI — the graphical interface of windows, icons, and
+          buttons you've used your whole life. The second way is the CLI.
+        </p>
+
+        <p><strong>The CLI — command line interface — is where you type instructions straight to the computer instead of clicking through screens.</strong></p>
+
+        <p>
+          It's that black window from the hacker movies. And you just used one: <code>ls</code> to
+          look around, <code>open</code> to read a file, <code>deploy</code> to ship a site. Type
+          a thing, get a thing. That's the entire interface. (If you tried <code>make coffee</code>,
+          you also met the terminal's personality: literal, honest, one job per command.)
+        </p>
+
+        <h2>One line beats six clicks</h2>
+
+        <p>Why would anyone give up buttons? Three reasons builders never go back:</p>
+
+        <ul>
+          <li><strong>Precision.</strong> A command says one exact thing. No "wait, which of these three gear icons is settings?"</li>
+          <li><strong>Repeatability.</strong> A command is text, so you can save it, paste it, run it a hundred times, or schedule it every morning with a <a href="cron-job.html">cron job</a>. "Click the third menu, then the gray button" is not a recipe a computer can rerun. <code>deploy</code> is.</li>
+          <li><strong>Power.</strong> A GUI shows you the options somebody decided to draw buttons for. The CLI exposes everything the tool can do.</li>
+        </ul>
+
+        <p>
+          You saw the strip under the widget: the GUI route to publishing a site is six clicks
+          across three screens. The CLI route is one word. Now imagine doing that every day,
+          forever.
+        </p>
+
+        <h2>This is where Claude Code lives</h2>
+
+        <p>
+          Here's why this lesson matters more now than ever: AI agents are CLI-native. A language
+          model's whole world is text in, text out — and a terminal is exactly that. No pixels to
+          interpret, no buttons to hunt for.
+        </p>
+
+        <p>
+          So when Claude Code builds something for you, it's sitting in a terminal typing
+          commands, just like you just did: listing files, installing packages, running tests,
+          deploying. Every tool with a CLI is a tool your AI can drive at full speed. There is a
+          slower path where AI literally moves a mouse around the screen — that's
+          <a href="computer-use.html">computer use</a>, later in the course — but text is its
+          native language.
+        </p>
+
+        <p>
+          One more thing: the machines your projects eventually run on — servers in a data
+          center — don't have screens at all. Out there, the terminal isn't a preference. It's
+          the only door in. You'll walk through it in the <a href="ssh.html">SSH</a> lesson.
+        </p>
+
+        <div class="callout">
+          A terminal does what you say, not what you mean — and plenty of commands have no undo
+          and no "are you sure?" Make this a habit: paste any unfamiliar command to Claude first
+          and ask "what does this do?" Ten seconds of checking, zero days of regret.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>No more panic when a tutorial — or Claude — says "run this command"</li>
+          <li>Install real builder tools with one pasted line instead of a nine-screen wizard</li>
+          <li>Watch Claude Code work and actually follow what it's doing</li>
+          <li>Automate anything you catch yourself clicking through twice</li>
+          <li>Talk to screenless machines — which is most of the machines that matter</li>
+        </ul>
+
+        <p>
+          You don't need to memorize commands. You need to stop fearing the black window —
+          because your AI speaks fluent terminal, and now you know enough to read over its
+          shoulder.
+        </p>
+
+        <p><strong>Clicking is pointing at pictures. The CLI is speaking the computer's language.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Claude tells you: "run <code>npm install</code> in your project folder." Where does that happen?</p>
+            <div class="opts">
+              <button class="opt">In the browser's address bar</button>
+              <button class="opt" data-correct>In the terminal — you type it at the prompt and press Enter</button>
+              <button class="opt">In the search bar of the npm website</button>
+            </div>
+            <div class="why">Commands run in the terminal. The address bar finds websites; the terminal runs instructions on your machine.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You mistype a command and the terminal says "command not found." What actually happened?</p>
+            <div class="opts">
+              <button class="opt">The computer ran its best guess at what you meant</button>
+              <button class="opt">You broke the terminal and need to restart your computer</button>
+              <button class="opt" data-correct>Nothing ran — the terminal is literal and waits for a command it recognizes</button>
+            </div>
+            <div class="why">Terminals don't guess — you saw this in the widget. Wrong text means no action, which is exactly what makes the right text so powerful.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Why do AI agents like Claude Code do their work in a terminal instead of clicking around the screen?</p>
+            <div class="opts">
+              <button class="opt" data-correct>A terminal is pure text in, text out — the language an AI already speaks natively</button>
+              <button class="opt">Terminals are the only place where code is allowed to execute</button>
+              <button class="opt">Clicking is disabled for AIs for safety reasons</button>
+            </div>
+            <div class="why">AI can click screens too — that's computer use, coming in Level 3 — but text commands are faster, more precise, and exactly how a language model already thinks.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* type-it-yourself terminal */
+    (function () {
+      var log = document.getElementById("cli-log");
+      var input = document.getElementById("cli-in");
+      var runBtn = document.getElementById("cli-run");
+      var history = [];
+      var hIdx = 0;
+      var busy = false;
+
+      var FILES = {
+        "report.txt": "Q2 report: revenue up 14%. Coffee budget: officially out of control.",
+        "ideas.md": "1. an app that texts me when my server is sad\n2. a newsletter about newsletters\n3. (this one is secret)",
+        "todo.txt": "[x] learn what a CLI is\n[ ] everything else"
+      };
+
+      function esc(s) {
+        return String(s).replace(/[&<>"]/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+        });
+      }
+
+      function out(html) {
+        log.innerHTML += (log.innerHTML ? "\n" : "") + html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function run(raw) {
+        var cmd = raw.trim();
+        if (!cmd || busy) return;
+        out('<span class="acc">$ ' + esc(cmd) + "</span>");
+        history.push(cmd);
+        hIdx = history.length;
+
+        var parts = cmd.split(/\s+/);
+        var name = parts[0].toLowerCase();
+        var arg = parts.slice(1).join(" ");
+
+        if (name === "help") {
+          out('available commands:\n  <span class="ok">help</span>          this list\n  <span class="ok">ls</span>            list the files here\n  <span class="ok">open</span> &lt;file&gt;   read a file\n  <span class="ok">deploy</span>        put the site live\n  <span class="ok">make coffee</span>   worth a try\n  <span class="ok">clear</span>         wipe the screen');
+        } else if (name === "ls") {
+          out('report.txt   ideas.md   todo.txt   <span class="dim">app/</span>');
+        } else if (name === "open") {
+          if (!arg) {
+            out('<span class="err">open what?</span> <span class="dim">usage: open report.txt</span>');
+          } else if (FILES[arg]) {
+            out('<span class="dim">── ' + esc(arg) + ' ──</span>\n' + esc(FILES[arg]));
+          } else {
+            out('<span class="err">no such file: ' + esc(arg) + '</span> <span class="dim">— try "ls" to see what is here</span>');
+          }
+        } else if (name === "make") {
+          if (arg.toLowerCase() === "coffee") {
+            out('<span class="err">I\'m a terminal, not a barista.</span> But nice instinct — one command should do one thing.');
+          } else {
+            out('<span class="err">make: I only know how to attempt coffee.</span> <span class="dim">try "make coffee"</span>');
+          }
+        } else if (name === "clear") {
+          log.innerHTML = "";
+        } else if (name === "deploy") {
+          busy = true;
+          out('<span class="dim">building site…</span>');
+          setTimeout(function () { out('<span class="dim">uploading 14 files to the server…</span>'); }, 500);
+          setTimeout(function () {
+            out('<span class="ok">🚀 deployed — your site is live.</span> one line. that\'s the whole point.');
+            busy = false;
+          }, 1200);
+        } else {
+          out('<span class="err">command not found: ' + esc(name) + '</span> <span class="dim">— type "help" to see what I know</span>');
+        }
+      }
+
+      function submit() {
+        var v = input.value;
+        input.value = "";
+        run(v);
+        input.focus();
+      }
+
+      runBtn.addEventListener("click", submit);
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          submit();
+        } else if (e.key === "ArrowUp") {
+          if (history.length) {
+            hIdx = Math.max(0, hIdx - 1);
+            input.value = history[hIdx];
+            e.preventDefault();
+          }
+        } else if (e.key === "ArrowDown") {
+          if (history.length) {
+            hIdx = Math.min(history.length, hIdx + 1);
+            input.value = history[hIdx] || "";
+            e.preventDefault();
+          }
+        }
+      });
+
+      [].slice.call(document.querySelectorAll(".cli-chip")).forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          run(btn.getAttribute("data-cmd"));
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

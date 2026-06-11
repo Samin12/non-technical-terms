@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Worker — Claude Club</title>
+  <meta name="description" content="Worker, explained in plain English: a small program that runs one job on demand. With an interactive job dispatcher." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="worker" data-related="queue,job,serverless,process,async">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Worker</h1>
+        <p class="tldr"><b>TLDR</b>A small program that runs one job on demand.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: job dispatcher ============ -->
+      <section class="widget" aria-label="Worker job dispatcher">
+        <div class="widget-bar"><span class="dot"></span> Try it — the job dispatcher</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            You're the app. Tasks come in, and a crew of workers chews through them.
+            Drop tasks into the lane, then change the size of your crew and watch the throughput.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn primary" id="wk-add">➕ New task</button>
+            <button class="wbtn" id="wk-add10">🌊 Rush: 10 tasks</button>
+            <button class="wbtn" id="wk-hire">🧑‍🍳 Add worker</button>
+            <button class="wbtn danger" id="wk-fire">Remove worker</button>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.8rem; gap:1rem; font-size:0.8rem; font-weight:600; color:var(--ink-soft);">
+            <span>🗒️ Pending: <b id="wk-stat-pending" style="color:var(--accent);">0</b></span>
+            <span>🔁 In progress: <b id="wk-stat-active">0</b></span>
+            <span>✅ Done: <b id="wk-stat-done" style="color:var(--good);">0</b></span>
+            <span>⚡ Throughput: <b id="wk-stat-rate">~0/min</b></span>
+          </div>
+
+          <div style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:0.35rem;">Pending lane (the line of tickets)</div>
+          <div id="wk-lane" style="display:flex; flex-wrap:wrap; gap:6px; min-height:46px; background:var(--bg-deep); border:1px dashed var(--border); border-radius:10px; padding:8px; margin-bottom:0.9rem;">
+            <span id="wk-lane-empty" style="font-size:0.78rem; color:var(--muted);">no tickets waiting — hit ➕ New task</span>
+          </div>
+
+          <div style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:0.35rem;">Worker pool</div>
+          <div id="wk-pool" style="display:flex; flex-direction:column; gap:6px;"></div>
+        </div>
+        <p class="widget-hint">Spam 10 tasks with one worker and watch the line crawl — then hire four more and watch it get chewed through.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Friday night. A restaurant kitchen. Orders are flying in, and the head chef is running
+          the line — reading tickets, plating dishes, keeping the whole room moving.
+        </p>
+
+        <p>
+          So who's peeling the potatoes? Who's dicing the forty pounds of onions? Not the head
+          chef. That's what prep cooks are for. Each one takes a ticket, does one thing well,
+          and grabs the next ticket. The chef never stops running the line.
+        </p>
+
+        <p><strong>That's a worker: a small program that sits off to the side, picks up one job at a time, runs it, and asks for the next.</strong></p>
+
+        <h2>Hand off the ticket, keep moving</h2>
+
+        <p>
+          Your app — the part people actually click on — is the head chef. Its whole job is
+          staying responsive. When you upload 400 photos, it does not stop to resize them while
+          you stare at a spinner. It writes 400 tickets, drops them on a
+          <a href="queue.html">queue</a>, instantly says "got it," and goes back to answering
+          clicks. Off to the side, workers grab tickets and chew through them.
+        </p>
+
+        <p>
+          You just played this exact scene in the dispatcher above: the pending lane is the
+          queue, each slot in the pool is a worker, and every ✓ is one finished
+          <a href="job.html">job</a>. The app never broke a sweat — because the app never did
+          the heavy lifting. That handoff — answer now, work later — is the same instinct
+          you'll meet again in <a href="async.html">async</a>.
+        </p>
+
+        <h2>Scaling means more cooks, not a faster chef</h2>
+
+        <p>
+          Here's the beautiful part: throughput becomes a knob. When the line of pending tasks
+          gets long, you don't rewrite your app or shop for a magic computer. You add workers.
+          You watched it happen — ten tasks with one worker is a slow, sad line; the same ten
+          tasks with five workers evaporate.
+        </p>
+
+        <p>
+          Engineers call this scaling horizontally, and modern platforms do it automatically:
+          <a href="serverless.html">serverless</a> systems spin up extra workers when the line
+          grows and quietly dismiss them when things calm down. Demand spikes stop being
+          emergencies. They're just longer lines that more cooks eat through.
+        </p>
+
+        <h2>This is what "background processing" means</h2>
+
+        <p>
+          Every time an app tells you "we're processing your file — we'll email you when it's
+          ready," you now know exactly what's happening: a worker has your ticket. AI tools
+          transcribing an hour of audio, video exports, "generating your report," Claude
+          running a long task while you keep chatting — workers, all the way down. There's
+          nothing magical back there. Just small programs with one skill each, doing it ten
+          thousand times without complaining.
+        </p>
+
+        <div class="callout">
+          Pro-tip: keep workers boring. One worker, one kind of job. And design for death — a
+          worker should be able to crash mid-task and have another worker simply retry the
+          ticket. Nothing lost, nobody paged. That retry safety net is the heart of the Job
+          lesson, coming right up.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>The upload that "processes in the background" while you keep browsing — workers</li>
+          <li>The "your export is ready" email that lands four minutes later — a worker finished your ticket</li>
+          <li>AI transcription that runs without freezing the page — a worker, not the chatbot itself</li>
+          <li>Apps that stay snappy under load — the heavy stuff was never in your way to begin with</li>
+        </ul>
+
+        <p>
+          Your app's job is to answer the door. The workers' job is everything else.
+        </p>
+
+        <p><strong>The head chef takes the orders — the prep cooks are how the restaurant scales.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You upload 300 photos and the app instantly says "Processing — we'll notify you," and lets you keep browsing. What's happening backstage?</p>
+            <div class="opts">
+              <button class="opt">One big program is resizing all 300 photos before it answers you</button>
+              <button class="opt" data-correct>The app wrote 300 tickets, and workers are picking them up one by one in the background</button>
+              <button class="opt">Your phone already resized the photos before uploading</button>
+            </div>
+            <div class="why">An instant answer plus results-later is the worker signature: the main app handed off tickets and went straight back to answering clicks.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. It's launch day. The pending lane grows all afternoon, and your single worker is healthy but maxed out. The classic fix?</p>
+            <div class="opts">
+              <button class="opt">Restart the queue so the line resets to zero</button>
+              <button class="opt" data-correct>Add more workers — throughput scales sideways, like hiring more prep cooks</button>
+              <button class="opt">Have the main app pitch in on tasks between user clicks</button>
+            </div>
+            <div class="why">Exactly what you saw in the dispatcher: same ten tasks, five workers instead of one. Resetting the line loses work, and the main app must stay free to answer the door.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Why shouldn't the main app — the one answering every click — also transcode uploaded videos itself?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The heavy work would block it, so every user's clicks would wait behind someone's video</button>
+              <button class="opt">Main apps are technically incapable of processing video</button>
+              <button class="opt">It could, but only during nighttime hours</button>
+            </div>
+            <div class="why">It physically could — it just shouldn't. A head chef peeling potatoes means the whole line stops. Heavy work goes to workers so the app stays responsive.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* job dispatcher */
+    (function () {
+      var KINDS = [
+        { icon: "🖼️", name: "resize image" },
+        { icon: "✉️", name: "send email" },
+        { icon: "📄", name: "generate PDF" },
+        { icon: "🎙️", name: "transcribe audio" }
+      ];
+      var pending = [];
+      var workers = [];
+      var taskN = 0, doneCount = 0, hireN = 0;
+      var doneTimes = [];
+
+      var lane = document.getElementById("wk-lane");
+      var laneEmpty = document.getElementById("wk-lane-empty");
+      var pool = document.getElementById("wk-pool");
+      var elPending = document.getElementById("wk-stat-pending");
+      var elActive = document.getElementById("wk-stat-active");
+      var elDone = document.getElementById("wk-stat-done");
+      var elRate = document.getElementById("wk-stat-rate");
+      var btnHire = document.getElementById("wk-hire");
+      var btnFire = document.getElementById("wk-fire");
+
+      function chipFor(t) {
+        var el = document.createElement("span");
+        el.style.cssText = "font-size:0.74rem;font-weight:600;background:var(--card-raise);border:1px solid var(--border);border-radius:7px;padding:4px 8px;transition:all .3s ease;white-space:nowrap;";
+        el.textContent = t.icon + " " + t.name + " #" + t.id;
+        return el;
+      }
+
+      function newTask() {
+        var k = KINDS[Math.floor(Math.random() * KINDS.length)];
+        taskN++;
+        var t = { id: taskN, icon: k.icon, name: k.name };
+        t.el = chipFor(t);
+        pending.push(t);
+        lane.appendChild(t.el);
+        render();
+      }
+
+      function makeWorker() {
+        if (workers.length >= 6) return;
+        hireN++;
+        var w = { name: "Worker " + hireN, busy: false, task: null, timer: null };
+        var row = document.createElement("div");
+        row.style.cssText = "display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border-soft);border-radius:9px;padding:7px 11px;";
+        row.innerHTML =
+          '<span style="font-size:1.05rem;">🧑‍🍳</span>' +
+          '<b style="font-size:0.78rem;white-space:nowrap;">' + w.name + "</b>" +
+          '<span data-st style="font-size:0.76rem;color:var(--muted);flex:1;min-width:90px;">idle — waiting for a ticket</span>' +
+          '<div class="wmeter" style="width:110px;flex:none;"><i></i></div>';
+        w.el = row;
+        w.stEl = row.querySelector("[data-st]");
+        w.barEl = row.querySelector(".wmeter > i");
+        pool.appendChild(row);
+        workers.push(w);
+        render();
+      }
+
+      function fireWorker() {
+        if (workers.length <= 1) return;
+        var w = workers.pop();
+        if (w.timer) clearTimeout(w.timer);
+        if (w.task) {
+          /* hand the unfinished ticket back to the front of the line */
+          pending.unshift(w.task);
+          lane.insertBefore(w.task.el, lane.firstChild);
+        }
+        w.el.remove();
+        render();
+      }
+
+      function assign(w, t) {
+        w.busy = true;
+        w.task = t;
+        t.el.remove();
+        w.stEl.textContent = t.icon + " " + t.name + " #" + t.id + "…";
+        w.stEl.style.color = "var(--accent)";
+        var dur = 1500 + Math.random() * 500;
+        w.barEl.style.transition = "none";
+        w.barEl.style.width = "0%";
+        void w.barEl.offsetWidth;
+        w.barEl.style.transition = "width " + Math.round(dur) + "ms linear";
+        w.barEl.style.width = "100%";
+        w.timer = setTimeout(function () {
+          doneCount++;
+          doneTimes.push(Date.now());
+          w.stEl.textContent = "✓ done: " + t.name + " #" + t.id;
+          w.stEl.style.color = "var(--good)";
+          w.busy = false;
+          w.task = null;
+          w.timer = null;
+          w.barEl.style.transition = "none";
+          w.barEl.style.width = "0%";
+          render();
+        }, dur);
+      }
+
+      function render() {
+        var active = 0;
+        workers.forEach(function (w) { if (w.busy) active++; });
+        elPending.textContent = pending.length;
+        elActive.textContent = active;
+        elDone.textContent = doneCount;
+        var now = Date.now();
+        doneTimes = doneTimes.filter(function (ts) { return now - ts < 60000; });
+        elRate.textContent = "~" + doneTimes.length + "/min";
+        laneEmpty.style.display = pending.length ? "none" : "inline";
+        btnFire.disabled = workers.length <= 1;
+        btnHire.disabled = workers.length >= 6;
+      }
+
+      /* the dispatcher: idle workers grab the next ticket */
+      setInterval(function () {
+        workers.forEach(function (w) {
+          if (!w.busy && pending.length) {
+            assign(w, pending.shift());
+          }
+        });
+        render();
+      }, 200);
+
+      document.getElementById("wk-add").addEventListener("click", newTask);
+      document.getElementById("wk-add10").addEventListener("click", function () {
+        for (var i = 0; i < 10; i++) newTask();
+      });
+      btnHire.addEventListener("click", makeWorker);
+      btnFire.addEventListener("click", fireWorker);
+
+      makeWorker();
+      makeWorker();
+      makeWorker();
+    })();
+  </script>
+</body>
+</html>

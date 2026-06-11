@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HTTP Methods — Claude Club</title>
+  <meta name="description" content="HTTP methods, explained in plain English: get, create, update, delete — the verbs of the web. With an interactive verb playground." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="http-methods" data-related="api,endpoint,rest-api,webhook">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>HTTP Methods</h1>
+        <p class="tldr"><b>TLDR</b>Get, create, update, delete. The verbs of the web.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: verb playground ============ -->
+      <section class="widget" aria-label="HTTP methods verb playground">
+        <div class="widget-bar"><span class="dot"></span> Try it — the verb playground</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            One address — <b>/orders</b> — four verbs. Below is the bakery's live order board.
+            Hit each verb and watch what actually changes.
+          </p>
+
+          <div id="hm-list" style="display:flex; flex-direction:column; gap:6px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:10px; min-height:70px; margin-bottom:0.9rem;"></div>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn" id="hm-get">🔍 GET /orders</button>
+            <button class="wbtn" id="hm-post">➕ POST /orders</button>
+            <button class="wbtn" id="hm-put">✏️ PUT /orders/2</button>
+            <button class="wbtn danger" id="hm-del">🗑️ DELETE /orders/3</button>
+            <button class="wbtn" id="hm-reset">↺ Reset</button>
+          </div>
+
+          <div class="wlog" id="hm-log" style="margin-bottom:1.1rem;"><span class="dim">Pick a verb…</span></div>
+
+          <div style="border-top:1px dashed var(--border); padding-top:0.9rem;">
+            <div style="font-weight:700; font-size:0.74rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:0.55rem;">Round 2 — pick the right verb</div>
+            <div id="hm-task" style="font-weight:600; margin-bottom:0.55rem;"></div>
+            <div class="wrow" style="margin-bottom:0.55rem;">
+              <button class="wbtn hm-ans" data-v="GET">GET</button>
+              <button class="wbtn hm-ans" data-v="POST">POST</button>
+              <button class="wbtn hm-ans" data-v="PUT">PUT</button>
+              <button class="wbtn hm-ans" data-v="DELETE">DELETE</button>
+            </div>
+            <div id="hm-fb" style="font-family:var(--sans); font-size:0.85rem; min-height:1.4em; color:var(--muted);"></div>
+          </div>
+        </div>
+        <p class="widget-hint">Notice: GET never changed the board. POST grew it. PUT edited one row. DELETE removed one. That difference is the whole lesson.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          You already use four verbs at a library without thinking: look at a book, donate a
+          new one, swap in a fresh edition, pull a damaged copy off the shelf. Four moves.
+          That's the entire repertoire.
+        </p>
+
+        <p>
+          The web runs on the same four moves. Every time any app talks to any other app —
+          your AI included — the request leads with a verb that declares its intent.
+        </p>
+
+        <p><strong>HTTP methods are the verbs of the web: GET reads, POST creates, PUT updates, DELETE removes.</strong></p>
+
+        <h2>Same door, different verb</h2>
+
+        <p>
+          In the <a href="endpoint.html">Endpoint</a> lesson you learned the nouns — the doors,
+          like <code>/orders</code>. Methods are what you <em>do</em> at the door. You just
+          felt this in the playground: <code>GET /orders</code> and <code>POST /orders</code>
+          hit the exact same address, and one left the board untouched while the other grew it.
+          Verb plus noun makes a complete sentence: <code>POST /orders</code> literally reads
+          "create an order."
+        </p>
+
+        <ul>
+          <li><strong>GET — read it.</strong> Loading your profile, fetching a list. Never changes anything. You can GET all day with zero consequences.</li>
+          <li><strong>POST — create something new.</strong> A signup, a payment, a new order. Every POST makes another one — you watched #4, #5, #6 stack up.</li>
+          <li><strong>PUT — update what's there.</strong> (Its cousin PATCH edits just one field.) Order #2 went large; run it again and it's still just… large. Same call, same result.</li>
+          <li><strong>DELETE — remove it.</strong> Order #3 faded out. Try deleting it twice and the second attempt 404s — it's already gone.</li>
+        </ul>
+
+        <p>
+          The numbers that came back are the receipts: <b>200</b> means "done, here you go,"
+          <b>201</b> means "created your new thing," <b>204</b> means "deleted, nothing left to
+          show you." You'll meet the full family in the <a href="rest-api.html">REST API</a>
+          lesson — for now, just notice the answers were as predictable as the verbs.
+        </p>
+
+        <h2>Why this matters when you build with AI</h2>
+
+        <p>
+          When Claude wires up an automation through an <a href="api.html">API</a>, every step
+          in its log is one of these sentences: <code>GET /subscribers</code>,
+          <code>POST /invoices</code>, <code>DELETE /webhooks/3</code>. Once you read verbs,
+          those logs stop being noise and start being a story — it read the list, it created an
+          invoice, it removed a hook. You can audit your own agent at a glance.
+        </p>
+
+        <p>
+          It also sharpens how you ask. "Pull the rows but don't modify anything" is you saying
+          <em>GET only</em>. "Add this as a new contact" is a POST. Speaking in verbs gets you
+          exactly the automation you meant, instead of roughly the one you described.
+        </p>
+
+        <div class="callout">
+          The verb tells you what's safe to retry. Retrying a GET is free — reading twice
+          changes nothing. Retrying a POST creates a <em>second</em> thing: two orders, two
+          invoices, two charges on a customer's card. When an automation "mysteriously made
+          duplicates," a POST got fired twice. It's also why checkout pages beg you not to
+          click the buy button again.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Read any request log like English — verb + door = what just happened</li>
+          <li>Brief your AI precisely: "GET the data, never POST" is a one-line safety rail</li>
+          <li>Diagnose duplicates instantly (something retried a POST)</li>
+          <li>Know which buttons are safe to mash (reads) and which are not (creates)</li>
+        </ul>
+
+        <p><strong>Nouns are the doors. Verbs are what you do at them. Four verbs run the entire conversation between every app on the internet.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your AI needs to pull your last 10 Shopify orders to summarize them — changing nothing. Which request should it send?</p>
+            <div class="opts">
+              <button class="opt" data-correct>GET /orders — it's a read, and reads never change anything</button>
+              <button class="opt">POST /orders — POST is the strongest verb, so it's safest</button>
+              <button class="opt">DELETE /orders — fetch them by removing them from the store</button>
+            </div>
+            <div class="why">Summarizing is pure reading, and reading is GET. POST would create a new order, and DELETE would be a very bad morning.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Your invoicing automation glitched and every customer got two identical invoices. Which verb was almost certainly involved?</p>
+            <div class="opts">
+              <button class="opt">GET — it ran twice, so it doubled the data</button>
+              <button class="opt" data-correct>POST — it creates something new every time it fires, so firing twice made two</button>
+              <button class="opt">DELETE — deleting can accidentally duplicate things</button>
+            </div>
+            <div class="why">POST is the "make another one" verb. A retried GET reads twice and changes nothing; a retried POST manufactures a second invoice.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You want to fix just the shipping address on order #7 — everything else stays. Best fit?</p>
+            <div class="opts">
+              <button class="opt">DELETE /orders/7, then hope the customer reorders</button>
+              <button class="opt">GET /orders/7 with the new address typed into it</button>
+              <button class="opt" data-correct>PUT (or PATCH) to /orders/7 with the corrected address</button>
+            </div>
+            <div class="why">Updating an existing thing is PUT/PATCH territory — aimed at the one specific order, /orders/7. GET can't change data, and DELETE is a sledgehammer.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* verb playground */
+    (function () {
+      var log = document.getElementById("hm-log");
+      var listEl = document.getElementById("hm-list");
+      var orders, nextId, pastryIx;
+      var PASTRIES = ["🥐 croissant", "🍩 babka", "🧁 danish", "🥨 pretzel", "🍪 scone"];
+
+      function add(html) {
+        if (!log.dataset.started) { log.innerHTML = ""; log.dataset.started = "1"; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function rowEl(o) {
+        var d = document.createElement("div");
+        d.style.cssText = "display:flex;gap:8px;align-items:center;font-family:var(--sans);font-size:0.84rem;font-weight:600;background:var(--card-raise);border:1px solid var(--border);border-radius:8px;padding:6px 10px;transition:all .45s ease;";
+        d.innerHTML = '<span style="color:var(--accent);">#' + o.id + "</span> " + o.item +
+          (o.extra ? ' <span style="color:var(--good);">' + o.extra + "</span>" : "");
+        return d;
+      }
+
+      function flash(el) {
+        el.style.background = "var(--accent-faint)";
+        el.style.borderColor = "var(--accent-bright)";
+        setTimeout(function () {
+          el.style.background = "var(--card-raise)";
+          el.style.borderColor = "var(--border)";
+        }, 700);
+      }
+
+      function reset() {
+        orders = [
+          { id: 1, item: "🍞 sourdough" },
+          { id: 2, item: "☕ coffee cake", extra: "" },
+          { id: 3, item: "🥖 baguette" }
+        ];
+        nextId = 4;
+        pastryIx = 0;
+        listEl.innerHTML = "";
+        orders.forEach(function (o) { o.el = rowEl(o); listEl.appendChild(o.el); });
+      }
+
+      function find(id) {
+        for (var i = 0; i < orders.length; i++) { if (orders[i].id === id) return orders[i]; }
+        return null;
+      }
+
+      document.getElementById("hm-get").addEventListener("click", function () {
+        add('<span class="acc">→ GET /orders</span>');
+        var names = orders.map(function (o) { return "#" + o.id; }).join(", ");
+        setTimeout(function () {
+          add('<span class="ok">← 200 OK</span> — ' + orders.length + " orders: " + (names || "none") + ' <span class="dim">(a read — the board didn\'t change)</span>');
+        }, 300);
+      });
+
+      document.getElementById("hm-post").addEventListener("click", function () {
+        var o = { id: nextId++, item: PASTRIES[pastryIx++ % PASTRIES.length] };
+        add('<span class="acc">→ POST /orders</span> { item: "' + o.item.split(" ")[1] + '" }');
+        setTimeout(function () {
+          o.el = rowEl(o);
+          o.el.style.opacity = "0";
+          listEl.appendChild(o.el);
+          orders.push(o);
+          requestAnimationFrame(function () { o.el.style.opacity = "1"; flash(o.el); });
+          add('<span class="ok">← 201 Created</span> — order #' + o.id + ' exists now <span class="dim">(every POST makes one more)</span>');
+        }, 300);
+      });
+
+      document.getElementById("hm-put").addEventListener("click", function () {
+        add('<span class="acc">→ PUT /orders/2</span> { size: "large" }');
+        var o = find(2);
+        setTimeout(function () {
+          if (!o) { add('<span class="err">← 404 Not Found</span> — order #2 is gone.'); return; }
+          var already = !!o.extra;
+          o.extra = "· size: LARGE";
+          o.el.innerHTML = '<span style="color:var(--accent);">#2</span> ' + o.item + ' <span style="color:var(--good);">' + o.extra + "</span>";
+          flash(o.el);
+          add('<span class="ok">← 200 OK</span> — order #2 updated' + (already ? ' <span class="dim">(again — same call, same result)</span>' : ""));
+        }, 300);
+      });
+
+      document.getElementById("hm-del").addEventListener("click", function () {
+        add('<span class="acc">→ DELETE /orders/3</span>');
+        var o = find(3);
+        setTimeout(function () {
+          if (!o) {
+            add('<span class="err">← 404 Not Found</span> — order #3 is already gone. <span class="dim">(can\'t delete what doesn\'t exist)</span>');
+            return;
+          }
+          o.el.style.opacity = "0";
+          o.el.style.transform = "translateX(26px)";
+          orders.splice(orders.indexOf(o), 1);
+          setTimeout(function () { o.el.remove(); }, 450);
+          add('<span class="ok">← 204 No Content</span> — deleted. <span class="dim">(204 = "done, nothing to show you")</span>');
+        }, 300);
+      });
+
+      document.getElementById("hm-reset").addEventListener("click", function () {
+        reset();
+        add('<span class="dim">↺ board reset — orders #1, #2, #3 restored.</span>');
+      });
+
+      reset();
+
+      /* round 2 — pick the verb */
+      var SCEN = [
+        { text: "“A user signs up for your app.”", v: "POST", why: "a brand-new account gets created" },
+        { text: "“Load my profile page.”", v: "GET", why: "pure reading — nothing changes" },
+        { text: "“Remove a photo from the gallery.”", v: "DELETE", why: "one thing gets taken away" }
+      ];
+      var ix = 0, misses = 0, gameDone = false;
+      var taskEl = document.getElementById("hm-task");
+      var fbEl = document.getElementById("hm-fb");
+      var ansBtns = [].slice.call(document.querySelectorAll(".hm-ans"));
+
+      function showScen() {
+        taskEl.textContent = "Scenario " + (ix + 1) + " of 3: " + SCEN[ix].text;
+      }
+
+      function finish() {
+        gameDone = true;
+        taskEl.textContent = misses === 0 ? "🎉 3 for 3, first try. You speak HTTP." : "✓ Done — " + misses + " wrong guess" + (misses === 1 ? "" : "es") + " along the way.";
+        fbEl.innerHTML = "";
+        var rb = document.createElement("button");
+        rb.className = "wbtn";
+        rb.textContent = "↺ Play again";
+        rb.addEventListener("click", function () {
+          ix = 0; misses = 0; gameDone = false;
+          fbEl.innerHTML = "";
+          showScen();
+        });
+        fbEl.appendChild(rb);
+      }
+
+      ansBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          if (gameDone) return;
+          var v = btn.getAttribute("data-v");
+          if (v === SCEN[ix].v) {
+            fbEl.style.color = "var(--good)";
+            fbEl.textContent = "✓ " + v + " — " + SCEN[ix].why + ".";
+            ix++;
+            setTimeout(function () {
+              if (ix >= SCEN.length) { finish(); }
+              else { fbEl.textContent = ""; fbEl.style.color = "var(--muted)"; showScen(); }
+            }, 900);
+          } else {
+            misses++;
+            fbEl.style.color = "var(--bad)";
+            fbEl.textContent = "✗ Not " + v + ". Ask: does it read, create, change, or remove?";
+          }
+        });
+      });
+
+      showScen();
+    })();
+  </script>
+</body>
+</html>

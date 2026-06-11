@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Refactoring — Claude Club</title>
+  <meta name="description" content="Refactoring, explained in plain English: tidy the code, change nothing it does. With an interactive tidy-the-kitchen code cleaner." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="refactoring" data-related="technical-debt,dry,kiss,git-version-control,vibe-coding">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Refactoring</h1>
+        <p class="tldr"><b>TLDR</b>Tidy the code. Change nothing it does.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: tidy the kitchen ============ -->
+      <section class="widget" aria-label="Tidy the kitchen code cleaner">
+        <div class="widget-bar"><span class="dot"></span> Try it — tidy the kitchen</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            This function works — and it's a mess. Apply the cleanup steps one at a time,
+            and watch the test re-run after <b>every single step</b>.
+          </p>
+
+          <div style="display:flex; justify-content:space-between; gap:0.6rem; align-items:center; flex-wrap:wrap; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:0.55rem 0.8rem; margin-bottom:0.8rem; font-size:0.82rem;">
+            <span>🧪 <b>The test:</b> 2 paperbacks + 1 hardback must come to <b>$42</b></span>
+            <span id="rf-stamp" style="font-family:var(--mono); font-weight:700; color:var(--good); white-space:nowrap; transition:transform .2s ease;">→ returns $42 ✓</span>
+          </div>
+
+          <pre id="rf-code" style="font-family:var(--mono); font-size:0.76rem; line-height:1.7; background:var(--code-bg); color:var(--code-ink); margin:0 0 0.8rem; padding:0.8rem 0.9rem; border-radius:10px; overflow-x:auto;"></pre>
+
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn primary" id="rf-b0">1 · Rename variables</button>
+            <button class="wbtn" id="rf-b1" disabled>2 · Extract the duplicate</button>
+            <button class="wbtn" id="rf-b2" disabled>3 · Delete dead code</button>
+            <button class="wbtn" id="rf-reset">↺ Reset</button>
+          </div>
+
+          <div style="font-family:var(--sans); font-size:0.8rem; font-weight:600; color:var(--ink-soft); display:flex; justify-content:space-between; margin-bottom:0.35rem;">
+            <span>Readability: <b id="rf-readpct">30%</b></span>
+            <span>📏 <b id="rf-lines">12 lines</b></span>
+          </div>
+          <div class="wmeter" style="margin-bottom:0.9rem;"><i id="rf-meter" style="width:30%;"></i></div>
+
+          <div class="wlog" id="rf-log"><span class="dim">Same menu tonight. Let's find the knives. Start with step 1…</span></div>
+        </div>
+        <p class="widget-hint">Watch the stamp: after every step it says “still returns $42 ✓”. That unchanging answer IS the definition of refactoring.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>A restaurant kitchen after the Saturday rush is a crime scene. Pans everywhere, sauce on the counter, knives… wherever knives end up. So between services, the team deep-cleans. Sunday's menu? Identical. Same dishes, same prices. But now the cooks can find the knives.</p>
+
+        <p>That's what you just did to that function. Three cleanup steps — rename, extract, delete — and after every single one, the test stamped the same verdict: still returns $42. The menu never changed.</p>
+
+        <p><strong>Refactoring means improving how code is written without changing what it does.</strong></p>
+
+        <h2>"Change no behavior" is the entire definition</h2>
+
+        <p>That repeating ✓ in the widget isn't decoration — it's the law. If the output changes, it isn't refactoring anymore; it's editing, and possibly breaking. Hold the boundaries clearly: refactoring is not a <em>rewrite</em> (tearing the kitchen down and rebuilding it), and it's not <em>new features</em> (adding dishes to the menu). It's strictly inside work — better names, less duplication, dead code gone, same behavior to the decimal.</p>
+
+        <p>Look at what each step actually bought you. Renaming <code>x2</code> to <code>hardbackCost</code> made the code say what it means. Extracting the duplicated price-plus-wrap block into one helper is <a href="dry.html">DRY</a> in action — fix the pricing once, both line items get the fix. Deleting the commented-out "keep just in case" lines removed pure fog. Twelve lines became six. Output: identical.</p>
+
+        <h2>Tests are the safety net</h2>
+
+        <p>The obvious question: how do you tidy with confidence and <em>know</em> you broke nothing? You watched the answer fire after every step. That automatic "still returns $42 ✓" is a test — a tiny program that checks the real program. With tests in place, refactoring stops being scary: make a change, run the test, get a verdict in seconds.</p>
+
+        <p>No tests? Then you're rearranging the kitchen blindfolded and finding out on Saturday night. This is also why builders lean on <a href="git-version-control.html">version control</a>: every cleanup step can be a save point, so even a botched step rolls back in one command. Net plus harness — that's how professionals tidy fearlessly, and why they do it weekly instead of "someday."</p>
+
+        <h2>Why teams never stop doing this</h2>
+
+        <p>Code rots — not by itself, but because requirements keep landing on it. Every shipped feature and every deadline shortcut leaves the kitchen a little messier than before. That accumulated mess has a name, <a href="technical-debt.html">technical debt</a>, and it's the next lesson. Refactoring is how you pay it down: small payments on a schedule beat one desperate mega-clean a year too late.</p>
+
+        <p>The payoff compounds. The widget's final state — same output, half the lines, names a human can read — isn't just prettier. The <em>next</em> feature lands in that kitchen instead of the crime scene, which means it ships faster and breaks less. Mess is normal during service. Cleaning is what keeps service possible.</p>
+
+        <div class="callout">
+          One of the highest-value prompts you can give your AI, word for word:
+          <em>"Refactor this. Change no behavior. Run the tests after each step — and if there are
+          no tests, write them first."</em> Claude is exceptionally good at this exact job, and the
+          phrase "change no behavior" is what keeps it on the rails.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>You can have Claude safely clean up a <a href="vibe-coding.html">vibe-coded</a> project — tidy now, before the mess calcifies</li>
+          <li>You can tell "it's broken" from "it's messy" — different problems, different fixes</li>
+          <li>You understand why a developer spends a day shipping "nothing visible" — and why that day makes every following week faster</li>
+          <li>You know the three moves you just clicked — rename, extract, delete — cover most real-world tidying</li>
+        </ul>
+
+        <p><strong>Refactoring is how code gets better without getting different. Same menu tonight — but now you can find the knives.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. In the widget, the test re-ran after every cleanup step and stamped "$42 ✓" each time. Why is that the whole point?</p>
+            <div class="opts">
+              <button class="opt">It proves the code got faster with each step</button>
+              <button class="opt" data-correct>Refactoring means behavior never changes — the repeating ✓ proves you tidied without breaking anything</button>
+              <button class="opt">It proves the function no longer needs tests</button>
+            </div>
+            <div class="why">Same input, same output, after every step — that unchanging answer is the definition. The test is the safety net that makes tidying fearless.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Your developer (or Claude) spends a full day refactoring and ships "no new features." What did you actually get?</p>
+            <div class="opts">
+              <button class="opt">Nothing — the day was wasted</button>
+              <button class="opt" data-correct>A codebase where the next features arrive faster and break less</button>
+              <button class="opt">A visibly redesigned app for your users</button>
+            </div>
+            <div class="why">It's the kitchen deep-clean: same menu tonight, faster cooking all week. Refactoring pays down technical debt so future work stops dragging.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Which of these requests is a true refactor?</p>
+            <div class="opts">
+              <button class="opt">"Rewrite this app in a new language and add an admin panel"</button>
+              <button class="opt" data-correct>"Rename these variables and extract the duplicated block — change no behavior"</button>
+              <button class="opt">"Add dark mode, but keep the existing code style"</button>
+            </div>
+            <div class="why">Refactor = same behavior, better insides. Rewrites and new features are different jobs with different risks — don't let them sneak in under the same word.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* tidy the kitchen */
+    (function () {
+      var STATES = [
+        {
+          read: 30,
+          lines: [
+            { t: "function doStuff(x, t) {" },
+            { t: "  // var promo = x * 0.8;   // old promo, keep just in case", k: "dead" },
+            { t: '  // alert("debug " + promo);', k: "dead" },
+            { t: "  // TODO: delete this someday???", k: "dead" },
+            { t: "  var temp = 0;" },
+            { t: "  var x2 = 0;" },
+            { t: "  temp = x * 12;" },
+            { t: "  temp = temp + 3;" },
+            { t: "  x2 = t * 12;" },
+            { t: "  x2 = x2 + 3;" },
+            { t: "  return temp + x2;" },
+            { t: "}" }
+          ]
+        },
+        {
+          read: 55,
+          note: 'Renamed: doStuff → orderTotal, temp → paperbackCost, x2 → hardbackCost. The code now says what it means.',
+          lines: [
+            { t: "function orderTotal(paperbacks, hardbacks) {", k: "chg" },
+            { t: "  // var promo = paperbacks * 0.8;   // old promo, keep just in case", k: "dead" },
+            { t: '  // alert("debug " + promo);', k: "dead" },
+            { t: "  // TODO: delete this someday???", k: "dead" },
+            { t: "  var paperbackCost = 0;", k: "chg" },
+            { t: "  var hardbackCost = 0;", k: "chg" },
+            { t: "  paperbackCost = paperbacks * 12;", k: "chg" },
+            { t: "  paperbackCost = paperbackCost + 3;", k: "chg" },
+            { t: "  hardbackCost = hardbacks * 12;", k: "chg" },
+            { t: "  hardbackCost = hardbackCost + 3;", k: "chg" },
+            { t: "  return paperbackCost + hardbackCost;", k: "chg" },
+            { t: "}" }
+          ]
+        },
+        {
+          read: 80,
+          note: "The duplicated price+wrap block now lives in ONE helper: wrapAndPrice(). Fix the pricing once, both line items get the fix.",
+          lines: [
+            { t: "function wrapAndPrice(count) {", k: "chg" },
+            { t: "  return count * 12 + 3;   // $12 book + $3 gift wrap", k: "chg" },
+            { t: "}", k: "chg" },
+            { t: "function orderTotal(paperbacks, hardbacks) {" },
+            { t: "  // var promo = paperbacks * 0.8;   // old promo, keep just in case", k: "dead" },
+            { t: '  // alert("debug " + promo);', k: "dead" },
+            { t: "  // TODO: delete this someday???", k: "dead" },
+            { t: "  return wrapAndPrice(paperbacks) + wrapAndPrice(hardbacks);", k: "chg" },
+            { t: "}" }
+          ]
+        },
+        {
+          read: 95,
+          note: "Dead code deleted. It was never “just in case”. It was fog.",
+          lines: [
+            { t: "function wrapAndPrice(count) {" },
+            { t: "  return count * 12 + 3;   // $12 book + $3 gift wrap" },
+            { t: "}" },
+            { t: "function orderTotal(paperbacks, hardbacks) {" },
+            { t: "  return wrapAndPrice(paperbacks) + wrapAndPrice(hardbacks);" },
+            { t: "}" }
+          ]
+        }
+      ];
+
+      var step = 0, busy = false;
+      var codeEl = document.getElementById("rf-code");
+      var stamp = document.getElementById("rf-stamp");
+      var meter = document.getElementById("rf-meter");
+      var readPct = document.getElementById("rf-readpct");
+      var linesEl = document.getElementById("rf-lines");
+      var log = document.getElementById("rf-log");
+      var btns = [
+        document.getElementById("rf-b0"),
+        document.getElementById("rf-b1"),
+        document.getElementById("rf-b2")
+      ];
+      var resetBtn = document.getElementById("rf-reset");
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function clearIfFirst() {
+        if (!log.dataset.started) { log.innerHTML = ""; }
+      }
+
+      function render(i, animate) {
+        codeEl.innerHTML = "";
+        STATES[i].lines.forEach(function (ln) {
+          var d = document.createElement("div");
+          d.textContent = ln.t;
+          if (ln.k === "dead") {
+            d.style.cssText = "color:#75716a; font-style:italic;";
+          }
+          if (animate && ln.k === "chg") {
+            d.style.background = "#4a3a2a";
+            d.style.transition = "background 1.1s ease";
+            setTimeout(function () { d.style.background = "transparent"; }, 650);
+          }
+          codeEl.appendChild(d);
+        });
+        meter.style.width = STATES[i].read + "%";
+        readPct.textContent = STATES[i].read + "%";
+        linesEl.textContent = STATES[i].lines.length + " lines";
+      }
+
+      function paintButtons() {
+        btns.forEach(function (b, i) {
+          b.disabled = i !== step;
+          b.classList.toggle("primary", i === step);
+          if (i < step) { b.textContent = "✓ " + b.textContent.replace(/^✓ /, ""); }
+        });
+      }
+
+      btns.forEach(function (b, i) {
+        b.addEventListener("click", function () {
+          if (busy || i !== step) return;
+          busy = true;
+          clearIfFirst();
+          stamp.textContent = "▶ running test…";
+          stamp.style.color = "var(--muted)";
+          setTimeout(function () { render(i + 1, true); }, 250);
+          setTimeout(function () {
+            stamp.textContent = "→ still returns $42 ✓";
+            stamp.style.color = "var(--good)";
+            stamp.style.transform = "scale(1.12)";
+            setTimeout(function () { stamp.style.transform = "scale(1)"; }, 220);
+            add('<span class="ok">step ' + (i + 1) + " ✓</span> " + STATES[i + 1].note + ' <span class="dim">(test re-ran: still $42)</span>');
+            step++;
+            if (step >= 3) {
+              add('<span class="acc">🏁 Done: same output, half the code, names a human can read. THAT is refactoring.</span>');
+              btns.forEach(function (bb) { bb.disabled = true; bb.classList.remove("primary"); });
+            } else {
+              paintButtons();
+            }
+            busy = false;
+          }, 950);
+        });
+      });
+
+      resetBtn.addEventListener("click", function () {
+        if (busy) return;
+        step = 0;
+        btns[0].textContent = "1 · Rename variables";
+        btns[1].textContent = "2 · Extract the duplicate";
+        btns[2].textContent = "3 · Delete dead code";
+        paintButtons();
+        render(0, false);
+        stamp.textContent = "→ returns $42 ✓";
+        stamp.style.color = "var(--good)";
+        log.innerHTML = '<span class="dim">Same menu tonight. Let\'s find the knives. Start with step 1…</span>';
+        delete log.dataset.started;
+      });
+
+      render(0, false);
+      paintButtons();
+    })();
+  </script>
+</body>
+</html>

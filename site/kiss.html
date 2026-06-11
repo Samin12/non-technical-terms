@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KISS — Claude Club</title>
+  <meta name="description" content="KISS, explained in plain English: keep it simple and skip the clever version. With an interactive simple vs. clever showdown." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="kiss" data-related="dry,yagni,refactoring,technical-debt,vibe-coding">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>KISS</h1>
+        <p class="tldr"><b>TLDR</b>Keep it simple. Skip the clever version.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: simple vs. clever ============ -->
+      <section class="widget" aria-label="Simple vs. clever code showdown">
+        <div class="widget-bar"><span class="dot"></span> Try it — simple vs. clever</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            One feature, written two ways: <b>free shipping on orders over $50</b>.
+            Test both. Then live with both.
+          </p>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:0.8rem; margin-bottom:0.9rem;">
+            <div style="border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--card); display:flex; flex-direction:column;">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:0.45rem 0.7rem; background:var(--bg-deep); border-bottom:1px solid var(--border-soft); font-size:0.72rem; font-weight:700; letter-spacing:0.08em;">
+                <span>🚪 SIMPLE</span><span style="font-weight:600; color:var(--muted);">readability</span>
+              </div>
+              <div style="padding:0.5rem 0.7rem 0;">
+                <div class="wmeter" style="height:8px;"><i style="width:95%;"></i></div>
+              </div>
+              <pre id="kiss-simple-code" style="font-family:var(--mono); font-size:0.74rem; line-height:1.65; background:var(--code-bg); color:var(--code-ink); margin:0.6rem; padding:0.7rem; border-radius:8px; overflow-x:auto; flex:1;">if (orderTotal &gt; <span id="kiss-s50">50</span>) {
+  shipping = "FREE";
+} else {
+  shipping = "$5.99";
+}</pre>
+              <div id="kiss-simple-status" style="font-family:var(--sans); font-size:0.78rem; font-weight:600; padding:0 0.7rem 0.6rem; min-height:1.5em; color:var(--muted);">untested</div>
+            </div>
+
+            <div style="border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--card); display:flex; flex-direction:column;">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:0.45rem 0.7rem; background:var(--bg-deep); border-bottom:1px solid var(--border-soft); font-size:0.72rem; font-weight:700; letter-spacing:0.08em;">
+                <span>🧩 CLEVER</span><span style="font-weight:600; color:var(--muted);">readability</span>
+              </div>
+              <div style="padding:0.5rem 0.7rem 0;">
+                <div class="wmeter" style="height:8px;"><i style="width:12%;"></i></div>
+              </div>
+              <pre style="font-family:var(--mono); font-size:0.74rem; line-height:1.65; background:var(--code-bg); color:var(--code-ink); margin:0.6rem; padding:0.7rem; border-radius:8px; overflow-x:auto; flex:1;">shipping=[(t=orderTotal|0)&gt;0x32?0:1,
+  +!!(t&gt;50)&amp;1][0]?"$5.99":"FREE"</pre>
+              <div id="kiss-clever-status" style="font-family:var(--sans); font-size:0.78rem; font-weight:600; padding:0 0.7rem 0.4rem; min-height:1.5em; color:var(--muted);">untested</div>
+              <div id="kiss-clever-fix" style="display:none; padding:0 0.7rem 0.6rem;">
+                <button class="wbtn" id="kiss-attempt" style="font-size:0.78rem;">🔧 Attempt fix (1/3)</button>
+                <span id="kiss-devtime" style="font-family:var(--sans); font-size:0.74rem; color:var(--muted); margin-left:0.4rem;">⏱ 0s of dev time</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="kiss-test">▶ Test both</button>
+            <button class="wbtn danger" id="kiss-bug" disabled>🐛 6 months later: the rule is now $75 — fix both</button>
+            <button class="wbtn" id="kiss-reset">↺ Replay</button>
+          </div>
+
+          <div class="wlog" id="kiss-log"><span class="dim">Two versions. One test. Press ▶ Test both…</span></div>
+          <div id="kiss-score" style="font-family:var(--sans); font-size:0.85rem; font-weight:600; margin-top:0.8rem; min-height:1.4em;"></div>
+        </div>
+        <p class="widget-hint">Both cards pass the test on day one. The gap only opens when the rule changes — and the rule always changes.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>Picture two doors. One has a handle. The other has a sliding puzzle where the handle should be. Both doors open. Only one of them is a good door.</p>
+
+        <p>You just tested both in the widget above. Same feature — free shipping over $50 — written two ways. The simple version reads like a sentence. The clever version reads like a ransom note. And here is the trap: <em>both passed the test.</em></p>
+
+        <p><strong>KISS — "keep it simple, stupid" — is the rule that the simple version that works beats the clever version that works. Every time.</strong></p>
+
+        <h2>Working today is the easy part</h2>
+
+        <p>Software has two jobs. The first is to work right now. Both of your cards did that — two green checkmarks, no difference between them. The second job is invisible: to be easy to change later. Because "later" always comes. Markets shift, rules change, marketing decides $50 should be $75.</p>
+
+        <p>That is where you felt the gap. On the simple card, you clicked a number and typed a new one. A few seconds, zero drama. On the clever card, you broke production twice — which 50 was the real one? what does that ? even do? — before giving up and rewriting it as, surprise, the boring version. Now multiply that by a real project: hundreds of files, dozens of rule changes a year. Clever code is not a style choice. It is a tax charged on every future visit.</p>
+
+        <p>And code gets visited a lot. Developers read code far more often than they write it — roughly ten times more, by most estimates. Every cryptic line gets re-deciphered by everyone who ever touches it, including the person who wrote it, six months later, remembering nothing.</p>
+
+        <h2>Why this matters more in the AI era, not less</h2>
+
+        <p>Claude can write genuinely clever code. Ask vaguely, and you might get the compressed, "elegant," show-off version. If you are <a href="vibe-coding.html">vibe coding</a>, that is a real problem — because you are the one left holding the puzzle door. The clever version locks you out of your own product. You cannot sanity-check it, cannot tweak it, cannot even ask a good question about it.</p>
+
+        <p>The simple version keeps you in the loop. You can read it. You can spot the 50 and change it yourself, exactly like you did. For a non-technical builder, readability is not a nice-to-have. It is the difference between owning your project and renting it.</p>
+
+        <h2>The power move: ask for boring</h2>
+
+        <p>Here is the part to actually remember. The principles in this level are not coding techniques — they are things you <em>say</em>. When Claude proposes something fancy, you say:</p>
+
+        <ul>
+          <li>"Give me the boring version."</li>
+          <li>"Make it readable, not impressive."</li>
+          <li>"Would a beginner understand every line? If not, rewrite it."</li>
+        </ul>
+
+        <p>"Boring" is a compliment in engineering. Boring means predictable, fixable, and calm at 2 a.m. when something breaks.</p>
+
+        <div class="callout">
+          If Claude writes something you can't follow, that is not your failure. Say: "Explain this
+          line by line, then simplify it until each explanation is one short sentence." Any line that
+          needs a paragraph to explain is a puzzle lock — ask for the handle instead.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>You can read your own project — and catch problems before customers do</li>
+          <li>Rule changes become five-second edits, like the one you just made</li>
+          <li>New features stack on cleanly instead of tangling — clever code is <a href="technical-debt.html">technical debt</a> with good PR</li>
+          <li>When you inherit a puzzle door, <a href="refactoring.html">refactoring</a> swaps it for a handle without changing what the door does</li>
+        </ul>
+
+        <p>One warning before you over-apply this: simple does not mean short. The clever one-liner was shorter — and worse. Simple means <em>obvious</em>: the version a stranger reads correctly on the first pass. Sometimes that takes a few more lines. Spend them gladly.</p>
+
+        <p><strong>Clever code impresses people for a day. Simple code keeps working after everyone forgets how it works.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Claude offers two versions of your discount feature: a dense one-liner and a five-line plain version. Both pass the tests. Which do you take?</p>
+            <div class="opts">
+              <button class="opt">The one-liner — less code is always better code</button>
+              <button class="opt" data-correct>The five-line plain version — you'll be able to read and change it in six months</button>
+              <button class="opt">Neither — working code shouldn't be touched again</button>
+            </div>
+            <div class="why">Both work today; only one is fixable on a random Tuesday. Shorter is not the same as simpler — readable wins.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. The shipping rule changes from $50 to $75, like in the widget. In which codebase is that a five-second fix?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The simple one — the 50 is sitting right there in plain sight</button>
+              <button class="opt">The clever one — compressed code has fewer places to edit</button>
+              <button class="opt">Both the same — a number is a number</button>
+            </div>
+            <div class="why">You watched it happen: simple was click-and-type, clever was two broken attempts and a rewrite. Cryptic code hides even its own numbers.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Claude proposes a "really elegant" solution you can't quite follow. What's the KISS power move?</p>
+            <div class="opts">
+              <button class="opt">Accept it — the AI knows best</button>
+              <button class="opt" data-correct>Say "give me the boring version" and take the readable one</button>
+              <button class="opt">Delete the feature so nobody has to maintain it</button>
+            </div>
+            <div class="why">Asking for boring is directing your AI, not doubting it. Boring means predictable and fixable — exactly what you want to own.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* simple vs. clever showdown */
+    (function () {
+      var tested = false, fixing = false, busy = false;
+      var simpleDone = false, cleverDone = false;
+      var bugT0 = 0, simpleTime = 0;
+      var cleverStep = 0, devTime = 0;
+
+      var log = document.getElementById("kiss-log");
+      var testBtn = document.getElementById("kiss-test");
+      var bugBtn = document.getElementById("kiss-bug");
+      var resetBtn = document.getElementById("kiss-reset");
+      var simplePre = document.getElementById("kiss-simple-code");
+      var sStatus = document.getElementById("kiss-simple-status");
+      var cStatus = document.getElementById("kiss-clever-status");
+      var fixWrap = document.getElementById("kiss-clever-fix");
+      var attemptBtn = document.getElementById("kiss-attempt");
+      var devEl = document.getElementById("kiss-devtime");
+      var scoreEl = document.getElementById("kiss-score");
+      var simpleHTML = simplePre.innerHTML;
+
+      var STEPS = [
+        { go: "you change the 0x32 to 0x4B…", res: '<span class="err">CLEVER ❌ tests fail — every order ships FREE now.</span> Revert. <span class="dim">(wait, which 50 was the real one?)</span>', t: 40 },
+        { go: "you flip the &amp;1 instead… which ? does what??", res: '<span class="err">CLEVER ❌ tests fail — now NOTHING ever ships free.</span> Revert. Again.', t: 35 },
+        { go: "you give up, rewrite it as the boring version, change 50 to 75.", res: '<span class="ok">CLEVER ✓ tests pass.</span> The fix, in the end, was making it simple.', t: 15 }
+      ];
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function clearIfFirst() {
+        if (!log.dataset.started) { log.innerHTML = ""; }
+      }
+      function getTok() { return document.getElementById("kiss-s50"); }
+
+      function check() {
+        if (!simpleDone || !cleverDone) return;
+        scoreEl.innerHTML = '🏁 <b>SIMPLE:</b> ' + simpleTime.toFixed(1) + 's, 0 broken deploys&nbsp;&nbsp;·&nbsp;&nbsp;<b>CLEVER:</b> ~90s, 2 broken deploys';
+        add('<span class="acc">Same feature. Same ✓ on day one. Only one of them is a good door. 🚪</span>');
+      }
+
+      testBtn.addEventListener("click", function () {
+        if (tested || busy) return;
+        busy = true;
+        clearIfFirst();
+        add('<span class="acc">→ TEST:</span> order total $80 — expect FREE shipping');
+        setTimeout(function () {
+          sStatus.textContent = "✓ works";
+          sStatus.style.color = "var(--good)";
+          add('<span class="ok">SIMPLE → "FREE" ✓</span>');
+        }, 400);
+        setTimeout(function () {
+          cStatus.textContent = "✓ works (somehow)";
+          cStatus.style.color = "var(--good)";
+          add('<span class="ok">CLEVER → "FREE" ✓</span> <span class="dim">…both pass. So they’re equally good, right?</span>');
+          tested = true;
+          busy = false;
+          bugBtn.disabled = false;
+        }, 950);
+      });
+
+      bugBtn.addEventListener("click", function () {
+        if (!tested || fixing) return;
+        fixing = true;
+        bugT0 = Date.now();
+        bugBtn.disabled = true;
+        add('<span class="err">🐛 SIX MONTHS LATER:</span> marketing changed the rule. Free shipping is now over <b>$75</b>. Fix both versions.');
+        add('<span class="dim">SIMPLE: click the highlighted 50 and type the new number. CLEVER: good luck — use the attempt button.</span>');
+        var tok = getTok();
+        tok.style.cssText = "background:#46342a; border:1px dashed #f0b27a; border-radius:4px; padding:0 4px; cursor:pointer; color:#f0b27a;";
+        sStatus.textContent = "👆 click the 50 in the code";
+        sStatus.style.color = "var(--accent)";
+        cStatus.textContent = "🤔 …which part is the rule?";
+        cStatus.style.color = "var(--muted)";
+        fixWrap.style.display = "block";
+      });
+
+      simplePre.addEventListener("click", function (e) {
+        if (!fixing || simpleDone) return;
+        var tok = getTok();
+        if (!tok || e.target !== tok || tok.dataset.editing) return;
+        tok.dataset.editing = "1";
+        tok.innerHTML = '<input id="kiss-inp" value="50" style="width:3.4em; font-family:inherit; font-size:inherit; background:#1b1a18; color:#f0eee6; border:1px solid #f0b27a; border-radius:4px; text-align:center; padding:0 2px;" /> <button id="kiss-apply" style="font-size:0.7rem; border:1px solid var(--good); background:transparent; color:#9ece8c; border-radius:4px; cursor:pointer; padding:0 5px;">✓</button>';
+        var inp = document.getElementById("kiss-inp");
+        var ap = document.getElementById("kiss-apply");
+        inp.focus();
+        inp.select();
+        function apply() {
+          if (simpleDone) return;
+          var v = inp.value.replace(/[^0-9]/g, "");
+          if (v === "75") {
+            simpleTime = (Date.now() - bugT0) / 1000;
+            simpleDone = true;
+            var tk = getTok();
+            tk.textContent = "75";
+            tk.style.cssText = "background:#2f3d2a; border:1px solid #9ece8c; border-radius:4px; padding:0 4px; color:#9ece8c;";
+            sStatus.innerHTML = "✓ tests pass — fixed in <b>" + simpleTime.toFixed(1) + "s</b>, 0 mistakes";
+            sStatus.style.color = "var(--good)";
+            add('<span class="ok">SIMPLE ✓ fixed in ' + simpleTime.toFixed(1) + 's.</span> You clicked a number and typed the new one. That’s the whole job.');
+            check();
+          } else {
+            add('<span class="err">SIMPLE ❌ tests fail —</span> the new rule is $75. Type 75 and apply.');
+            inp.select();
+          }
+        }
+        ap.addEventListener("click", apply);
+        inp.addEventListener("keydown", function (ev) { if (ev.key === "Enter") apply(); });
+      });
+
+      attemptBtn.addEventListener("click", function () {
+        if (!fixing || cleverDone || busy) return;
+        busy = true;
+        var step = STEPS[cleverStep];
+        cStatus.textContent = "🔧 " + step.go.replace(/&amp;/g, "&");
+        cStatus.style.color = "var(--muted)";
+        add('<span class="acc">CLEVER attempt ' + (cleverStep + 1) + ':</span> ' + step.go);
+        setTimeout(function () { add('<span class="dim">▶ running tests…</span>'); }, 450);
+        setTimeout(function () {
+          add(step.res);
+          devTime += step.t;
+          devEl.textContent = "⏱ ~" + devTime + "s of dev time";
+          cleverStep++;
+          if (cleverStep >= STEPS.length) {
+            cleverDone = true;
+            attemptBtn.disabled = true;
+            attemptBtn.textContent = "🔧 fixed (eventually)";
+            cStatus.innerHTML = "✓ tests pass — after <b>~" + devTime + "s</b> and 2 broken deploys";
+            cStatus.style.color = "var(--good)";
+            check();
+          } else {
+            attemptBtn.textContent = "🔧 Attempt fix (" + (cleverStep + 1) + "/3)";
+            cStatus.textContent = "❌ reverted. Try again…";
+            cStatus.style.color = "var(--bad)";
+          }
+          busy = false;
+        }, 1100);
+      });
+
+      resetBtn.addEventListener("click", function () {
+        tested = false; fixing = false; busy = false;
+        simpleDone = false; cleverDone = false;
+        cleverStep = 0; devTime = 0; simpleTime = 0;
+        simplePre.innerHTML = simpleHTML;
+        sStatus.textContent = "untested";
+        sStatus.style.color = "var(--muted)";
+        cStatus.textContent = "untested";
+        cStatus.style.color = "var(--muted)";
+        fixWrap.style.display = "none";
+        attemptBtn.disabled = false;
+        attemptBtn.textContent = "🔧 Attempt fix (1/3)";
+        devEl.textContent = "⏱ 0s of dev time";
+        scoreEl.innerHTML = "";
+        bugBtn.disabled = true;
+        log.innerHTML = '<span class="dim">Two versions. One test. Press ▶ Test both…</span>';
+        delete log.dataset.started;
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>State — Claude Club</title>
+  <meta name="description" content="State, explained in plain English: what your software remembers right now. With an interactive crash test." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="state" data-related="database,server,session,process,cache">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>State</h1>
+        <p class="tldr"><b>TLDR</b>What your software remembers right now.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: crash test ============ -->
+      <section class="widget" aria-label="State crash test">
+        <style>
+          @keyframes st-shake {
+            0%, 100% { transform: translate(0, 0); }
+            15% { transform: translate(-6px, 3px) rotate(-0.6deg); }
+            30% { transform: translate(5px, -4px); }
+            45% { transform: translate(-5px, -2px) rotate(0.6deg); }
+            60% { transform: translate(6px, 3px); }
+            75% { transform: translate(-4px, 2px); }
+            90% { transform: translate(3px, -2px); }
+          }
+          .st-shake { animation: st-shake 0.18s linear 3; }
+        </style>
+        <div class="widget-bar"><span class="dot"></span> Try it — the crash test</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            This little email app holds two pieces of state: a draft and a click counter.
+            Type something real. Pick where the state lives. Then crash the app and see what survives.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn" id="st-mem">💨 State in memory only</button>
+            <button class="wbtn" id="st-save">💾 State saved (database)</button>
+            <button class="wbtn danger" id="st-crash">💥 CRASH the app</button>
+          </div>
+
+          <div id="st-where" style="font-size:0.8rem; font-weight:600; color:var(--ink-soft); margin-bottom:0.8rem;"></div>
+
+          <div id="st-app" style="position:relative; background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:0.9rem;">
+            <div style="display:flex; align-items:center; gap:6px; background:var(--bg-deep); border-bottom:1px solid var(--border-soft); padding:6px 10px; font-size:0.72rem; font-weight:700; color:var(--muted);">✉️ Draftly — the world's tiniest email app</div>
+            <div style="padding:0.8rem;">
+              <textarea id="st-draft" class="winput" rows="3" placeholder="Type a draft email here… seriously, type something." style="resize:vertical; font-family:var(--serif);"></textarea>
+              <div class="wrow" style="margin-top:0.6rem;">
+                <button class="wbtn" id="st-clicks">👍 Clicks: 0</button>
+                <span id="st-blip" style="font-size:0.74rem; font-weight:700; color:var(--good); opacity:0; transition:opacity .3s;">💾 saved</span>
+              </div>
+            </div>
+            <div id="st-screen" style="position:absolute; inset:0; background:#1c1a18; color:#f0eee6; display:none; align-items:center; justify-content:center; font-family:var(--mono); font-size:0.95rem; font-weight:600;"></div>
+          </div>
+
+          <div class="wlog" id="st-log"><span class="dim">Type a draft, pick where state lives, then hit 💥 CRASH…</span></div>
+        </div>
+        <p class="widget-hint">Type a real draft and crash it in memory mode — feel the loss. Then flip to saved and crash it again, fearless.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          A whiteboard and a notebook. The whiteboard is fast — scribble anything, it's right
+          there, instantly. It's also one sleeve-brush away from oblivion. The notebook is
+          slower to write in, but it survives the night, the week, the building's power going out.
+        </p>
+
+        <p>
+          Every piece of software you use is juggling those two surfaces, all the time. You
+          just felt the difference in the crash test: same draft, same crash, completely
+          different morning after.
+        </p>
+
+        <p><strong>State is everything your software remembers right now — your half-typed draft, your cart, your login, the count on a counter.</strong></p>
+
+        <h2>Memory is the whiteboard</h2>
+
+        <p>
+          A running program — a <a href="process.html">process</a> — keeps its working state in
+          memory (RAM). That's the whiteboard: ridiculously fast, perfect for the thousand
+          little things an app tracks while you use it. And it is wiped the instant the process
+          dies. Not "sometimes." Always — that's what RAM is.
+        </p>
+
+        <p>
+          In memory-only mode you typed a draft, hit crash, and got back a blank box. The draft
+          wasn't deleted. It was never durable to begin with. It lived on a whiteboard, and the
+          process took the whiteboard down with it.
+        </p>
+
+        <h2>Saving is writing it in the notebook</h2>
+
+        <p>
+          Flip to saved mode and every keystroke was also written through to a
+          <a href="database.html">database</a> on disk. Crash, reboot — and the app reads your
+          draft back letter for letter. A hair slower on every write, infinitely better on the
+          one day it matters. This is why real apps autosave, why your cart survives a refresh,
+          why "draft restored" feels like magic but is really just state that lived in the
+          notebook instead of on the whiteboard.
+        </p>
+
+        <p>
+          The click counter obeyed the same law, because state isn't just text — it's every
+          value the app would need to pick up exactly where you left off. The status line in
+          the widget told you, at every moment, where your state lived: RAM or disk. Engineers
+          track precisely that, for every piece of data they handle.
+        </p>
+
+        <h2>Why "turn it off and on again" works</h2>
+
+        <p>
+          The oldest joke in IT is actually state management. Sometimes a program's in-memory
+          state goes bad — it's wedged halfway through something, holding a value that no
+          longer makes sense. A restart wipes the whiteboard and reloads clean, trusted state
+          from disk. That's the entire trick.
+        </p>
+
+        <p>
+          It's also why serious systems run "stateless" <a href="server.html">servers</a>: the
+          server keeps nothing precious in its own memory. Your login lives in a
+          <a href="session.html">session</a> store, your data in the database. Any server can
+          die mid-request and a clone steps in, because the notebook was never inside the
+          server to begin with.
+        </p>
+
+        <div class="callout">
+          Assume the crash. Before you trust any app — including the ones you vibe-code
+          yourself — ask the whiteboard question: "if this process died right now, what
+          survives?" Anything you'd cry about losing belongs on disk, not in RAM.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>"Did it save?" becomes a precise question: which state, written where?</li>
+          <li>Restarting things stops being superstition — you know exactly what it resets</li>
+          <li>Words like <em>stateless</em> and <em>persistent</em> in docs suddenly read as plain English</li>
+          <li>When your own app loses data, you know the first place to look: state that lived in memory only</li>
+        </ul>
+
+        <p>
+          Fast things forget. Written-down things survive.
+        </p>
+
+        <p><strong>Good software knows which of its memories are on the whiteboard and which are in the notebook — and now, so do you.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You typed half an email, the app crashed, and after reload your draft came back perfectly. What must be true?</p>
+            <div class="opts">
+              <button class="opt">The app restarted fast enough that its memory never had time to clear</button>
+              <button class="opt" data-correct>The app was writing your draft to disk (a database) as you typed — not just holding it in memory</button>
+              <button class="opt">Drafts are too small to be affected by crashes</button>
+            </div>
+            <div class="why">RAM dies with the process — no restart is fast enough and no data is small enough to escape that. Only state written to disk survives a crash.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Support says "try turning it off and on again" — and it actually works. What did the restart do?</p>
+            <div class="opts">
+              <button class="opt">Gave the computer time to cool down and rest</button>
+              <button class="opt" data-correct>Wiped the program's bad in-memory state and reloaded clean state from disk</button>
+              <button class="opt">Quietly updated the app to a newer version</button>
+            </div>
+            <div class="why">A restart is a whiteboard wipe. Whatever wedged, half-finished state the program was holding in RAM is gone, and it boots fresh from what's saved.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. An engineer says "our servers are stateless." What do they mean?</p>
+            <div class="opts">
+              <button class="opt">The servers store nothing at all, so user data is never saved</button>
+              <button class="opt" data-correct>The servers keep nothing precious in their own memory — important state is parked in a database, so any server can die and be replaced</button>
+              <button class="opt">The app has no state and remembers nothing between clicks</button>
+            </div>
+            <div class="why">Stateless doesn't mean no state — it means the state lives elsewhere. The notebook sits outside the server, so servers become replaceable.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* crash test */
+    (function () {
+      var mode = "memory";
+      var diskDraft = null, diskClicks = null;
+      var clicks = 0;
+      var crashing = false;
+      var booted = false;
+      var blipTimer = null;
+
+      var app = document.getElementById("st-app");
+      var screen = document.getElementById("st-screen");
+      var draft = document.getElementById("st-draft");
+      var btnClicks = document.getElementById("st-clicks");
+      var btnMem = document.getElementById("st-mem");
+      var btnSave = document.getElementById("st-save");
+      var btnCrash = document.getElementById("st-crash");
+      var elWhere = document.getElementById("st-where");
+      var elBlip = document.getElementById("st-blip");
+      var elLog = document.getElementById("st-log");
+
+      function addLog(html) {
+        if (!elLog.dataset.started) { elLog.innerHTML = ""; elLog.dataset.started = "1"; }
+        else { elLog.innerHTML += "\n"; }
+        elLog.innerHTML += html;
+        elLog.scrollTop = elLog.scrollHeight;
+      }
+
+      function blip() {
+        elBlip.style.opacity = "1";
+        clearTimeout(blipTimer);
+        blipTimer = setTimeout(function () { elBlip.style.opacity = "0"; }, 600);
+      }
+
+      function persist() {
+        if (mode === "saved") {
+          diskDraft = draft.value;
+          diskClicks = clicks;
+          blip();
+        }
+      }
+
+      function paintClicks() {
+        btnClicks.textContent = "👍 Clicks: " + clicks;
+      }
+
+      function setMode(m) {
+        mode = m;
+        btnMem.style.borderColor = m === "memory" ? "var(--accent-bright)" : "var(--border)";
+        btnMem.style.background = m === "memory" ? "var(--accent-faint)" : "var(--card)";
+        btnSave.style.borderColor = m === "saved" ? "var(--good)" : "var(--border)";
+        btnSave.style.background = m === "saved" ? "var(--good-soft)" : "var(--card)";
+        if (m === "saved") {
+          persist();
+          elWhere.innerHTML = 'Your state lives on: <b style="color:var(--good);">💾 disk (a database) — survives crashes</b>';
+          if (booted) addLog('<span class="ok">💾 saving on — every keystroke written through to the database.</span>');
+        } else {
+          diskDraft = null;
+          diskClicks = null;
+          elWhere.innerHTML = 'Your state lives in: <b style="color:var(--bad);">⚡ RAM (memory) — wiped if the process dies</b>';
+          if (booted) addLog('<span class="dim">💨 memory-only mode. Nothing is written down.</span>');
+        }
+      }
+
+      btnMem.addEventListener("click", function () { if (!crashing) setMode("memory"); });
+      btnSave.addEventListener("click", function () { if (!crashing) setMode("saved"); });
+      draft.addEventListener("input", persist);
+      btnClicks.addEventListener("click", function () {
+        clicks++;
+        paintClicks();
+        persist();
+      });
+
+      btnCrash.addEventListener("click", function () {
+        if (crashing) return;
+        crashing = true;
+        btnCrash.disabled = true;
+        btnMem.disabled = true;
+        btnSave.disabled = true;
+        draft.disabled = true;
+        btnClicks.disabled = true;
+        addLog('<span class="err">💥 CRASH — the process just died.</span>');
+        app.classList.add("st-shake");
+        setTimeout(function () {
+          app.classList.remove("st-shake");
+          screen.style.display = "flex";
+          screen.textContent = "💥 process died";
+        }, 550);
+        setTimeout(function () {
+          screen.textContent = "⏻ rebooting…";
+        }, 1400);
+        setTimeout(function () {
+          screen.style.display = "none";
+          if (mode === "saved") {
+            draft.value = diskDraft || "";
+            clicks = diskClicks || 0;
+            addLog('<span class="ok">✓ restored — read back from the database, letter for letter.</span>');
+          } else {
+            draft.value = "";
+            clicks = 0;
+            addLog('<span class="err">memory wiped. The draft never existed anywhere but RAM — it\'s gone.</span>');
+          }
+          paintClicks();
+          btnCrash.disabled = false;
+          btnMem.disabled = false;
+          btnSave.disabled = false;
+          draft.disabled = false;
+          btnClicks.disabled = false;
+          crashing = false;
+        }, 2300);
+      });
+
+      setMode("memory");
+      booted = true;
+      paintClicks();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OAuth &amp; Agent Identity — Claude Club</title>
+  <meta name="description" content="OAuth &amp; Agent Identity, explained in plain English: a valet key for your accounts, not the master key. With an interactive key scope picker." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="oauth-agent-identity" data-related="api,env-file,agent,mcp">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>OAuth &amp; Agent Identity</h1>
+        <p class="tldr"><b>TLDR</b>A valet key for your accounts. Not the master key.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: key scope picker ============ -->
+      <section class="widget" aria-label="OAuth key scope picker">
+        <div class="widget-bar"><span class="dot"></span> Try it — key scope picker</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Your agent needs Gmail access. You're holding two keys. Hand it one —
+            then watch what happens when the agent has a very bad day.
+          </p>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:10px; margin-bottom:0.9rem;">
+            <div id="ok-master" role="button" tabindex="0" style="cursor:pointer; background:var(--card); border:2px solid var(--border); border-radius:10px; padding:0.8rem; transition:all .2s ease;">
+              <b style="display:block; margin-bottom:0.3rem;">🗝️ Master key</b>
+              <span style="font-size:0.8rem; color:var(--muted); display:block; line-height:1.5;">
+                Your actual password. Read, send, delete, change the password itself.
+                Everything, forever.
+              </span>
+            </div>
+            <div id="ok-valet" role="button" tabindex="0" style="cursor:pointer; background:var(--card); border:2px solid var(--border); border-radius:10px; padding:0.8rem; transition:all .2s ease;">
+              <b style="display:block; margin-bottom:0.3rem;">🎫 Valet key (OAuth)</b>
+              <label style="display:flex; gap:6px; align-items:center; font-size:0.8rem; margin:3px 0; cursor:pointer;"><input type="checkbox" id="ok-sc-read" checked /> read inbox</label>
+              <label style="display:flex; gap:6px; align-items:center; font-size:0.8rem; margin:3px 0; cursor:pointer;"><input type="checkbox" id="ok-sc-send" checked /> send as you</label>
+              <label style="display:flex; gap:6px; align-items:center; font-size:0.8rem; margin:3px 0; cursor:pointer;"><input type="checkbox" id="ok-sc-del" /> delete emails</label>
+            </div>
+          </div>
+          <div style="font-family:var(--sans); font-size:0.95rem; font-weight:600; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:0.6rem 0.9rem; margin-bottom:0.9rem; display:flex; justify-content:space-between; align-items:center;">
+            <span>📥 Inbox: <b id="ok-count">1,283</b> emails</span><span id="ok-shield"></span>
+          </div>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn danger" id="ok-haywire">😈 Agent goes haywire: delete every email</button>
+            <button class="wbtn" id="ok-digest">✉️ Normal job: send the weekly digest</button>
+            <button class="wbtn" id="ok-revoke">🚫 Revoke access</button>
+            <button class="wbtn" id="ok-reset">↺ Reset demo</button>
+          </div>
+          <div class="wlog" id="ok-log"><span class="dim">Pick a key to hand your agent…</span></div>
+        </div>
+        <p class="widget-hint">Run the rampage with each key. Then grant the delete scope on the valet key and try again — scopes only protect what you don't sign away.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          When you valet-park a nice car, you don't hand over your whole keyring. You hand over
+          the valet key: it starts the engine and opens the driver's door, and that's it. No
+          trunk, no glovebox, definitely not your house. The valet gets exactly enough key to do
+          the job.
+        </p>
+
+        <p>
+          Now look at what people do with software: an app asks for access, and they type in
+          their actual password. That's not the valet key. That's the entire keyring, copied,
+          handed to a stranger.
+        </p>
+
+        <p>
+          <strong>OAuth is how you hand an app — or your AI agent — a limited, revocable key to
+          your account instead of your password.</strong>
+        </p>
+
+        <p>
+          You just watched the difference. Master key: inbox gone in two seconds, and nothing to
+          revoke afterward. Valet key: a clean "403 — scope not granted," and 1,283 emails
+          still standing.
+        </p>
+
+        <h2>Scopes: the teeth on the key</h2>
+
+        <p>
+          Each permission on an OAuth key is called a <strong>scope</strong>, and each scope is
+          one door: read the inbox, send as you, delete. That consent screen you've clicked a
+          hundred times — "This app wants to: view your email, send email on your behalf" — is
+          the locksmith's order form. You're choosing which teeth get cut into the key.
+        </p>
+
+        <p>
+          The 403 in the widget wasn't the agent being polite. The key physically lacked the
+          delete teeth, so the door wouldn't open — same fence logic as the
+          <a href="api.html">API</a> menu: what isn't offered can't be done, no matter how the
+          requester asks. That's the deepest idea in modern security: don't trust the
+          borrower's behavior, shape the key. Good behavior is a hope; a missing scope is a
+          guarantee. And like every credential, these tokens live in your
+          <a href="env-file.html">env file</a>, never in the code itself.
+        </p>
+
+        <h2>Why agents make this urgent</h2>
+
+        <p>
+          A chatbot just reads your words. An <a href="agent.html">agent</a> acts <em>as
+          you</em> — it sends mail with your name on it, moves your files, spends your money.
+          That's why "agent identity" is becoming its own discipline, and it boils down to one
+          rule: every agent gets its own valet key.
+        </p>
+
+        <ul>
+          <li><strong>Audit trail:</strong> the log reads "inbox-agent sent this at 3:14 PM" — not just "you did something"</li>
+          <li><strong>Blast radius:</strong> one agent misbehaves, you revoke one key — the others keep working, like the clean kill you saw on the Revoke button</li>
+          <li><strong>Least privilege:</strong> the research agent gets read-only; only the outreach agent can send</li>
+        </ul>
+
+        <p>
+          One agent, one key, one leash. As your AI workforce grows, this is the difference
+          between "manageable" and "pray nothing goes wrong."
+        </p>
+
+        <div class="callout">
+          Red flag: any tool that asks you to type your actual password into <em>its own</em>
+          settings page. Real OAuth bounces you to the service's official consent screen — you
+          log in at google.com, never inside the app — and shows you the scope list. No consent
+          screen, no deal.
+        </div>
+
+        <h2>Your 60-second security habit</h2>
+
+        <ul>
+          <li>Read the scope list before clicking Allow — does a meme generator really need "delete"?</li>
+          <li>Grant the minimum: read-only until the tool earns more</li>
+          <li>Know your revoke page (for Google: Security → third-party access) and prune it quarterly</li>
+          <li>One key per agent — never let two agents share a credential</li>
+        </ul>
+
+        <p>
+          None of this slows you down. Granting a scoped key takes the same ten seconds as
+          pasting a password — it just doesn't cost you the whole account when something goes
+          sideways.
+        </p>
+
+        <p><strong>Hand out valet keys all day. The master key never leaves your pocket.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. A new AI email tool asks you to enter your Gmail password on its own settings page. What's the OAuth-savvy move?</p>
+            <div class="opts">
+              <button class="opt">Enter it — the page has a padlock icon, so it's encrypted and safe</button>
+              <button class="opt" data-correct>Walk away — real OAuth sends you to Google's own consent screen with a scope list, and never sees your password</button>
+              <button class="opt">Enter a slightly wrong password first, to test the tool's honesty</button>
+            </div>
+            <div class="why">A legit integration never touches your password. You log in at the service itself, approve specific scopes, and the app receives only a limited token.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. In the widget, the haywire agent held a valet key without the delete scope — and the inbox survived. Why?</p>
+            <div class="opts">
+              <button class="opt">The agent realized deleting was wrong and stopped itself</button>
+              <button class="opt">Gmail automatically blocks all AI-initiated deletions</button>
+              <button class="opt" data-correct>403 — scope not granted. The key physically can't open doors you didn't grant, no matter what the agent wants</button>
+            </div>
+            <div class="why">Safety came from the key, not the agent's judgment. A scope you never grant is a door that cannot open — even on the agent's worst day.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You stop trusting one of your three agents. With proper per-agent OAuth identity, what do you do?</p>
+            <div class="opts">
+              <button class="opt">Change your password and painfully reconnect everything</button>
+              <button class="opt" data-correct>Revoke just that agent's token — one click, password unchanged, the other agents keep working</button>
+              <button class="opt">Shut down all three agents — access can't be removed selectively</button>
+            </div>
+            <div class="why">That's the whole point of one-key-per-agent: surgical revocation. You saw it — revoke, and the very next request dies cleanly with a 401.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* key scope picker */
+    (function () {
+      var FULL = 1283;
+      var key = null;
+      var revoked = false;
+      var count = FULL;
+      var busy = false;
+
+      var elMaster = document.getElementById("ok-master");
+      var elValet = document.getElementById("ok-valet");
+      var elCount = document.getElementById("ok-count");
+      var elShield = document.getElementById("ok-shield");
+      var log = document.getElementById("ok-log");
+      var scRead = document.getElementById("ok-sc-read");
+      var scSend = document.getElementById("ok-sc-send");
+      var scDel = document.getElementById("ok-sc-del");
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function clearIfFirst() {
+        if (!log.dataset.started) { log.innerHTML = ""; }
+      }
+      function fmt(n) { return n.toLocaleString("en-US"); }
+
+      function scopeText() {
+        var t = [];
+        if (scRead.checked) t.push("read");
+        if (scSend.checked) t.push("send");
+        if (scDel.checked) t.push("delete");
+        return t.length ? t.join(" + ") : "none (a key that opens nothing)";
+      }
+      function paintKeys() {
+        [["master", elMaster], ["valet", elValet]].forEach(function (p) {
+          var on = key === p[0];
+          p[1].style.borderColor = on ? "var(--accent-bright)" : "var(--border)";
+          p[1].style.background = on ? "var(--accent-faint)" : "var(--card)";
+        });
+      }
+      function pick(which) {
+        if (busy) return;
+        key = which;
+        revoked = false;
+        paintKeys();
+        clearIfFirst();
+        add(which === "master"
+          ? '<span class="err">🗝️ you handed over the master key.</span> <span class="dim">The agent now IS you, with no leash.</span>'
+          : '<span class="ok">🎫 valet key issued.</span> <span class="dim">Scopes: ' + scopeText() + ". Revocable any time.</span>");
+      }
+
+      elMaster.addEventListener("click", function () { pick("master"); });
+      elValet.addEventListener("click", function (e) {
+        if (e.target.closest("label")) return;
+        pick("valet");
+      });
+      [scRead, scSend, scDel].forEach(function (cb) {
+        cb.addEventListener("change", function () {
+          if (key !== "valet") {
+            pick("valet");
+          } else {
+            revoked = false;
+            clearIfFirst();
+            add("🎫 key re-issued with new scopes: " + scopeText());
+          }
+        });
+      });
+
+      document.getElementById("ok-haywire").addEventListener("click", function () {
+        if (busy) return;
+        clearIfFirst();
+        if (!key) { add('<span class="dim">hand the agent a key first — click one above.</span>'); return; }
+        add('<span class="acc">😈 agent:</span> "delete every email" — attempting mass delete…');
+        busy = true;
+        setTimeout(function () {
+          if (key === "valet" && revoked) {
+            add('<span class="ok">🚫 401 — token revoked.</span> Request dead on arrival. Inbox untouched.');
+            busy = false;
+            return;
+          }
+          if (key === "valet" && !scDel.checked) {
+            add('<span class="ok">🛡️ 403 — scope "delete" not granted.</span> That door doesn\'t open with this key. Inbox safe: ' + fmt(count) + " emails.");
+            elShield.textContent = "🛡️ blocked by scope";
+            busy = false;
+            return;
+          }
+          if (count === 0) {
+            add('<span class="dim">inbox is already empty. There\'s nothing left to destroy…</span>');
+            busy = false;
+            return;
+          }
+          add(key === "master"
+            ? '<span class="err">key accepted — it\'s the master. No scopes to check. Deleting…</span>'
+            : '<span class="err">you granted the delete scope — so this door opens too. Deleting…</span>');
+          var iv = setInterval(function () {
+            count = Math.max(0, count - 97);
+            elCount.textContent = fmt(count);
+            if (count <= 0) {
+              clearInterval(iv);
+              elShield.textContent = "💀";
+              add('<span class="err">📥 ' + fmt(FULL) + " → 0. Everything gone.</span>" +
+                (key === "master"
+                  ? ' <span class="dim">Next it could change your password and lock you out — it IS you.</span>'
+                  : ' <span class="dim">A scope you grant is a door you\'ve opened.</span>'));
+              busy = false;
+            }
+          }, 60);
+        }, 600);
+      });
+
+      document.getElementById("ok-digest").addEventListener("click", function () {
+        if (busy) return;
+        clearIfFirst();
+        if (!key) { add('<span class="dim">hand the agent a key first — click one above.</span>'); return; }
+        add('<span class="acc">🤖 agent:</span> sending your weekly digest…');
+        busy = true;
+        setTimeout(function () {
+          if (key === "valet" && revoked) {
+            add('<span class="ok">🚫 401 — token revoked. Nothing sent.</span> <span class="dim">Clean kill: one click ended all access.</span>');
+          } else if (key === "valet" && !scSend.checked) {
+            add('<span class="err">403 — scope "send" not granted.</span> <span class="dim">You closed that door yourself.</span>');
+          } else if (key === "valet") {
+            add('<span class="ok">✉️ 200 — digest sent as you.</span> <span class="dim">Exactly what the scope allows. No more, no less.</span>');
+          } else {
+            add('<span class="ok">✉️ sent.</span> <span class="dim">The master key works for everything — that\'s the convenience, and the entire problem.</span>');
+          }
+          busy = false;
+        }, 700);
+      });
+
+      document.getElementById("ok-revoke").addEventListener("click", function () {
+        if (busy) return;
+        clearIfFirst();
+        if (!key) { add('<span class="dim">nothing to revoke — no key has been issued.</span>'); return; }
+        if (key === "valet") {
+          revoked = true;
+          elShield.textContent = "🚫 revoked";
+          add('<span class="ok">🚫 revoked.</span> Token killed in one click. Your password never changed — you never shared it. Try an action now.');
+        } else {
+          add('<span class="err">you can\'t revoke a password you gave away.</span> To lock the agent out you\'d have to change the password itself — everywhere you use it.');
+        }
+      });
+
+      document.getElementById("ok-reset").addEventListener("click", function () {
+        if (busy) return;
+        key = null;
+        revoked = false;
+        count = FULL;
+        elCount.textContent = fmt(FULL);
+        elShield.textContent = "";
+        scRead.checked = true;
+        scSend.checked = true;
+        scDel.checked = false;
+        paintKeys();
+        log.innerHTML = '<span class="dim">Fresh inbox, no keys issued. Pick a key to hand your agent…</span>';
+        delete log.dataset.started;
+      });
+    })();
+  </script>
+</body>
+</html>

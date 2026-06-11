@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DRY — Claude Club</title>
+  <meta name="description" content="DRY, explained in plain English: write it once and reuse it everywhere. With an interactive fix-the-bug-everywhere game." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="dry" data-related="kiss,refactoring,technical-debt,env-file,claude-md">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>DRY</h1>
+        <p class="tldr"><b>TLDR</b>Write it once. Reuse it everywhere.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: fix the bug everywhere ============ -->
+      <section class="widget" aria-label="Fix the bug everywhere game">
+        <div class="widget-bar"><span class="dot"></span> Try it — fix the bug everywhere</div>
+        <div class="widget-body">
+          <div style="background:var(--accent-faint); border:1px solid var(--accent-soft); border-radius:9px; padding:0.55rem 0.8rem; font-size:0.86rem; margin-bottom:0.8rem;">
+            📣 <b>The support email changed:</b> <span style="font-family:var(--mono); font-size:0.78rem;">support@oldmail.com</span> → <span style="font-family:var(--mono); font-size:0.78rem;">help@brightmail.com</span>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn primary" id="dry-tab1">Round 1 — the copy-paste site</button>
+            <button class="wbtn" id="dry-tab2">Round 2 — the DRY site</button>
+          </div>
+
+          <div id="dry-r1wrap">
+            <p style="font-size:0.85rem; color:var(--ink-soft); margin-bottom:0.5rem;">
+              The old address was hard-coded in <b>5 places</b>. Click every copy to update it, then declare the fix done.
+            </p>
+            <div id="dry-r1" style="max-height:200px; overflow-y:auto; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:0.6rem; margin-bottom:0.6rem;"></div>
+            <div class="wrow" style="margin-bottom:0.6rem;">
+              <button class="wbtn" id="dry-done">✅ Declare the fix done</button>
+              <span style="font-size:0.8rem; color:var(--muted);">clicks: <b id="dry-clicks">0</b> · bugs shipped: <b id="dry-bugs" style="color:var(--bad);">0</b></span>
+            </div>
+          </div>
+
+          <div id="dry-r2wrap" style="display:none;">
+            <p style="font-size:0.85rem; color:var(--ink-soft); margin-bottom:0.5rem;">
+              Same site, rebuilt DRY: the address lives in <b>one constant</b>, and all 5 places point at it.
+            </p>
+            <div style="background:var(--code-bg); color:var(--code-ink); border-radius:9px; padding:0.6rem 0.8rem; font-family:var(--mono); font-size:0.8rem; margin-bottom:0.6rem; display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+              <span>EMAIL = "<span id="dry-const" style="color:#f0b27a;">support@oldmail.com</span>"</span>
+              <button class="wbtn" id="dry-update" style="font-size:0.78rem;">✏️ Change the constant (1 click)</button>
+            </div>
+            <div id="dry-r2" style="max-height:200px; overflow-y:auto; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:0.6rem; margin-bottom:0.6rem;"></div>
+          </div>
+
+          <div class="wlog" id="dry-log"><span class="dim">Round 1: hunt down all five copies by hand…</span></div>
+          <div id="dry-score" style="font-family:var(--sans); font-size:0.85rem; font-weight:600; margin-top:0.8rem; min-height:1.4em;"></div>
+        </div>
+        <p class="widget-hint">Round 1 hides one copy below the fold — exactly like real codebases do. Round 2 is why developers invented constants.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>Imagine mailing fifty wedding invitations and hand-writing your return address on every envelope. Then you move. Fifty envelopes to fix — and you <em>will</em> miss one. The fix is a rubber stamp: change the stamp once, and every future envelope is automatically right.</p>
+
+        <p>You just lived the painful half of that in Round 1. The support email was copy-pasted into five corners of the site, and the receipt template — the one scrolled out of view — is exactly the kind of copy that gets missed in real projects. Round 2 was the stamp: one constant, one click, five fixes, zero misses.</p>
+
+        <p><strong>DRY — "Don't Repeat Yourself" — means every fact in your project lives in exactly one place, and everything else points to it.</strong></p>
+
+        <h2>Duplication is how bugs breed</h2>
+
+        <p>Here is the thing about that missed receipt: it wasn't a typo, and nobody was careless. The information was simply stored five times, and five copies means five separate chances to forget one. Every duplicate is a little time bomb with no countdown display.</p>
+
+        <p>Worse, the bug is invisible. The site <em>looked</em> fixed — header, footer, contact page all showed the new address. The broken copy only surfaced when a customer hit it, which is the most expensive possible way to find out. Multiply this by every price, label, rule, and address in a real product, and you understand why developers treat copy-paste like a smell.</p>
+
+        <p>The fixed version has a name worth knowing: a <strong>single source of truth</strong>. The email lives in one constant. The price lives in one place. Change the truth, and everything that references it updates for free. You've already met this idea twice in this course: your <a href="env-file.html">env file</a> is a single source of truth for secrets, and <a href="claude-md.html">CLAUDE.md</a> is one for your AI's house rules.</p>
+
+        <h2>How to direct your AI with it</h2>
+
+        <p>DRY is a phrase you say, not a technique you study. When you're reviewing something Claude built — or something you vibe-coded last month and barely remember — ask:</p>
+
+        <ul>
+          <li>"Is this email / price / name defined in more than one place? Make it DRY."</li>
+          <li>"If this value changes next year, how many edits is that?" The right answer is one.</li>
+          <li>"Extract the duplicated logic into one function."</li>
+        </ul>
+
+        <p>Claude is genuinely great at this job. Spotting copy-paste across a whole project is tedious for humans and trivial for an AI that can read every file at once. And the cleanup itself is a classic <a href="refactoring.html">refactoring</a> move — improving the structure without changing the behavior.</p>
+
+        <h2>The trap: over-DRY</h2>
+
+        <p>Now the counterweight, because every principle has one. DRY applies to things that are genuinely <em>the same fact</em>. It does not mean "merge everything that looks similar."</p>
+
+        <p>Say your receipt email and your marketing email share most of their formatting. Merge them into one template and you've tied two boats together: the moment marketing wants something receipts can't have, you're untangling the knot at the worst possible time. They looked alike by coincidence — but they change for different reasons. Keep them separate.</p>
+
+        <div class="callout">
+          Rule of thumb to tell Claude: "Only merge these if they would always change together."
+          A little honest duplication beats the wrong abstraction. The third-time rule helps too:
+          copy something once, fine. Twice, fine. The third time, extract it into one place.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Change a price, a name, or an address once — and trust it changed everywhere</li>
+          <li>Review AI output with one sharp question: "single source of truth?"</li>
+          <li>Kill the "I thought we fixed that" class of bug entirely</li>
+          <li>Pair it with <a href="kiss.html">KISS</a>: readable code with no clones is code you can actually own</li>
+        </ul>
+
+        <p><strong>Fix it once and it's fixed. Fix it in five places and you've planted four future bugs.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. The support email is hard-coded in five places and it just changed. What's the realistic outcome of updating it by hand?</p>
+            <div class="opts">
+              <button class="opt">All five get updated — people are careful with important things</button>
+              <button class="opt" data-correct>You'll probably miss one — like the receipt template nobody looked at — and ship a bug</button>
+              <button class="opt">The other copies update themselves once you fix the first one</button>
+            </div>
+            <div class="why">That was Round 1: every copy is a separate chance to forget, and the miss stays invisible until a customer hits it.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Your shop's delivery fee appears on the product page, the cart, and three email templates. What's the DRY move?</p>
+            <div class="opts">
+              <button class="opt">Copy it carefully and keep a checklist of all five spots</button>
+              <button class="opt" data-correct>Define the fee once and have all five places reference it — a single source of truth</button>
+              <button class="opt">Remove the fee from the emails so there's less to update</button>
+            </div>
+            <div class="why">Change the stamp, not fifty envelopes. One definition, five references — a future fee change is one edit, everywhere at once.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Two functions look almost identical: one formats customer receipts, one formats legal invoices. Should Claude merge them?</p>
+            <div class="opts">
+              <button class="opt">Yes — fewer functions is always cleaner</button>
+              <button class="opt" data-correct>Not necessarily — they look similar by coincidence and will change for different reasons</button>
+              <button class="opt">Yes, but only if it makes the code shorter</button>
+            </div>
+            <div class="why">DRY is about one fact living in one place — not gluing together things that merely look alike. When they drift apart, the merged version becomes a knot.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* fix the bug everywhere */
+    (function () {
+      var OLD = "support@oldmail.com";
+      var NEW = "help@brightmail.com";
+      var PLACES = [
+        { icon: "🔝", name: "Site header", text: "Questions? Email " },
+        { icon: "📞", name: "Contact page", text: "Reach a human: " },
+        { icon: "⚠️", name: "Error page", text: "If this keeps happening, email " },
+        { icon: "🦶", name: "Site footer", text: "© BrightShop · " },
+        { icon: "🧾", name: "Receipt email template", text: "Problem with your order? Reply to " }
+      ];
+
+      var clicks = 0, bugs = 0, fixed = 0, r1Done = false, r2Done = false;
+
+      var log = document.getElementById("dry-log");
+      var r1Host = document.getElementById("dry-r1");
+      var r2Host = document.getElementById("dry-r2");
+      var r1Wrap = document.getElementById("dry-r1wrap");
+      var r2Wrap = document.getElementById("dry-r2wrap");
+      var tab1 = document.getElementById("dry-tab1");
+      var tab2 = document.getElementById("dry-tab2");
+      var doneBtn = document.getElementById("dry-done");
+      var updateBtn = document.getElementById("dry-update");
+      var constEl = document.getElementById("dry-const");
+      var clicksEl = document.getElementById("dry-clicks");
+      var bugsEl = document.getElementById("dry-bugs");
+      var scoreEl = document.getElementById("dry-score");
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function clearIfFirst() {
+        if (!log.dataset.started) { log.innerHTML = ""; }
+      }
+
+      function block(p, inner) {
+        var d = document.createElement("div");
+        d.style.cssText = "background:var(--card-raise); border:1px solid var(--border-soft); border-radius:8px; padding:0.55rem 0.8rem; margin-bottom:0.5rem; transition:border-color .3s ease;";
+        d.innerHTML =
+          '<div style="font-size:0.66rem; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:var(--muted); margin-bottom:0.15rem;">' + p.icon + " " + p.name + "</div>" +
+          '<div style="font-size:0.86rem;">' + p.text + inner + "</div>";
+        return d;
+      }
+
+      function buildR1() {
+        r1Host.innerHTML = "";
+        PLACES.forEach(function (p, i) {
+          var btn = '<button data-i="' + i + '" class="dry-em" style="font-family:var(--mono); font-size:0.76rem; background:var(--bad-soft); border:1px solid var(--bad); color:var(--bad); border-radius:6px; padding:1px 6px; cursor:pointer;">' + OLD + "</button>";
+          r1Host.appendChild(block(p, btn));
+        });
+      }
+
+      function buildR2() {
+        r2Host.innerHTML = "";
+        PLACES.forEach(function (p) {
+          var ref = '<span class="dry-ref" style="font-family:var(--mono); font-size:0.76rem; background:var(--good-soft); border:1px solid var(--border); border-radius:6px; padding:1px 6px; transition:all .35s ease;">' + OLD + '</span> <sup style="color:var(--accent); font-size:0.62rem; font-family:var(--sans); font-weight:700;">{{EMAIL}}</sup>';
+          r2Host.appendChild(block(p, ref));
+        });
+      }
+
+      function setTab(n) {
+        r1Wrap.style.display = n === 1 ? "block" : "none";
+        r2Wrap.style.display = n === 2 ? "block" : "none";
+        tab1.classList.toggle("primary", n === 1);
+        tab2.classList.toggle("primary", n === 2);
+      }
+
+      tab1.addEventListener("click", function () { setTab(1); });
+      tab2.addEventListener("click", function () { setTab(2); });
+
+      r1Host.addEventListener("click", function (e) {
+        var t = e.target;
+        if (!t.classList || !t.classList.contains("dry-em")) return;
+        if (t.dataset.fixed) return;
+        t.dataset.fixed = "1";
+        t.textContent = NEW;
+        t.style.background = "var(--good-soft)";
+        t.style.borderColor = "var(--good)";
+        t.style.color = "var(--good)";
+        clicks++;
+        fixed++;
+        clicksEl.textContent = clicks;
+        clearIfFirst();
+        add('<span class="ok">✓ updated</span> ' + PLACES[t.dataset.i].name.toLowerCase() + " (" + fixed + "/5)");
+      });
+
+      doneBtn.addEventListener("click", function () {
+        if (r1Done) return;
+        clearIfFirst();
+        var missed = PLACES.length - fixed;
+        if (missed > 0) {
+          bugs++;
+          bugsEl.textContent = bugs;
+          add('<span class="err">🚨 A receipt just went out with the dead address ❌</span> An angry customer is typing… <span class="dim">(' + missed + " cop" + (missed === 1 ? "y" : "ies") + " still wrong — scroll the site)</span>");
+        } else {
+          r1Done = true;
+          add('<span class="ok">All 5 updated by hand — ' + clicks + " clicks.</span> You got them all. This time. <span class=\"dim\">Now run Round 2 →</span>");
+          updateScore();
+        }
+      });
+
+      updateBtn.addEventListener("click", function () {
+        if (r2Done) return;
+        r2Done = true;
+        constEl.textContent = NEW;
+        constEl.style.color = "#9ece8c";
+        var refs = [].slice.call(r2Host.querySelectorAll(".dry-ref"));
+        refs.forEach(function (el, i) {
+          setTimeout(function () {
+            el.textContent = NEW;
+            el.style.borderColor = "var(--good)";
+            el.style.color = "var(--good)";
+            el.style.transform = "scale(1.06)";
+            setTimeout(function () { el.style.transform = "scale(1)"; }, 250);
+          }, i * 90);
+        });
+        clearIfFirst();
+        add('<span class="ok">✓ One edit. Five places. Zero misses possible.</span> The references can’t be wrong — they don’t store the address, they point at it.');
+        updateScore();
+      });
+
+      function updateScore() {
+        var r1 = r1Done ? clicks + " clicks · " + bugs + " bug" + (bugs === 1 ? "" : "s") + " shipped" : "not finished";
+        var r2 = r2Done ? "1 click · 0 bugs" : "not run yet";
+        scoreEl.innerHTML = "🏁 <b>ROUND 1 (copy-paste):</b> " + r1 + "&nbsp;&nbsp;·&nbsp;&nbsp;<b>ROUND 2 (DRY):</b> " + r2;
+        if (r1Done && r2Done) {
+          add('<span class="acc">Rubber stamp beats hand-writing fifty envelopes. That’s DRY.</span>');
+        }
+      }
+
+      buildR1();
+      buildR2();
+      setTab(1);
+    })();
+  </script>
+</body>
+</html>

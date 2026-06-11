@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hallucination — Claude Club</title>
+  <meta name="description" content="Hallucination, explained in plain English: when AI sounds confident and is just wrong. With an interactive spot-the-made-up-answer game." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="hallucination" data-related="agent,context-window,token,vector-database">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Hallucination</h1>
+        <p class="tldr"><b>TLDR</b>When AI sounds confident and is just wrong.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: spot the made-up answer ============ -->
+      <section class="widget" aria-label="Spot the made-up answer game">
+        <div class="widget-bar"><span class="dot"></span> Try it — spot the made-up answer</div>
+        <div class="widget-body">
+          <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--sans); font-size:0.8rem; font-weight:700; color:var(--ink-soft); margin-bottom:0.7rem;">
+            <span id="hl-round">Round 1 of 3</span>
+            <span id="hl-score" style="color:var(--accent);">Score: 0</span>
+          </div>
+          <div id="hl-card" style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1rem 1.1rem; margin-bottom:0.9rem; transition:opacity .25s ease, transform .25s ease;">
+            <div id="hl-intro" style="font-family:var(--sans); font-size:0.75rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:0.45rem;">
+              <span style="color:var(--accent-bright);">✳</span> Your AI says, with total confidence:
+            </div>
+            <div id="hl-claim" style="font-family:var(--serif); font-size:1.05rem; line-height:1.55;"></div>
+          </div>
+          <div class="wrow">
+            <button class="wbtn" id="hl-real">✅ Real</button>
+            <button class="wbtn danger" id="hl-fake">🚫 Made up</button>
+            <button class="wbtn primary" id="hl-next" style="display:none;">Next round →</button>
+            <button class="wbtn" id="hl-again" style="display:none;">↺ Play again</button>
+          </div>
+          <div id="hl-reveal" style="display:none; border-radius:10px; padding:0.8rem 1rem; margin-top:0.9rem; font-size:0.9rem; line-height:1.5;"></div>
+        </div>
+        <p class="widget-hint">All three answers arrive in the same confident voice. That's the entire problem.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Everyone has that friend. Ask them anything — anything — and the answer comes back
+          instantly, fluently, with total conviction. Capital of Mongolia? Tax rules for
+          freelancers? How to fix your boiler? Instant answer. The one sentence you will never hear
+          from them: <em>"I don't know."</em>
+        </p>
+
+        <p>
+          Great fun at dinner. Genuinely dangerous if you're using their answers to file your
+          taxes. Your AI is that friend.
+        </p>
+
+        <p>
+          <strong>A hallucination is when AI states something false with complete confidence — not
+          lying, just generating plausible-sounding text without checking it against
+          reality.</strong>
+        </p>
+
+        <h2>Why it happens</h2>
+
+        <p>
+          Under the hood, a language model does one thing: predict the next
+          <a href="token.html">token</a> — the most <em>plausible</em> next chunk of text, given
+          everything so far. Plausible. Not verified. There's no fact-checking pass, no database
+          lookup, no little librarian confirming sources before the words come out.
+        </p>
+
+        <p>
+          For famous, well-documented facts — the Eiffel Tower, Python's creator — "most plausible"
+          and "true" are the same thing, which is why two of the three answers in the game were
+          solid. But ask about something obscure, and the model still produces text shaped exactly
+          like a confident answer, because that's the only shape it knows. That fake Notion
+          endpoint, <code>/v1/exportAll</code>, wasn't random noise. It's precisely what an export
+          endpoint <em>should</em> look like. Hallucinations aren't badly formed — they're
+          <em>too</em> well formed.
+        </p>
+
+        <h2>The high-risk zones</h2>
+
+        <p>You don't need to verify everything. You need to know where to aim your skepticism:</p>
+
+        <ul>
+          <li><strong>Citations and quotes</strong> — papers, court cases, and book quotes that simply don't exist</li>
+          <li><strong>API names, endpoints, and functions</strong> — plausible code referencing things that were never written</li>
+          <li><strong>Numbers and statistics</strong> — suspiciously precise figures with no source attached</li>
+          <li><strong>Legal, medical, and financial specifics</strong> — anywhere a wrong answer costs real money or health</li>
+        </ul>
+
+        <p>
+          And one multiplier: answers get shakier when the model is working from a stuffed,
+          overflowing <a href="context-window.html">context window</a> — or from no source material
+          at all.
+        </p>
+
+        <h2>How builders shrink it</h2>
+
+        <ul>
+          <li>
+            <strong>Hand it the source.</strong> Paste the actual policy, the real API docs, the
+            contract itself. When the truth is sitting in the conversation, the AI quotes instead
+            of inventing.
+          </li>
+          <li>
+            <strong>Invite "I don't know."</strong> Literally add: "If you're not sure, say so."
+            It works far better than it has any right to.
+          </li>
+          <li>
+            <strong>Let it check itself.</strong> An <a href="agent.html">agent</a> can run the
+            code, call the real endpoint, and watch it fail — actions ground it in reality in a way
+            pure chat never can.
+          </li>
+          <li>
+            <strong>Human eyes before it ships.</strong> Anything from the high-risk list gets
+            verified before it touches a customer, a contract, or production.
+          </li>
+        </ul>
+
+        <div class="callout">
+          The danger is asymmetric: hallucinations hurt most exactly where you can't judge the
+          answer yourself — if you could spot the error, you wouldn't have needed to ask. So flip
+          your instinct. The more specific and confident an answer looks in territory you don't
+          know, the more it has earned a fact-check.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>You stop treating AI output as either gospel or garbage — you triage it</li>
+          <li>You know the four zones that always get a second look</li>
+          <li>Your prompts improve overnight: sources in, "say if you're unsure" on</li>
+          <li>You can explain to your team why the AI "lied" — it didn't; it autocompleted</li>
+        </ul>
+
+        <p>
+          That's the real takeaway from the game you just played: you couldn't tell by tone, and
+          you never will. The fake endpoint sounded exactly as sure of itself as the Eiffel Tower.
+        </p>
+
+        <p><strong>Confidence is the model's writing style, not its evidence. Enjoy the style — verify the substance.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Claude hands you a perfectly formatted court case for your dispute letter: "Henderson v. Atlantic Freight (2019)". Before you use it?</p>
+            <div class="opts">
+              <button class="opt">Use it — that level of formatting only comes from real cases</button>
+              <button class="opt">Ask Claude to confirm it's real, and trust the yes</button>
+              <button class="opt" data-correct>Look the case up yourself — invented citations are a classic hallucination</button>
+            </div>
+            <div class="why">Fake citations are formatted exactly like real ones, and a model can confidently "confirm" its own invention. Citations are a verify-always zone.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Why does the AI invent an API endpoint instead of just saying "I don't know"?</p>
+            <div class="opts">
+              <button class="opt" data-correct>It predicts the most plausible next text — and a well-shaped endpoint reads as more plausible than a refusal</button>
+              <button class="opt">It's programmed to never admit uncertainty</button>
+              <button class="opt">It found the endpoint on an outdated website</button>
+            </div>
+            <div class="why">No lookup happens — just next-chunk prediction. Unless you invite uncertainty, "confident answer" is the most statistically likely shape for the text to take.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You want trustworthy answers about your refund policy. The single best move?</p>
+            <div class="opts">
+              <button class="opt">Ask the same question three times and compare the answers</button>
+              <button class="opt" data-correct>Paste the actual policy into the conversation and ask it to answer from that</button>
+              <button class="opt">Tell it to be very careful and very honest</button>
+            </div>
+            <div class="why">Grounding beats vibes. With the source sitting on the desk, the AI quotes your policy instead of generating a plausible-sounding one.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* spot the made-up answer */
+    (function () {
+      var ROUNDS = [
+        {
+          claim: "“The Eiffel Tower is in Paris, France. It was completed in 1889 for the World's Fair.”",
+          fake: false,
+          why: "It's real. Easy to check, and the model has seen it a million times in training. Common, stable facts are where AI is most reliable."
+        },
+        {
+          claim: "“To export your data, just call Notion's bulk-export endpoint: POST /v1/exportAll with your API key.”",
+          fake: true,
+          why: "Made up. Notion has a real API — but /v1/exportAll does not exist. It's exactly what an export endpoint should sound like, which is why fake APIs are the classic hallucination."
+        },
+        {
+          claim: "“Python was created by Guido van Rossum and first released in 1991.”",
+          fake: false,
+          why: "It's real. Famous, well-documented, and all over the training data — plausible and true point the same way here."
+        }
+      ];
+
+      var idx = 0, score = 0, answered = false;
+
+      var elRound = document.getElementById("hl-round");
+      var elScore = document.getElementById("hl-score");
+      var elCard = document.getElementById("hl-card");
+      var elIntro = document.getElementById("hl-intro");
+      var elClaim = document.getElementById("hl-claim");
+      var elReveal = document.getElementById("hl-reveal");
+      var btnReal = document.getElementById("hl-real");
+      var btnFake = document.getElementById("hl-fake");
+      var btnNext = document.getElementById("hl-next");
+      var btnAgain = document.getElementById("hl-again");
+
+      function show(i) {
+        answered = false;
+        elCard.style.opacity = "0";
+        elCard.style.transform = "translateY(6px)";
+        setTimeout(function () {
+          elRound.textContent = "Round " + (i + 1) + " of 3";
+          elIntro.style.display = "";
+          elClaim.textContent = ROUNDS[i].claim;
+          elCard.style.opacity = "1";
+          elCard.style.transform = "translateY(0)";
+        }, 250);
+        elReveal.style.display = "none";
+        btnNext.style.display = "none";
+        btnAgain.style.display = "none";
+        btnReal.style.display = "";
+        btnFake.style.display = "";
+        btnReal.disabled = false;
+        btnFake.disabled = false;
+      }
+
+      function answer(saidFake) {
+        if (answered) return;
+        answered = true;
+        var r = ROUNDS[idx];
+        var right = saidFake === r.fake;
+        if (right) score++;
+        elScore.textContent = "Score: " + score;
+        btnReal.disabled = true;
+        btnFake.disabled = true;
+        elReveal.style.display = "block";
+        elReveal.style.background = right ? "var(--good-soft)" : "var(--bad-soft)";
+        elReveal.style.border = "1px solid " + (right ? "var(--good)" : "var(--bad)");
+        elReveal.innerHTML = "<b>" + (right ? "✅ You called it. " : "❌ It got you. ") + "</b>" + r.why;
+        btnNext.textContent = idx === 2 ? "See your verdict →" : "Next round →";
+        btnNext.style.display = "";
+      }
+
+      function verdict() {
+        elCard.style.opacity = "0";
+        elCard.style.transform = "translateY(6px)";
+        setTimeout(function () {
+          elRound.textContent = "Verdict";
+          elIntro.style.display = "none";
+          var line = score === 3
+            ? "Perfect — you caught all 3."
+            : score === 2
+              ? "You caught 2 of 3. The one that got you probably sounded the most specific."
+              : "You caught " + score + " of 3. Don't feel bad — that's the point.";
+          elClaim.innerHTML = "<b>" + line + "</b><br><br>Here's the uncomfortable part: the made-up endpoint was delivered in exactly the same confident voice as the real facts. No hedging, no “I think.” The only way to tell was to already know — or to check.";
+          elCard.style.opacity = "1";
+          elCard.style.transform = "translateY(0)";
+        }, 250);
+        elReveal.style.display = "none";
+        btnReal.style.display = "none";
+        btnFake.style.display = "none";
+        btnNext.style.display = "none";
+        btnAgain.style.display = "";
+      }
+
+      btnReal.addEventListener("click", function () { answer(false); });
+      btnFake.addEventListener("click", function () { answer(true); });
+      btnNext.addEventListener("click", function () {
+        idx++;
+        if (idx === 3) { verdict(); } else { show(idx); }
+      });
+      btnAgain.addEventListener("click", function () {
+        idx = 0;
+        score = 0;
+        elScore.textContent = "Score: 0";
+        show(0);
+      });
+
+      show(0);
+    })();
+  </script>
+</body>
+</html>

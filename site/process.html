@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Process — Claude Club</title>
+  <meta name="description" content="Process, explained in plain English: a program that is actually running. With an interactive process spawner." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="process" data-related="runtime,daemon,server,state">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Process</h1>
+        <p class="tldr"><b>TLDR</b>A program that is actually running.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: process spawner ============ -->
+      <section class="widget" aria-label="Process spawner">
+        <div class="widget-bar"><span class="dot"></span> Try it — the process spawner</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Three programs sit on this fake computer's disk. Launch them and watch processes appear —
+            then run <b>script.js</b> twice and compare the PIDs.
+          </p>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn" id="pr-notes">📝 Open Notes</button>
+            <button class="wbtn" id="pr-music">🎵 Open Music</button>
+            <button class="wbtn primary" id="pr-script">⚙️ Run script.js</button>
+          </div>
+          <div style="font-family:var(--sans); font-size:0.8rem; font-weight:600; color:var(--ink-soft); display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.5rem;">
+            <span>📀 programs on disk: <b>3</b> <span style="color:var(--muted); font-weight:500;">(never changes)</span></span>
+            <span>⚡ processes running: <b id="pr-count" style="color:var(--accent);">0</b></span>
+          </div>
+          <div style="background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:8px; margin-bottom:0.9rem;">
+            <div style="display:grid; grid-template-columns:1.3fr 0.7fr 0.7fr 1fr 34px; gap:6px; font-family:var(--sans); font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); padding:4px 8px;">
+              <span>Process</span><span>PID</span><span>CPU</span><span>Status</span><span></span>
+            </div>
+            <div id="pr-rows"></div>
+            <div id="pr-empty" style="font-family:var(--sans); font-size:0.85rem; color:var(--muted); padding:14px 8px;">Nothing running. The three programs are just files, sitting quietly on disk.</div>
+          </div>
+          <div class="wlog" id="pr-log"><span class="dim">Activity Monitor ready. Launch something…</span></div>
+        </div>
+        <p class="widget-hint">Run script.js twice: one program, two processes, two PIDs. Kill one — the other doesn't even notice, and the file on disk is fine.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Your Applications folder is a graveyard. Notes, Music, your browser — every app in
+          there is, right now, just a file. Instructions written down and sitting on disk,
+          doing nothing, costing nothing.
+        </p>
+
+        <p>
+          Then you double-click. The computer reads those instructions into memory, hands them
+          CPU time, stamps the whole thing with an ID number — and now it's alive. Drawing
+          windows. Responding to clicks. Draining your battery.
+        </p>
+
+        <p><strong>A process is a program that is actually running — the live copy in memory, not the file on disk.</strong></p>
+
+        <p>
+          The analogy that makes it stick: the file is a recipe. The process is a cake actually
+          baking in the oven. The recipe describes a cake; the oven is where one actually
+          exists. And one recipe can have several cakes baking at the same time.
+        </p>
+
+        <h2>Same recipe, two cakes</h2>
+
+        <p>
+          That's the trick you just pulled in the spawner. Click "Run script.js" twice and you
+          get two rows: same name, same file — different PIDs. A PID is a process ID, the
+          number the operating system hands every process at birth so it can tell them apart.
+          Your real computer is running a few hundred of these right now — open Activity
+          Monitor and you can watch them all, CPU wiggling exactly like the widget.
+        </p>
+
+        <p>
+          Because each process gets its own memory and its own slice of CPU, the two copies are
+          complete strangers. Kill one and the other keeps running without a flicker. Real
+          systems lean on this constantly: a busy app might run five identical copies of the
+          same code on a <a href="server.html">server</a> to handle traffic. Five cakes, one
+          recipe.
+        </p>
+
+        <h2>Why force-quit works</h2>
+
+        <p>
+          When an app freezes and you reach for Force Quit, you now know exactly what you're
+          doing: killing the process. You're pulling a half-baked cake out of the oven and
+          binning it. Brutal — but the recipe is untouched. The program file sits on disk
+          exactly as it was, ready to spawn a fresh process the moment you relaunch.
+        </p>
+
+        <p>
+          That's why force-quitting almost never damages an app itself. The only thing at risk
+          is whatever the process was holding in memory and hadn't saved yet — its
+          <a href="state.html">state</a>. The cake is lost; the cookbook is fine. Modern apps
+          autosave constantly for exactly this reason: they assume their process can die at
+          any second.
+        </p>
+
+        <h2>Where this shows up when you build</h2>
+
+        <p>The moment you start building with Claude, processes stop being trivia:</p>
+
+        <ul>
+          <li>Run <code>npm run dev</code> and your terminal is hosting a process. Close the terminal, the process dies, your local site goes down with it.</li>
+          <li>Ask Claude to run a script and a process spawns, works, and exits. The <a href="runtime.html">runtime</a> is the oven; the process is the bake.</li>
+          <li>"Port 3000 is already in use" means an old process is still alive and squatting on that port. You don't reboot — you find it and kill it.</li>
+          <li>Some processes are born to never exit: no window, running forever in the background. Those get their own name — <a href="daemon.html">daemons</a> — and their own lesson, next.</li>
+        </ul>
+
+        <div class="callout">
+          Pro tip: when anything acts haunted — port taken, file locked, changes not showing up —
+          ask one question first: "is there an old process still running?" Nine times out of ten
+          the ghost is a cake you forgot in the oven. Kill the process and the haunting stops.
+        </div>
+
+        <p>
+          Once you see the split, your computer gets a lot less mysterious. The Applications
+          folder is a cookbook. Activity Monitor is the kitchen, live, mid-service. And you now
+          read both fluently.
+        </p>
+
+        <p><strong>Programs are promises. Processes are the work actually happening.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Notes is frozen and you hit Force Quit. What did you actually destroy?</p>
+            <div class="opts">
+              <button class="opt">The Notes app — you'll need to reinstall it</button>
+              <button class="opt" data-correct>The running process — the program file on disk is untouched</button>
+              <button class="opt">Both the process and every note you've ever written</button>
+            </div>
+            <div class="why">Force Quit kills the live process — the half-baked cake. The recipe (the app file) stays on disk, ready to launch a fresh process. At most you lose unsaved work.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You run the same script in two terminal windows at once. What does the operating system see?</p>
+            <div class="opts">
+              <button class="opt">One process working twice as hard</button>
+              <button class="opt" data-correct>Two separate processes with two different PIDs</button>
+              <button class="opt">An error — a program can only run once</button>
+            </div>
+            <div class="why">One recipe, two cakes. Each launch spawns its own process with its own PID, memory, and CPU time — killing one leaves the other running, exactly like in the spawner.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your dev server says "port 3000 already in use." Best first move?</p>
+            <div class="opts">
+              <button class="opt">Restart the computer — it's the only way to free a port</button>
+              <button class="opt" data-correct>Find the old process holding the port and kill it</button>
+              <button class="opt">Delete the project folder and start over</button>
+            </div>
+            <div class="why">A leftover process is still alive and holding the port. Kill that one process and the port frees instantly — no reboot, no re-clone, no drama.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* process spawner */
+    (function () {
+      var rowsEl = document.getElementById("pr-rows");
+      var emptyEl = document.getElementById("pr-empty");
+      var countEl = document.getElementById("pr-count");
+      var log = document.getElementById("pr-log");
+      var procs = [];
+
+      function addLog(html) {
+        if (!log.dataset.started) { log.innerHTML = ""; log.dataset.started = "1"; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function freshPid() {
+        var p;
+        do { p = 1000 + Math.floor(Math.random() * 9000); }
+        while (procs.some(function (x) { return x.pid === p; }));
+        return p;
+      }
+
+      function render() {
+        countEl.textContent = procs.length;
+        emptyEl.style.display = procs.length ? "none" : "block";
+      }
+
+      function kill(p) {
+        var i = procs.indexOf(p);
+        if (i === -1) return;
+        procs.splice(i, 1);
+        p.el.style.opacity = "0";
+        p.el.style.transform = "translateX(24px)";
+        setTimeout(function () { p.el.remove(); }, 350);
+        render();
+        addLog('<span class="err">✖ killed PID ' + p.pid + ".</span> The " + p.name + " file on disk: untouched.");
+        var twins = procs.filter(function (x) { return x.name === p.name; });
+        if (twins.length === 1) {
+          addLog('<span class="dim">the other ' + p.name + " (PID " + twins[0].pid + ") never even noticed.</span>");
+        }
+      }
+
+      function spawn(name, icon, baseCpu) {
+        if (procs.length >= 8) {
+          addLog('<span class="err">🌀 fan at full blast — 8 processes is plenty. Kill something first.</span>');
+          return;
+        }
+        var p = { name: name, icon: icon, pid: freshPid(), base: baseCpu };
+        var row = document.createElement("div");
+        row.style.cssText =
+          "display:grid; grid-template-columns:1.3fr 0.7fr 0.7fr 1fr 34px; gap:6px; align-items:center;" +
+          "font-family:var(--sans); font-size:0.82rem; background:var(--card-raise); border:1px solid var(--border);" +
+          "border-radius:8px; padding:7px 8px; margin-top:6px; transition:opacity .35s ease, transform .35s ease;" +
+          "opacity:0; transform:translateY(6px);";
+        row.innerHTML =
+          "<span>" + icon + " <b>" + name + "</b></span>" +
+          '<span style="font-family:var(--mono); font-size:0.78rem;">' + p.pid + "</span>" +
+          '<span class="pr-cpu" style="font-family:var(--mono); font-size:0.78rem;">' + p.base.toFixed(1) + "%</span>" +
+          '<span style="color:var(--good); font-weight:600; font-size:0.78rem;">● running</span>' +
+          '<button class="wbtn danger" style="padding:2px 8px; font-size:0.78rem;" title="Force quit">✖</button>';
+        p.cpuEl = row.querySelector(".pr-cpu");
+        row.querySelector("button").addEventListener("click", function () { kill(p); });
+        p.el = row;
+        rowsEl.appendChild(row);
+        setTimeout(function () { row.style.opacity = "1"; row.style.transform = "translateY(0)"; }, 30);
+        procs.push(p);
+        render();
+        addLog('<span class="ok">▶ spawned</span> ' + name + ' <span class="acc">(PID ' + p.pid + ")</span>");
+        var twins = procs.filter(function (x) { return x.name === name; });
+        if (twins.length === 2) {
+          addLog('<span class="acc">two ' + name + " processes, two PIDs — same recipe, two cakes in the oven.</span>");
+        }
+      }
+
+      setInterval(function () {
+        procs.forEach(function (p) {
+          var c = Math.max(0.4, p.base + (Math.random() * 8 - 4));
+          p.cpuEl.textContent = c.toFixed(1) + "%";
+        });
+      }, 700);
+
+      document.getElementById("pr-notes").addEventListener("click", function () { spawn("Notes", "📝", 3); });
+      document.getElementById("pr-music").addEventListener("click", function () { spawn("Music", "🎵", 7); });
+      document.getElementById("pr-script").addEventListener("click", function () { spawn("script.js", "⚙️", 24); });
+    })();
+  </script>
+</body>
+</html>

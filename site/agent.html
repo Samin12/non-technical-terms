@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agent — Claude Club</title>
+  <meta name="description" content="Agent, explained in plain English: an AI that takes actions, not just answers. With an interactive agent loop simulator." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="agent" data-related="api,harness,agents-sdk,mcp,computer-use">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Agent</h1>
+        <p class="tldr"><b>TLDR</b>An AI that takes actions, not just answers.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: watch the loop run ============ -->
+      <section class="widget" aria-label="Agent loop simulator">
+        <div class="widget-bar"><span class="dot"></span> Try it — watch the loop run</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Same AI, same goal, two modes. One talks about the task. The other does it —
+            in a loop you can watch.
+          </p>
+
+          <div style="font-weight:600; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:0.6rem 0.9rem; margin-bottom:0.8rem;">
+            🎯 Goal: “Find me a flight under $200.”
+          </div>
+
+          <div class="wrow" style="justify-content:space-between; margin-bottom:0.8rem;">
+            <div class="wrow" style="gap:0.4rem;">
+              <span id="ag-p-think" style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.06em; border:1px solid var(--border); background:var(--card); color:var(--ink-soft); border-radius:999px; padding:0.3rem 0.7rem; transition:all .25s ease; display:inline-block;">🧠 THINK</span>
+              <span style="color:var(--muted);">→</span>
+              <span id="ag-p-act" style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.06em; border:1px solid var(--border); background:var(--card); color:var(--ink-soft); border-radius:999px; padding:0.3rem 0.7rem; transition:all .25s ease; display:inline-block;">🔧 ACT</span>
+              <span style="color:var(--muted);">→</span>
+              <span id="ag-p-observe" style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.06em; border:1px solid var(--border); background:var(--card); color:var(--ink-soft); border-radius:999px; padding:0.3rem 0.7rem; transition:all .25s ease; display:inline-block;">👀 OBSERVE</span>
+            </div>
+            <span id="ag-cycle" style="font-family:var(--sans); font-size:0.78rem; font-weight:700; color:var(--muted);">cycle 0 / 3</span>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn" id="ag-chat">💬 Chatbot mode</button>
+            <button class="wbtn primary" id="ag-agent">🤖 Agent mode</button>
+          </div>
+
+          <div class="wlog" id="ag-log"><span class="dim">Pick a mode. Same goal, very different mornings…</span></div>
+        </div>
+        <p class="widget-hint">Run both modes. The chatbot answers in one shot. The agent loops — watch what it does when the first search comes back over budget.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>Picture two interns on day one. You give both the same job: “Find me a flight to Miami under $200.”</p>
+
+        <p>
+          Intern one leans back and says, “Have you tried comparing sites? Flying Tuesday is usually
+          cheaper.” Technically true. Completely useless. Intern two opens a laptop, searches, finds
+          nothing under budget, shifts the dates, widens the search, and comes back twenty minutes
+          later with: “$187, Tuesday, nonstop. Want me to book it?”
+        </p>
+
+        <p>
+          You just watched that exact difference play out in the widget. The first button is a
+          chatbot. The second is an agent.
+        </p>
+
+        <p><strong>An agent is an AI running in a loop: it takes a goal, thinks about a move, acts using a tool, observes what happened — and goes again until the job is done.</strong></p>
+
+        <h2>The loop is the whole idea</h2>
+
+        <p>
+          A chatbot’s life is one round: you talk, it talks, end of story. An agent’s life is a cycle —
+          think → act → observe — and the magic lives in the third step. When the first search came
+          back at $240, the agent didn’t shrug and report failure. It looked at the result, adjusted
+          the plan, and tried again with flexible dates. Then again with a wider window. That’s not
+          some extra intelligence bolted on top. That’s just the loop doing its job.
+        </p>
+
+        <p>
+          Notice it took three cycles in the demo. Real agents might take thirty. The loop keeps
+          running until the goal is met, the agent decides it’s stuck, or it hits a limit you set —
+          and good builders always set one.
+        </p>
+
+        <h2>Tools are the hands</h2>
+
+        <p>
+          “Act” doesn’t happen by magic. An agent acts through tools — and tools are mostly
+          <a href="api.html">APIs</a>, the order windows you met earlier. That
+          <code>search_flights()</code> call in the widget is exactly that: an order placed at a
+          flight-data window. Give the same loop more tools — calendar, email, your database — and
+          it can do more jobs. Plug them in through <a href="mcp.html">MCP</a> and you barely have
+          to wire anything yourself.
+        </p>
+
+        <p>
+          Two more pieces complete the picture. The software wrapped around the model — the thing
+          that actually runs the loop, calls the tools, and feeds results back in — is the
+          <a href="harness.html">harness</a>. And if you want to build your own agent instead of
+          renting one, you don’t start from zero: that’s what an <a href="agents-sdk.html">Agents SDK</a>
+          is for.
+        </p>
+
+        <h2>When you want an agent — and when you don’t</h2>
+
+        <p>
+          A chatbot is the right tool when the answer <em>is</em> the product: explain this contract,
+          draft this email, brainstorm ten names. Reach for an agent when the doing is the product —
+          multi-step work with checkable results. Research this market and compile a doc. Fix this
+          bug and run the tests. Find the flight and hold the seat. If you’d hand the task to an
+          assistant rather than ask a friend for advice, it’s agent-shaped.
+        </p>
+
+        <div class="callout">
+          An AI that can act can also act wrong — at full speed, on repeat. That’s why builders cap
+          the loop (max cycles, spending limits), shrink the tool menu to what the job needs, and
+          keep a human approval step in front of anything irreversible. Give the intern a company
+          card limit <em>before</em> sending them shopping.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>An inbox triager that reads, labels, drafts replies, and flags only the three emails that truly need you</li>
+          <li>A research agent that searches, cross-checks sources, and assembles a brief while you sleep</li>
+          <li>A coding agent that writes a fix, runs the tests, sees one fail, and patches its own work</li>
+          <li>An ops agent that watches a dashboard and files the ticket the moment something breaks</li>
+        </ul>
+
+        <p>
+          Same model in every case — Claude doesn’t get smarter between the two buttons you pressed.
+          The difference is the loop around it and the tools in its hands.
+        </p>
+
+        <p><strong>A chatbot answers you. An agent comes back with the job done.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You tell an AI: “Get me a table for four on Friday night.” Which response tells you it’s an agent, not a chatbot?</p>
+            <div class="opts">
+              <button class="opt">“Here are five great tips for snagging reservations in your city”</button>
+              <button class="opt" data-correct>“Checked the booking tool: 7:00 was full, so I held 8:15 at Lucali — confirm?”</button>
+              <button class="opt">A beautifully written essay about Friday dining culture</button>
+            </div>
+            <div class="why">An agent acts through tools and reports results — including adjusting when the first try (7:00) fails. Advice, however good, is chatbot territory.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Mid-task, an agent’s first search returns zero flights under budget. What does a well-built agent do next?</p>
+            <div class="opts">
+              <button class="opt">Stops immediately and reports failure</button>
+              <button class="opt" data-correct>Observes the result, rethinks, and tries a different action — that’s the loop</button>
+              <button class="opt">Repeats the exact same search until it works</button>
+            </div>
+            <div class="why">The observe step exists so results feed the next think. Instant surrender or the same action on repeat means the loop isn’t actually looping.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Why do builders put guardrails — tool limits, spending caps, approval steps — on agents?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Agents take real actions, so a wrong loop can do real damage — fast and repeatedly</button>
+              <button class="opt">Guardrails make the underlying model smarter</button>
+              <button class="opt">They’re only needed for agents that handle voice calls</button>
+            </div>
+            <div class="why">A chatbot’s worst output is a bad paragraph. An agent’s worst output is the wrong refund issued forty times. Guardrails scope the blast radius.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* watch the loop run */
+    (function () {
+      var log = document.getElementById("ag-log");
+      var cyc = document.getElementById("ag-cycle");
+      var bChat = document.getElementById("ag-chat");
+      var bAgent = document.getElementById("ag-agent");
+      var pills = {
+        think: document.getElementById("ag-p-think"),
+        act: document.getElementById("ag-p-act"),
+        observe: document.getElementById("ag-p-observe")
+      };
+      var timers = [];
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function setPhase(p) {
+        for (var k in pills) {
+          var on = k === p;
+          pills[k].style.background = on ? "var(--accent-bright)" : "var(--card)";
+          pills[k].style.color = on ? "#fff" : "var(--ink-soft)";
+          pills[k].style.borderColor = on ? "var(--accent-bright)" : "var(--border)";
+          pills[k].style.transform = on ? "translateY(-1px) scale(1.07)" : "none";
+        }
+      }
+      function reset() {
+        timers.forEach(clearTimeout);
+        timers = [];
+        log.innerHTML = "";
+        log.dataset.started = "";
+        setPhase("");
+        cyc.textContent = "cycle 0 / 3";
+      }
+      function lock(b) { bChat.disabled = b; bAgent.disabled = b; }
+      function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+
+      bChat.addEventListener("click", function () {
+        reset();
+        lock(true);
+        add('<span class="acc">→ YOU:</span> “Find me a flight under $200.”');
+        at(450, function () {
+          add('💬 CHATBOT: “Try comparing sites like Kayak or Google Flights! Flying Tuesday is often cheaper. Good luck!”');
+        });
+        at(1150, function () {
+          add('<span class="err">— done.</span> <span class="dim">Nothing searched. Nothing booked. The task is still yours.</span>');
+          lock(false);
+        });
+      });
+
+      var STEPS = [
+        { c: 1, p: "think",   t: '<span class="acc">THINK</span>   “I’ll search flights NYC → MIA for Friday.”' },
+        { c: 1, p: "act",     t: '<span class="acc">ACT</span>     🔧 search_flights(NYC → MIA, Fri)' },
+        { c: 1, p: "observe", t: '<span class="acc">OBSERVE</span> 3 results. Cheapest $240 — <span class="err">over budget</span>.' },
+        { c: 2, p: "think",   t: '<span class="acc">THINK</span>   “Over budget. Try flexible dates, ±1 day.”' },
+        { c: 2, p: "act",     t: '<span class="acc">ACT</span>     🔧 search_flights(NYC → MIA, Thu–Sat)' },
+        { c: 2, p: "observe", t: '<span class="acc">OBSERVE</span> Cheapest now $212 — <span class="err">still over</span>.' },
+        { c: 3, p: "think",   t: '<span class="acc">THINK</span>   “Widen to any day next week. Keep it nonstop.”' },
+        { c: 3, p: "act",     t: '<span class="acc">ACT</span>     🔧 search_flights(NYC → MIA, next week)' },
+        { c: 3, p: "observe", t: '<span class="acc">OBSERVE</span> $187 on Tuesday — <span class="ok">under budget ✓</span>' }
+      ];
+
+      bAgent.addEventListener("click", function () {
+        reset();
+        lock(true);
+        add('<span class="acc">→ YOU:</span> “Find me a flight under $200.”');
+        STEPS.forEach(function (s, i) {
+          at(500 + i * 620, function () {
+            setPhase(s.p);
+            cyc.textContent = "cycle " + s.c + " / 3";
+            add(s.t);
+          });
+        });
+        at(500 + STEPS.length * 620 + 200, function () {
+          setPhase("");
+          add('<span class="ok">✓ GOAL MET in 3 cycles:</span> booked-ready option — $187, Tuesday, nonstop. <span class="dim">Want me to hold it?</span>');
+          lock(false);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

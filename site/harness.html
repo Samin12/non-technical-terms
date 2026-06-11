@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Harness — Claude Club</title>
+  <meta name="description" content="Harness, explained in plain English: the car built around the AI engine. With an interactive engine vs. car tour." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="harness" data-related="agent,context-window,agents-sdk,system-prompt">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Harness</h1>
+        <p class="tldr"><b>TLDR</b>The car built around the AI engine.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: engine vs. car tour ============ -->
+      <section class="widget" aria-label="Harness engine versus car tour">
+        <div class="widget-bar"><span class="dot"></span> Try it — engine vs. car tour</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            The brain in the middle is the model — the engine. Everything around it is the harness.
+            Click each part to inspect it, send the task, then try removing the car entirely.
+          </p>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:0.8rem;">
+            <button class="wbtn hn-part" data-part="steering" style="padding:0.7rem 0.3rem;">🛞 Steering</button>
+            <button class="wbtn hn-part" data-part="dashboard" style="padding:0.7rem 0.3rem;">📊 Dashboard</button>
+            <button class="wbtn hn-part" data-part="mirrors" style="padding:0.7rem 0.3rem;">🪞 Mirrors</button>
+            <button class="wbtn hn-part" data-part="seatbelts" style="padding:0.7rem 0.3rem;">🔒 Seatbelts</button>
+            <div id="hn-engine" style="border:2px solid var(--accent-bright); background:var(--accent-faint); border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.4rem 0.3rem; font-family:var(--sans); font-weight:800; font-size:0.72rem; letter-spacing:0.1em; text-align:center; transition:box-shadow .4s ease;">
+              <span style="font-size:1.5rem; line-height:1.2;">🧠</span>ENGINE
+              <span style="font-weight:600; font-size:0.68rem; color:var(--muted); letter-spacing:0;">the model</span>
+            </div>
+            <button class="wbtn hn-part" data-part="fuel" style="padding:0.7rem 0.3rem;">⛽ Fuel gauge</button>
+          </div>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="hn-task">🧾 Send task: "do my taxes"</button>
+            <button class="wbtn danger" id="hn-toggle">🔧 Remove the harness</button>
+          </div>
+          <div class="wlog" id="hn-log"><span class="dim">Click a car part to inspect it, or send the task…</span></div>
+        </div>
+        <p class="widget-hint">Same engine both times. Remove the harness and "do my taxes" becomes an essay about taxes.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          A Ferrari engine on a workbench is a glorious object. It revs. It roars. It cost
+          millions to develop. And it cannot drive to the store, because an engine is not a car.
+        </p>
+
+        <p>
+          That's a frontier AI model, fresh out of the lab. Staggeringly smart, and completely
+          stuck. On its own it can do exactly one thing: take text in, push text out. It can't
+          open your files, remember yesterday, ask before doing something risky, or show you
+          progress. The model is the engine. Everything else has to be built around it.
+        </p>
+
+        <p>
+          <strong>The harness is everything built around the model that turns raw intelligence
+          into a product that can actually do things.</strong>
+        </p>
+
+        <p>
+          You just toured one. The steering, seatbelts, dashboard, fuel gauge, and mirrors in
+          the widget aren't a cute metaphor — they're a real parts list.
+        </p>
+
+        <h2>Same engine, completely different car</h2>
+
+        <p>
+          Here's the thing nobody tells beginners: the Claude you chat with in an app and the
+          Claude that fixes code in a terminal can be the exact same model. Identical engine.
+          They feel wildly different because each one is wrapped in a different harness. The
+          chat harness gives the engine a text box and a conversation. Claude Code's harness
+          gives it your files, a terminal, permissions, and a loop that keeps working until the
+          job is done.
+        </p>
+
+        <p>
+          Same brain. One can chat about your taxes; the other can open the folder and do them.
+          You watched that exact gap in the widget: remove the harness and "do my taxes"
+          produced a lovely essay and zero filed taxes. That's why harness quality
+          <em>is</em> product quality. The model sets the ceiling — the harness decides how
+          close you get to it.
+        </p>
+
+        <h2>A tour of the parts</h2>
+
+        <ul>
+          <li><strong>Steering</strong> is the loop: decide the next move, act, check the result, go again. That loop is what makes an <a href="agent.html">agent</a> an agent.</li>
+          <li><strong>Seatbelts</strong> are permissions. A good harness pauses before deleting, paying, or sending — and asks you first.</li>
+          <li><strong>The dashboard</strong> is everything you see: progress, logs, results. The engine has no screen of its own.</li>
+          <li><strong>The fuel gauge</strong> watches the <a href="context-window.html">context window</a> and trims it before it overflows mid-task.</li>
+          <li><strong>Mirrors</strong> are memory: the standing rules and notes the harness shows the engine before it starts — your <a href="system-prompt.html">system prompt</a> and house-rules files.</li>
+        </ul>
+
+        <p>
+          Half of this site is secretly a harness tour. Once you can see the parts, every
+          "new AI product" announcement decodes itself: it's almost never a new engine.
+          It's a better car.
+        </p>
+
+        <div class="callout">
+          Pro tip: when an AI product feels smarter than the competition, check the harness
+          before you believe the magic. What tools does it have? Does it ask permission? How
+          does it handle a long session? Two products running the same model can be a go-kart
+          and a Land Cruiser.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li><strong>Judge tools properly.</strong> Compare harnesses — tools, seatbelts, memory — not just the model name on the box.</li>
+          <li><strong>Debug like a builder.</strong> When your AI flails, the cause is usually harness: a missing tool, a context window that quietly filled up, a permission it never had.</li>
+          <li><strong>Read announcements clearly.</strong> "We launched an agent" usually means "we built a new harness."</li>
+          <li><strong>Build your own.</strong> The <a href="agents-sdk.html">Agents SDK</a> is literally a harness kit — the car parts, pre-drilled.</li>
+        </ul>
+
+        <p>
+          So when the next model drops and everyone argues about benchmarks, you'll know the
+          quieter truth that builders trade in.
+        </p>
+
+        <p><strong>Models get the headlines. Harnesses ship the product.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Two apps run the exact same Claude model. One just chats; the other reads your files, asks permission, then fixes the bug itself. What explains the difference?</p>
+            <div class="opts">
+              <button class="opt">The second app secretly got a smarter model</button>
+              <button class="opt" data-correct>The harness — the loop, tools, and permissions built around the same engine</button>
+              <button class="opt">The model learned your files on its own over time</button>
+            </div>
+            <div class="why">Same engine, different car. The tools, loop, and seatbelts around the model — the harness — decide what it can actually do in the world.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Your agent gets noticeably dumber two hours into a big task. Which harness part should you suspect first?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The fuel gauge — the context window filled up and early instructions fell out</button>
+              <button class="opt">The engine — models wear out with heavy use</button>
+              <button class="opt">The seatbelts — permission checks slow down its thinking</button>
+            </div>
+            <div class="why">Models don't tire. Long sessions overflow the context window — which is exactly the thing the fuel gauge exists to watch and manage.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. A company announces: "Our AI agent can now book travel end-to-end." Most likely, what actually shipped?</p>
+            <div class="opts">
+              <button class="opt">A brand-new model trained only on flight data</button>
+              <button class="opt">A bigger context window</button>
+              <button class="opt" data-correct>A new harness: booking tools, a loop, and permissions wrapped around an existing model</button>
+            </div>
+            <div class="why">New capabilities usually arrive as harness work — new tools and seatbelts around the same engine. The car changed, not the engine.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* engine vs. car tour */
+    (function () {
+      var log = document.getElementById("hn-log");
+      var toggleBtn = document.getElementById("hn-toggle");
+      var taskBtn = document.getElementById("hn-task");
+      var parts = [].slice.call(document.querySelectorAll(".hn-part"));
+      var engine = document.getElementById("hn-engine");
+      var harnessOn = true;
+      var busy = false;
+
+      var PARTS = {
+        steering: {
+          title: "🛞 STEERING — the agent loop",
+          what: "Decides the next move, over and over: look at the goal, pick an action, check what happened, repeat.",
+          demo: '<span class="acc">steering:</span> goal "do my taxes" → next step: open the receipts folder'
+        },
+        seatbelts: {
+          title: "🔒 SEATBELTS — permissions",
+          what: "Holds the engine back from dangerous moves until you approve them.",
+          demo: '<span class="acc">seatbelt:</span> "delete old_receipts_2019?" → <span class="err">held</span> — waiting for your OK'
+        },
+        dashboard: {
+          title: "📊 DASHBOARD — what you see",
+          what: "Progress, logs, results. The engine has no screen of its own — the harness draws one.",
+          demo: '<span class="acc">dashboard:</span> step 2 of 4 · reading receipts.pdf ▮▮▮▯'
+        },
+        fuel: {
+          title: "⛽ FUEL GAUGE — the context meter",
+          what: "Watches how full the model's working memory is, and trims it before it overflows.",
+          demo: '<span class="acc">fuel:</span> context 62% full — compacting the oldest messages…'
+        },
+        mirrors: {
+          title: "🪞 MIRRORS — memory files",
+          what: "What the harness shows the engine before it starts: your rules, your project, what happened last session.",
+          demo: '<span class="acc">mirror:</span> read the house rules → "always use the 2025 tax form"'
+        }
+      };
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function clearIfFirst() {
+        if (!log.dataset.started) { log.innerHTML = ""; }
+      }
+
+      parts.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          if (!harnessOn) return;
+          parts.forEach(function (b) { b.style.borderColor = "var(--border)"; });
+          btn.style.borderColor = "var(--accent-bright)";
+          var p = PARTS[btn.getAttribute("data-part")];
+          clearIfFirst();
+          add('<span class="ok">' + p.title + "</span>");
+          add('<span class="dim">' + p.what + "</span>");
+          add(p.demo);
+        });
+      });
+
+      toggleBtn.addEventListener("click", function () {
+        if (busy) return;
+        harnessOn = !harnessOn;
+        parts.forEach(function (b) {
+          b.style.transition = "opacity .5s ease";
+          b.style.opacity = harnessOn ? "1" : "0.12";
+          b.style.pointerEvents = harnessOn ? "auto" : "none";
+          b.style.borderColor = "var(--border)";
+        });
+        engine.style.boxShadow = harnessOn ? "none" : "0 0 0 4px var(--accent-soft)";
+        toggleBtn.textContent = harnessOn ? "🔧 Remove the harness" : "🔧 Rebuild the harness";
+        clearIfFirst();
+        add(harnessOn
+          ? '<span class="ok">🔧 harness rebuilt.</span> <span class="dim">The engine has a car again. Send the task.</span>'
+          : '<span class="err">🔧 harness removed.</span> Steering, seatbelts, dashboard, fuel, mirrors — gone. What\'s left is a very smart text engine. Send the task and see.');
+      });
+
+      taskBtn.addEventListener("click", function () {
+        if (busy) return;
+        busy = true;
+        clearIfFirst();
+        add('<span class="acc">→ YOU:</span> "do my taxes"');
+        var lines = harnessOn
+          ? [
+              "🛞 steering: goal received → plan made: 4 steps",
+              '🪞 mirrors: loaded your rules — "2025 form, receipts live in ~/Taxes"',
+              "📊 dashboard: step 2 of 4 · reading receipts.pdf · ⛽ fuel: context 41% full",
+              '🔒 seatbelt: "submit the return?" → <span class="ok">you clicked Allow</span>',
+              '<span class="ok">✓ filed.</span> Receipts archived, confirmation saved. The car drove somewhere.'
+            ]
+          : [
+              '<span class="dim">(no steering, no tools, no memory — text in, text out)</span>',
+              '🧠 engine: "Sure! Step 1: gather your receipts. Step 2: choose the right form. Step 3: …"',
+              '<span class="err">✗ nothing happened.</span> No file was read, nothing was filed. A brilliant engine, bolted to a workbench.'
+            ];
+        lines.forEach(function (line, i) {
+          setTimeout(function () {
+            add(line);
+            if (i === lines.length - 1) { busy = false; }
+          }, 550 * (i + 1));
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Embedding — Claude Club</title>
+  <meta name="description" content="Embedding, explained in plain English: meaning, turned into numbers. With an interactive meaning map." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="embedding" data-related="vector-database,token,database,hallucination">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Embedding</h1>
+        <p class="tldr"><b>TLDR</b>Meaning, turned into numbers.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: the meaning map ============ -->
+      <section class="widget" aria-label="Embedding meaning map">
+        <div class="widget-bar"><span class="dot"></span> Try it — the meaning map</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Every word below got coordinates based on what it <em>means</em>. Click any word to
+            see its nearest neighbors — then drop a brand-new word and watch where it lands.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn primary" id="em-wolf">🐺 Where would “wolf” land?</button>
+            <button class="wbtn primary" id="em-sad">🌧️ Where would “sad” land?</button>
+          </div>
+
+          <div id="em-map" style="position:relative; height:320px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:12px; overflow:hidden; margin-bottom:0.7rem;">
+            <div style="position:absolute; left:5%; top:5%; width:32%; height:40%; background:var(--accent-faint); border-radius:50%; opacity:.7;"></div>
+            <div style="position:absolute; left:63%; top:4%; width:30%; height:34%; background:var(--accent-faint); border-radius:50%; opacity:.7;"></div>
+            <div style="position:absolute; left:3%; top:60%; width:30%; height:36%; background:var(--accent-faint); border-radius:50%; opacity:.7;"></div>
+            <div style="position:absolute; left:58%; top:56%; width:36%; height:40%; background:var(--accent-faint); border-radius:50%; opacity:.7;"></div>
+            <span style="position:absolute; left:13%; top:45%; font-family:var(--sans); font-size:0.66rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); opacity:.85;">pets</span>
+            <span style="position:absolute; left:71%; top:36%; font-family:var(--sans); font-size:0.66rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); opacity:.85;">royalty</span>
+            <span style="position:absolute; left:11%; top:62%; font-family:var(--sans); font-size:0.66rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); opacity:.85;">vehicles</span>
+            <span style="position:absolute; left:73%; top:58%; font-family:var(--sans); font-size:0.66rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); opacity:.85;">feelings</span>
+            <span style="position:absolute; right:10px; bottom:6px; font-family:var(--sans); font-size:0.65rem; color:var(--muted);">every dot = a list of numbers</span>
+            <svg id="em-lines" viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; z-index:1;"></svg>
+          </div>
+
+          <div id="em-read" style="font-family:var(--sans); font-size:0.88rem; background:var(--card); border:1px solid var(--border-soft); border-radius:10px; padding:0.7rem 0.9rem; color:var(--ink-soft); min-height:3.2em;">
+            Click any word to reveal its two nearest neighbors and the distance between them.
+          </div>
+        </div>
+        <p class="widget-hint">This map is 2-D so your eyes can cope. Real embeddings use a thousand-plus dimensions — the distance math works exactly the same.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>Quick question: how far is "dog" from "puppy"?</p>
+
+        <p>
+          Not in the dictionary — in meaning. Your gut answers instantly: basically next door.
+          And "dog" to "bus"? Different city. You've been carrying a map of meaning in your head
+          your whole life. The widget above is that same map, drawn by a machine.
+        </p>
+
+        <p>
+          <strong>An embedding is a long list of numbers that pins a piece of text to a spot on
+          a giant map of meaning.</strong> Similar meaning, neighboring spots. That's the whole
+          idea — and it quietly powers half of modern AI.
+        </p>
+
+        <h2>How words get GPS coordinates</h2>
+
+        <p>
+          An embedding model reads absurd amounts of text and notices which words show up in the
+          same situations. "Puppy" keeps appearing around food bowls, vets, and leashes — and so
+          does "kitten" — so they get parked in the same neighborhood. Nobody labels anything.
+          Location is learned from the company a word keeps.
+        </p>
+
+        <p>
+          That's why "wolf" landed next to the pets without anyone telling the model it's an
+          animal: it gets <em>used</em> like the animal words. And "sad" snuggled up to "gloomy"
+          while keeping its distance from "joyful" — you saw the exact numbers when you clicked.
+        </p>
+
+        <p>
+          Click around the map and the pattern holds everywhere: "king" grabs "queen" and
+          "prince", "car" grabs "truck". The model never took a vocabulary test. It watched how
+          humans use words, millions of times, and the neighborhoods emerged on their own.
+        </p>
+
+        <p>
+          It's not just single words, either. A sentence, a support ticket, a whole page —
+          anything made of <a href="token.html">tokens</a> can be squashed into one point on the
+          map. "I want my money back" gets coordinates too.
+        </p>
+
+        <h2>The real map has thousands of dimensions</h2>
+
+        <p>
+          The widget is two-dimensional because your eyes give up at three. Real embeddings are
+          lists of a thousand-plus numbers — one point in a thousand-dimensional space. Each
+          number is one dial: a little "is it alive?", a pinch of "is it formal?", a dash of "is
+          it positive?" No single dial means much on its own. Together, they triangulate a
+          meaning.
+        </p>
+
+        <p>
+          You can't picture that space. Nobody can. You also don't need to: a computer measures
+          distance in 1,536 dimensions as casually as in two, and it's the same math as the
+          readout you clicked. Close points, close meanings.
+        </p>
+
+        <p>
+          This is the unlock: <em>similar</em> becomes a number you can compute. "Refund please"
+          and "I want my money back" share almost no words — their points sit practically on top
+          of each other. Your AI doesn't match spelling. It measures distance.
+        </p>
+
+        <div class="callout">
+          Different models draw different maps. Coordinates from one embedding model mean nothing
+          on another model's map — compare them and you'll get confident nonsense. Pick one model
+          and use it for everything you store, or re-embed everything when you switch.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Search that survives synonyms, typos, and "I don't know what it's called"</li>
+          <li>Clustering thousands of customer messages into themes — automatically</li>
+          <li>"More like this" recommendations for products, videos, articles</li>
+          <li>Spotting the duplicate question that's been asked fifty different ways</li>
+          <li>The storage half: pour these points into a <a href="vector-database.html">vector database</a> and you can search millions of them in milliseconds — that's the next lesson</li>
+        </ul>
+
+        <p>
+          So when Claude pulls up the right document even though you butchered every keyword,
+          this is what happened: your sentence became numbers, the documents already were
+          numbers, and something measured the gap between them.
+        </p>
+
+        <p><strong>Once meaning has coordinates, software can do geometry on ideas.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You embed "I want my money back" and "requesting a refund". What do their two points look like on the meaning map?</p>
+            <div class="opts">
+              <button class="opt">Identical — same meaning means the exact same numbers</button>
+              <button class="opt" data-correct>Very close together, even though the sentences share almost no words</button>
+              <button class="opt">Far apart, because the words are different</button>
+            </div>
+            <div class="why">Embeddings encode meaning, not spelling. Near-synonyms land near each other — identical is rare, nearby is the whole point.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. The widget's map was flat (2-D), but real embedding models output 1,000+ numbers per text. Why so many?</p>
+            <div class="opts">
+              <button class="opt">Computers can't do math with fewer than 1,000 numbers</button>
+              <button class="opt" data-correct>More dimensions capture more shades of meaning — 2-D was just for human eyes, the distance math works the same</button>
+              <button class="opt">Longer lists of numbers make the text load faster</button>
+            </div>
+            <div class="why">Two dimensions can't hold "pet vs. wild vs. royal vs. gloomy" all at once. Thousands of dials can. We flatten to 2-D only so you can look at it.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You embedded your docs with model A. Later you embed search queries with model B and compare them. Results are garbage. Why?</p>
+            <div class="opts">
+              <button class="opt">Embeddings expire after 30 days and yours went stale</button>
+              <button class="opt" data-correct>Different models draw different maps — coordinates from one aren't comparable to the other's</button>
+              <button class="opt">Model B is newer, so its numbers are too precise to match</button>
+            </div>
+            <div class="why">Each embedding model has its own coordinate system. Mixing them is comparing GPS positions from two different planets. Stick to one model, or re-embed everything.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* the meaning map */
+    (function () {
+      var WORDS = [
+        { w: "dog", x: 18, y: 22 },
+        { w: "puppy", x: 26, y: 15 },
+        { w: "cat", x: 13, y: 33 },
+        { w: "kitten", x: 24, y: 30 },
+        { w: "king", x: 76, y: 16 },
+        { w: "queen", x: 85, y: 23 },
+        { w: "prince", x: 70, y: 27 },
+        { w: "car", x: 15, y: 72 },
+        { w: "truck", x: 25, y: 80 },
+        { w: "bus", x: 12, y: 86 },
+        { w: "happy", x: 77, y: 68 },
+        { w: "joyful", x: 86, y: 74 },
+        { w: "gloomy", x: 66, y: 87 }
+      ];
+      var EXTRA = {
+        wolf: { w: "wolf", x: 30, y: 18 },
+        sad: { w: "sad", x: 61, y: 85 }
+      };
+
+      var map = document.getElementById("em-map");
+      var svg = document.getElementById("em-lines");
+      var read = document.getElementById("em-read");
+      var active = WORDS.slice();
+
+      function dist(a, b) {
+        var dx = a.x - b.x, dy = a.y - b.y;
+        return Math.sqrt(dx * dx + dy * dy) / 100;
+      }
+      function fmt(d) { return d.toFixed(2); }
+
+      function style(item, mode) {
+        var el = item.el;
+        if (mode === "sel") {
+          el.style.boxShadow = "0 0 0 4px var(--accent-soft), var(--shadow-lift)";
+          el.style.opacity = "1"; el.style.zIndex = "4";
+        } else if (mode === "nb") {
+          el.style.boxShadow = "0 0 0 4px var(--good-soft), var(--shadow)";
+          el.style.opacity = "1"; el.style.zIndex = "3";
+        } else if (mode === "dim") {
+          el.style.boxShadow = "var(--shadow)";
+          el.style.opacity = "0.45"; el.style.zIndex = "2";
+        } else {
+          el.style.boxShadow = "var(--shadow)";
+          el.style.opacity = "1"; el.style.zIndex = "2";
+        }
+      }
+
+      function line(a, b) {
+        var l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        l.setAttribute("x1", a.x); l.setAttribute("y1", a.y);
+        l.setAttribute("x2", b.x); l.setAttribute("y2", b.y);
+        l.setAttribute("stroke-width", "2");
+        l.setAttribute("vector-effect", "non-scaling-stroke");
+        l.setAttribute("stroke-dasharray", "5 4");
+        l.style.stroke = "var(--accent-bright)";
+        svg.appendChild(l);
+      }
+
+      function ring(x, y) {
+        var r = document.createElement("span");
+        r.style.cssText = "position:absolute;left:" + x + "%;top:" + y + "%;width:18px;height:18px;border-radius:50%;border:2px solid var(--accent-bright);transform:translate(-50%,-50%) scale(0.6);opacity:0.9;pointer-events:none;z-index:1;transition:transform .8s ease, opacity .8s ease;";
+        map.appendChild(r);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            r.style.transform = "translate(-50%,-50%) scale(3.2)";
+            r.style.opacity = "0";
+          });
+        });
+        setTimeout(function () { r.remove(); }, 900);
+      }
+
+      function select(item) {
+        svg.innerHTML = "";
+        var others = active
+          .filter(function (o) { return o !== item; })
+          .map(function (o) { return { o: o, d: dist(item, o) }; })
+          .sort(function (a, b) { return a.d - b.d; });
+        var n1 = others[0], n2 = others[1], far = others[others.length - 1];
+        active.forEach(function (o) {
+          style(o, o === item ? "sel" : (o === n1.o || o === n2.o) ? "nb" : "dim");
+        });
+        line(item, n1.o);
+        line(item, n2.o);
+        read.innerHTML =
+          "“<b>" + item.w + "</b>” lives next to " +
+          "“<b style='color:var(--good)'>" + n1.o.w + "</b>” <span style='color:var(--muted)'>(distance " + fmt(n1.d) + ")</span> and " +
+          "“<b style='color:var(--good)'>" + n2.o.w + "</b>” <span style='color:var(--muted)'>(" + fmt(n2.d) + ")</span>. " +
+          "Farthest away: “<b style='color:var(--bad)'>" + far.o.w + "</b>” <span style='color:var(--muted)'>(" + fmt(far.d) + ")</span>. Small distance = similar meaning.";
+      }
+
+      function makeDot(item, isNew) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = item.w;
+        b.style.cssText =
+          "position:absolute;left:" + item.x + "%;top:" + item.y + "%;" +
+          "transform:translate(-50%,-50%) scale(" + (isNew ? 0 : 1) + ");" +
+          "font-family:var(--sans);font-size:0.74rem;font-weight:600;white-space:nowrap;" +
+          "color:" + (isNew ? "#fff" : "var(--ink-soft)") + ";" +
+          "background:" + (isNew ? "var(--accent-bright)" : "var(--card-raise)") + ";" +
+          "border:1px solid " + (isNew ? "var(--accent)" : "var(--border)") + ";" +
+          "border-radius:999px;padding:3px 9px;cursor:pointer;z-index:2;box-shadow:var(--shadow);" +
+          "transition:transform .45s cubic-bezier(.34,1.56,.64,1), box-shadow .2s ease, opacity .25s ease;";
+        map.appendChild(b);
+        item.el = b;
+        b.addEventListener("click", function () { select(item); });
+        if (isNew) {
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              b.style.transform = "translate(-50%,-50%) scale(1)";
+            });
+          });
+          ring(item.x, item.y);
+        }
+      }
+
+      function land(key, btn) {
+        var item = EXTRA[key];
+        if (item.el) return;
+        btn.disabled = true;
+        active.push(item);
+        makeDot(item, true);
+        setTimeout(function () { select(item); }, 520);
+      }
+
+      document.getElementById("em-wolf").addEventListener("click", function () { land("wolf", this); });
+      document.getElementById("em-sad").addEventListener("click", function () { land("sad", this); });
+
+      WORDS.forEach(function (w) { makeDot(w, false); });
+    })();
+  </script>
+</body>
+</html>

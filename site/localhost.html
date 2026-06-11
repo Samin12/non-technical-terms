@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Localhost — Claude Club</title>
+  <meta name="description" content="Localhost, explained in plain English: a website only you can see. With an interactive local vs. live switch." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="localhost" data-related="server,deploy,dns,vibe-coding">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Localhost</h1>
+        <p class="tldr"><b>TLDR</b>A website only you can see.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: local vs. live switch ============ -->
+      <section class="widget" aria-label="Localhost local vs live switch">
+        <div class="widget-bar"><span class="dot"></span> Try it — the local vs. live switch</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            You're building a site. Right now it runs on <b>localhost</b> — your machine. Compare
+            what you see with what your friend sees, then flip it live.
+          </p>
+          <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-bottom:0.9rem;">
+            <div style="flex:1; min-width:230px;">
+              <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem;">Your screen</div>
+              <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden;">
+                <div style="display:flex; gap:6px; align-items:center; padding:0.45rem 0.6rem; background:var(--bg-deep); border-bottom:1px solid var(--border-soft);">
+                  <span style="width:8px; height:8px; border-radius:50%; background:var(--bad); display:inline-block;"></span>
+                  <span style="width:8px; height:8px; border-radius:50%; background:#e0b252; display:inline-block;"></span>
+                  <span style="width:8px; height:8px; border-radius:50%; background:var(--good); display:inline-block;"></span>
+                  <span style="flex:1; font-family:var(--mono); font-size:0.72rem; background:var(--card); border:1px solid var(--border-soft); border-radius:6px; padding:0.18rem 0.5rem;">localhost:3000</span>
+                </div>
+                <div id="lh-page-you" style="padding:0.9rem; min-height:112px;"></div>
+              </div>
+            </div>
+            <div style="flex:1; min-width:230px;">
+              <div style="font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem;">Your friend's screen</div>
+              <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden;">
+                <div style="display:flex; gap:6px; align-items:center; padding:0.45rem 0.6rem; background:var(--bg-deep); border-bottom:1px solid var(--border-soft);">
+                  <span style="width:8px; height:8px; border-radius:50%; background:var(--bad); display:inline-block;"></span>
+                  <span style="width:8px; height:8px; border-radius:50%; background:#e0b252; display:inline-block;"></span>
+                  <span style="width:8px; height:8px; border-radius:50%; background:var(--good); display:inline-block;"></span>
+                  <span style="flex:1; font-family:var(--mono); font-size:0.72rem; background:var(--card); border:1px solid var(--border-soft); border-radius:6px; padding:0.18rem 0.5rem;">https://yoursite.com</span>
+                </div>
+                <div id="lh-page-friend" style="padding:0.9rem; min-height:112px;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn" id="lh-edit">✏️ Edit the headline</button>
+            <button class="wbtn" id="lh-friend">👀 Friend tries to visit</button>
+            <button class="wbtn primary" id="lh-deploy">🚀 Deploy to yoursite.com</button>
+          </div>
+          <div class="wlog" id="lh-log"><span class="dim">Your site is running on localhost:3000 — a server only you can reach.</span></div>
+        </div>
+        <p class="widget-hint">After deploying, edit the headline again — your friend keeps seeing the old one until you re-deploy. Local stays local until you ship.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          No chef opens a restaurant by letting customers watch them learn the recipe. You cook
+          at home first. You burn the first pancake where nobody can see. The doors stay locked
+          until the dish is right.
+        </p>
+
+        <p>Localhost is cooking at home — with the doors locked.</p>
+
+        <p><strong>Localhost is your own computer, acting as a private server that only you can reach.</strong></p>
+
+        <p>
+          You just watched it happen. Your screen showed a full, working website at
+          <code>localhost:3000</code>. Your friend, on their machine, got "can't connect." Same
+          moment, same site, two different realities.
+        </p>
+
+        <h2>The address that points at itself</h2>
+
+        <p>
+          When you build an app, your computer quietly runs a tiny private
+          <a href="server.html">server</a> just for you. The address <code>localhost:3000</code>
+          means "this very machine, door number 3000" — the number is called a port, and a port
+          is just a numbered door. Your browser knocks on it like it would knock on any website,
+          but the request never leaves your laptop.
+        </p>
+
+        <p>
+          And here's the part that explains your confused friend: <strong>localhost means "this
+          computer" on every computer.</strong> It's like the word "home." When you say it, you
+          mean your house. When your friend says it, they mean theirs. Send someone a localhost
+          link and their browser knocks on <em>their own</em> machine — where your site has never
+          existed. Hence the error.
+        </p>
+
+        <p>
+          The name itself is just two words glued together: <em>local</em> — this machine, right
+          here — and <em>host</em>, any computer that serves something. Your laptop, hosting a
+          website, for an audience of exactly one.
+        </p>
+
+        <h2>Why builders live here</h2>
+
+        <p>Three reasons all real building happens on localhost first:</p>
+
+        <ul>
+          <li><strong>It's free.</strong> No hosting, no bills, no setup.</li>
+          <li><strong>It's instant.</strong> Save a change, refresh, see it. The loop takes seconds.</li>
+          <li><strong>It's private.</strong> Break things spectacularly. Nobody's watching.</li>
+        </ul>
+
+        <p>
+          This is exactly the loop you'll live in when you're
+          <a href="vibe-coding.html">vibe coding</a> with Claude: it writes code, tells you "open
+          http://localhost:3000," you look, you say "make the headline bigger," refresh, repeat.
+          The widget's edit button was that loop, miniaturized. And now when Claude Code hands
+          you a localhost link, you know exactly what it means — and why it works only for you.
+        </p>
+
+        <h2>Opening night</h2>
+
+        <p>
+          When the site is ready, you <a href="deploy.html">deploy</a>: copy it onto an always-on
+          server with a real address that <a href="dns.html">DNS</a> can find. Now everyone sees
+          it — your friend included. Deploying doesn't delete your localhost, either. You keep
+          both: the private draft on your machine, the public copy on the server.
+        </p>
+
+        <p>
+          But keep the widget's last lesson: after you deployed, your next edit showed up on
+          localhost only, and the live site kept showing the old version until you deployed
+          again. Live is a snapshot. Localhost is the living draft. Shipping is the act of
+          copying one onto the other — and you decide when.
+        </p>
+
+        <div class="callout">
+          Classic mixup: you screen-share a demo and it looks great, then you paste the same
+          <code>http://localhost:3000</code> link in Slack and nobody can open it. Of course they
+          can't — you sent them the word "home." Everyone who clicks lands at their own house.
+          To share it, deploy it.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Preview what Claude built before a single human sees it</li>
+          <li>Understand the edit → refresh → repeat loop every builder talks about</li>
+          <li>Decode the famous excuse "works on my machine" — it ran on their localhost, not on the server</li>
+          <li>Know exactly when it's time to deploy: when the pancakes stop burning</li>
+        </ul>
+
+        <p><strong>Every site you love was once a mess on somebody's localhost.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You text a friend: "My site's done! Check it out → http://localhost:3000". What do they see?</p>
+            <div class="opts">
+              <button class="opt">Your site, just a bit slower because it's far away</button>
+              <button class="opt">A read-only copy of your site</button>
+              <button class="opt" data-correct>A "can't connect" error — localhost points at their machine, where your site doesn't exist</button>
+            </div>
+            <div class="why">Localhost means "this computer" on every computer. You texted them the word "home" — they went to their house, not yours.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Why build on localhost first instead of editing the live site directly?</p>
+            <div class="opts">
+              <button class="opt" data-correct>It's free, instant, and private — you can break things with zero visitors watching</button>
+              <button class="opt">Code physically can't run anywhere else</button>
+              <button class="opt">Sites on localhost load faster for your users worldwide</button>
+            </div>
+            <div class="why">Users never touch your localhost — that's the point. It's the locked test kitchen: experiment freely, then deploy when it's right.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You deployed yesterday. Today Claude updates your headline — localhost:3000 shows the new one, but yoursite.com still shows the old. What's going on?</p>
+            <div class="opts">
+              <button class="opt">The internet permanently caches every site on first deploy</button>
+              <button class="opt" data-correct>Expected behavior: local edits stay local until you deploy again</button>
+              <button class="opt">Nothing — live servers sync with your laptop every 24 hours</button>
+            </div>
+            <div class="why">Live is a snapshot from your last deploy; localhost is the living draft. Ship the new version and the live site catches up — you saw this exact beat in the widget.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* local vs. live switch */
+    (function () {
+      var HEADLINES = [
+        "Sam's Sourdough Club",
+        "Bread so good it's rude",
+        "Crusts you can trust",
+        "Flour power, daily",
+        "Knead-to-know basis"
+      ];
+      var hIdx = 0;
+      var deployed = false;
+      var liveIdx = -1;
+      var busy = false;
+
+      var pageYou = document.getElementById("lh-page-you");
+      var pageFriend = document.getElementById("lh-page-friend");
+      var editBtn = document.getElementById("lh-edit");
+      var friendBtn = document.getElementById("lh-friend");
+      var deployBtn = document.getElementById("lh-deploy");
+      var log = document.getElementById("lh-log");
+
+      function add(html) {
+        if (!log.dataset.started) { log.dataset.started = "1"; log.innerHTML = html; }
+        else { log.innerHTML += "\n" + html; }
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function site(idx) {
+        return '<div style="font-family:var(--serif); font-weight:700; font-size:1.05rem; margin-bottom:0.25rem;">🥖 ' + HEADLINES[idx] + "</div>" +
+          '<div style="font-size:0.78rem; color:var(--muted); margin-bottom:0.6rem;">Fresh loaves every Friday.</div>' +
+          '<span style="display:inline-block; font-size:0.75rem; font-weight:700; background:var(--accent-bright); color:#fff; border-radius:999px; padding:0.3rem 0.8rem;">Join the club</span>';
+      }
+
+      function errorPage() {
+        return '<div style="text-align:center; padding:0.6rem 0; color:var(--muted);">' +
+          '<div style="font-size:1.4rem;">🚫</div>' +
+          '<div style="font-weight:700; color:var(--bad); font-size:0.88rem;">This site can\'t be reached</div>' +
+          '<div style="font-size:0.76rem;">yoursite.com refused to connect.</div></div>';
+      }
+
+      function renderYou() { pageYou.innerHTML = site(hIdx); }
+
+      renderYou();
+      pageFriend.innerHTML = '<div style="text-align:center; padding:1.2rem 0; color:var(--muted); font-size:0.8rem;">— hasn\'t visited yet —</div>';
+
+      editBtn.addEventListener("click", function () {
+        hIdx = (hIdx + 1) % HEADLINES.length;
+        renderYou();
+        add('<span class="acc">✏️ headline changed on localhost:3000</span> <span class="dim">— only you can see this.</span>');
+        if (deployed && liveIdx !== hIdx) {
+          add('<span class="dim">   yoursite.com still shows the old headline — deploy to push it live.</span>');
+        }
+      });
+
+      friendBtn.addEventListener("click", function () {
+        if (busy) return;
+        busy = true;
+        pageFriend.innerHTML = '<div style="text-align:center; padding:1.2rem 0; color:var(--muted); font-size:0.8rem;">connecting to yoursite.com…</div>';
+        add('<span class="acc">👀 friend → https://yoursite.com</span>');
+        setTimeout(function () {
+          if (!deployed) {
+            pageFriend.innerHTML = errorPage();
+            add('<span class="err">✗ can\'t connect.</span> <span class="dim">Your site exists only on YOUR machine right now.</span>');
+          } else {
+            pageFriend.innerHTML = site(liveIdx);
+            add('<span class="ok">✓ 200 OK — friend sees the site.</span>' +
+              (liveIdx !== hIdx ? ' <span class="dim">…the OLD headline. Your newest edit is still local.</span>' : ""));
+          }
+          busy = false;
+        }, 650);
+      });
+
+      deployBtn.addEventListener("click", function () {
+        if (busy) return;
+        busy = true;
+        add('<span class="acc">🚀 deploying…</span> <span class="dim">bundling your site…</span>');
+        setTimeout(function () { add('<span class="dim">   uploading to an always-on server…</span>'); }, 500);
+        setTimeout(function () {
+          deployed = true;
+          liveIdx = hIdx;
+          add('<span class="ok">✓ live at https://yoursite.com — anyone on Earth can open it now (you included).</span>');
+          pageFriend.innerHTML = site(liveIdx);
+          add('<span class="dim">   friend\'s browser refreshes — they finally see it. 🎉</span>');
+          deployBtn.innerHTML = "🚀 Re-deploy (push edits live)";
+          busy = false;
+        }, 1100);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Database — Claude Club</title>
+  <meta name="description" content="Database, explained in plain English: a giant spreadsheet your software can query. With an interactive query race." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="database" data-related="frontend-backend,server,vector-database,state">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Database</h1>
+        <p class="tldr"><b>TLDR</b>A giant spreadsheet your software can query.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: query race ============ -->
+      <section class="widget" aria-label="Database query race">
+        <div class="widget-bar"><span class="dot"></span> Try it — the query race</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            One question — <b>"find Maria's order"</b> — answered two ways. Race the pile of
+            papers against the database.
+          </p>
+          <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-bottom:1rem;">
+            <div style="flex:1; min-width:220px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.9rem;">
+              <button class="wbtn" id="db-pile" style="width:100%;">📚 Search the pile of papers</button>
+              <div style="font-family:var(--mono); font-size:0.78rem; margin-top:0.6rem; min-height:62px; line-height:1.5;" id="db-pile-out"><span style="color:var(--muted);">847 receipts in a shoebox.</span></div>
+            </div>
+            <div style="flex:1; min-width:220px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.9rem;">
+              <button class="wbtn primary" id="db-query" style="width:100%;">⚡ Query the database</button>
+              <div style="font-family:var(--mono); font-size:0.78rem; margin-top:0.6rem; min-height:62px; line-height:1.5;" id="db-query-out"><span style="color:var(--muted);">Same data, organized.</span></div>
+            </div>
+          </div>
+          <div style="font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:0.45rem;">The orders table — query it yourself</div>
+          <input class="winput" id="db-filter" type="text" autocomplete="off" placeholder='Type to filter — try "maria" or "latte"' style="margin-bottom:0.6rem;" />
+          <div style="overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+              <thead>
+                <tr>
+                  <th style="text-align:left; padding:0.45rem 0.6rem; border-bottom:2px solid var(--border); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">id</th>
+                  <th style="text-align:left; padding:0.45rem 0.6rem; border-bottom:2px solid var(--border); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">customer</th>
+                  <th style="text-align:left; padding:0.45rem 0.6rem; border-bottom:2px solid var(--border); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">order</th>
+                  <th style="text-align:left; padding:0.45rem 0.6rem; border-bottom:2px solid var(--border); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">price</th>
+                </tr>
+              </thead>
+              <tbody id="db-tbody"></tbody>
+            </table>
+          </div>
+          <div id="db-count" style="font-size:0.8rem; color:var(--muted); margin-top:0.5rem;"></div>
+        </div>
+        <p class="widget-hint">That filter box is a query. "WHERE row CONTAINS maria" — congrats, you already speak database.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          It's tax season. Version one of your life: a shoebox stuffed with 847 receipts, and you
+          rifling through every single one to find the coffee you expensed in March. Version two:
+          a filing cabinet with labeled folders and alphabet tabs, where the right page is out
+          before you finish the question.
+        </p>
+
+        <p>
+          You just raced those two against each other. The pile took two and a half seconds and
+          checked all 847 papers. The database answered in 0.003 — and it would still answer that
+          fast with ten million rows.
+        </p>
+
+        <p><strong>A database is organized storage that your software can ask questions — and get instant, exact answers.</strong></p>
+
+        <h2>More than a spreadsheet</h2>
+
+        <p>
+          A database looks like a spreadsheet: tables, rows, columns. The orders table in the
+          widget would live happily in Excel. The difference is who it's built for. A spreadsheet
+          is for humans — one person scrolling, eyeballing, editing cell by cell. A database is
+          for software: it answers thousands of questions per second, from many apps at once,
+          without flinching at a million rows. Your <a href="frontend-backend.html">backend</a>
+          hits the database every single time anyone does anything.
+        </p>
+
+        <p>
+          That filter box you typed in was a query — a question asked in a precise language. The
+          classic one is called SQL, and it reads almost like English:
+        </p>
+
+        <p><code>SELECT * FROM orders WHERE customer = 'Maria'</code></p>
+
+        <p>"From the orders table, give me Maria's rows." That's it. That's the spell.</p>
+
+        <p>
+          One detail from the race is worth keeping: the pile search found Maria at paper #623 and
+          <em>kept going</em>, because with a pile you never know if there's a second Maria.
+          Databases skip all of that with an index — the alphabet tabs on the filing cabinet.
+          Jump straight to M. That's the whole 0.003-second magic trick.
+        </p>
+
+        <h2>You're surrounded by databases</h2>
+
+        <p>
+          Your Instagram feed: rows in a database. Your bank balance: a row. Your Amazon order
+          history, your Spotify playlists, the fourteen logins you've forgotten: rows, rows,
+          rows. Almost every app you've ever used is a pretty face standing in front of a
+          database, fetching your rows through a <a href="server.html">server</a> and dressing
+          them up nicely.
+        </p>
+
+        <p>
+          So when you build anything real — a signup form, a booking page, a little store — the
+          moment it needs to <em>remember</em> something, it needs a database.
+        </p>
+
+        <p>
+          And here's the part that changed recently: you never have to write SQL. You ask Claude
+          in English — "how many customers signed up last week?" — and your AI writes the query,
+          runs it, and reads you the answer. The database does the finding, the AI does the
+          translating, and you just ask good questions. Later in the course you'll meet the
+          <a href="vector-database.html">vector database</a>, a newer kind that searches by
+          meaning instead of exact matches. Same idea, weirder filing cabinet.
+        </p>
+
+        <div class="callout">
+          Your code is now cheap — Claude can rebuild an app in an afternoon. Your database is
+          not. It holds the only copy of every customer, order, and signup you've ever had. It's
+          the one part of a project you back up religiously. When founders whisper "we lost the
+          database," that's the company-ending sentence.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Build apps that remember — signups, orders, bookings, notes</li>
+          <li>Ask your own data questions in plain English and let your AI write the queries</li>
+          <li>Know why apps feel instant: indexes, not magic</li>
+          <li>Spot the line: humans edit spreadsheets, software queries databases</li>
+        </ul>
+
+        <p><strong>A pile of data is homework. A database is answers on demand.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your app has 50,000 customers and you need everyone who signed up last week. What's the database move?</p>
+            <div class="opts">
+              <button class="opt">Export everything into one giant document and scroll until your eyes find them</button>
+              <button class="opt" data-correct>Run one query — the database checks its index and answers in milliseconds</button>
+              <button class="opt">Email all 50,000 customers and ask who joined recently</button>
+            </div>
+            <div class="why">This is the widget race at real scale: the pile-of-papers approach melts at 50,000 rows; the query doesn't even notice.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Your business data lives in a spreadsheet you edit by hand. When does it need to become a database?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The moment software — your app, your AI — needs to read and write it automatically, all day long</button>
+              <button class="opt">When it reaches exactly 1,000 rows, the legal spreadsheet limit</button>
+              <button class="opt">Never — spreadsheets and databases are the same thing</button>
+            </div>
+            <div class="why">Spreadsheets are for human hands; databases are for software. Once an app queries your data thousands of times a day, the shoebox era is over.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You ask Claude: "How many orders did Maria place this month?" Your store's data sits in a database. What does Claude actually do?</p>
+            <div class="opts">
+              <button class="opt">Recalls the answer from its training data</button>
+              <button class="opt" data-correct>Translates your English into a query, runs it on the database, and reads back the result</button>
+              <button class="opt">Opens every order page in a browser and counts by hand</button>
+            </div>
+            <div class="why">Claude wasn't trained on your store. It writes the query — like the SQL you saw — the database does the finding, and you get the answer in English.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* query race */
+    (function () {
+      var ROWS = [
+        { id: 1041, name: "Aiden", item: "espresso", price: "$3.00" },
+        { id: 1042, name: "Maria", item: "oat latte", price: "$5.25" },
+        { id: 1043, name: "Sofia", item: "cappuccino", price: "$4.25" },
+        { id: 1044, name: "Leo", item: "cold brew", price: "$4.00" },
+        { id: 1045, name: "Maya", item: "flat white", price: "$4.50" },
+        { id: 1046, name: "Omar", item: "mocha", price: "$5.00" },
+        { id: 1047, name: "Nina", item: "drip coffee", price: "$2.75" },
+        { id: 1048, name: "Jonas", item: "chai latte", price: "$4.75" }
+      ];
+
+      var pileBtn = document.getElementById("db-pile");
+      var pileOut = document.getElementById("db-pile-out");
+      var queryBtn = document.getElementById("db-query");
+      var queryOut = document.getElementById("db-query-out");
+      var tbody = document.getElementById("db-tbody");
+      var filter = document.getElementById("db-filter");
+      var count = document.getElementById("db-count");
+      var pileBusy = false;
+
+      var TD = "padding:0.45rem 0.6rem; border-bottom:1px solid var(--border-soft);";
+
+      function render(q) {
+        q = (q || "").toLowerCase();
+        var shown = 0;
+        tbody.innerHTML = "";
+        ROWS.forEach(function (r) {
+          var hay = (r.id + " " + r.name + " " + r.item).toLowerCase();
+          if (q && hay.indexOf(q) === -1) return;
+          shown++;
+          var tr = document.createElement("tr");
+          tr.setAttribute("data-name", r.name);
+          tr.innerHTML =
+            '<td style="' + TD + ' font-family:var(--mono); color:var(--muted);">' + r.id + "</td>" +
+            '<td style="' + TD + ' font-weight:600;">' + r.name + "</td>" +
+            '<td style="' + TD + '">' + r.item + "</td>" +
+            '<td style="' + TD + ' font-family:var(--mono);">' + r.price + "</td>";
+          tbody.appendChild(tr);
+        });
+        var ms = (0.002 + Math.random() * 0.003).toFixed(3);
+        count.innerHTML = shown + (shown === 1 ? " row" : " rows") + ' matched in <b style="color:var(--good);">' + ms + "s</b>";
+      }
+
+      function flashMaria() {
+        [].slice.call(tbody.querySelectorAll("tr")).forEach(function (tr) {
+          if (tr.getAttribute("data-name") === "Maria") {
+            tr.style.transition = "background 0.4s ease";
+            tr.style.background = "var(--accent-soft)";
+            setTimeout(function () { tr.style.background = ""; }, 1300);
+          }
+        });
+      }
+
+      pileBtn.addEventListener("click", function () {
+        if (pileBusy) return;
+        pileBusy = true;
+        var checked = 0;
+        var t0 = Date.now();
+        pileOut.innerHTML = '<span style="color:var(--bad);">rifling…</span> papers checked: 0';
+        var iv = setInterval(function () {
+          checked += 13 + Math.floor(Math.random() * 12);
+          if (checked >= 847) {
+            clearInterval(iv);
+            var secs = ((Date.now() - t0) / 1000).toFixed(1);
+            pileOut.innerHTML =
+              'papers checked: <b>847</b><br><span style="color:var(--good);">found Maria at paper #623</span> — kept going in case there was a second Maria.<br>oat latte — $5.25 · <b style="color:var(--bad);">⏱ ' + secs + "s</b>";
+            pileBusy = false;
+          } else {
+            pileOut.innerHTML =
+              '<span style="color:var(--bad);">rifling…</span> papers checked: ' + checked +
+              (checked > 620 ? '<br><span style="color:var(--muted);">(found her — still checking the rest to be sure)</span>' : "");
+          }
+        }, 55);
+      });
+
+      queryBtn.addEventListener("click", function () {
+        queryOut.innerHTML = '<span style="color:var(--muted);">SELECT * FROM orders WHERE customer = "Maria"</span>';
+        setTimeout(function () {
+          queryOut.innerHTML =
+            '<span style="color:var(--muted);">SELECT * FROM orders WHERE customer = "Maria"</span><br>' +
+            '<span style="color:var(--good);">→ 1 row: Maria — oat latte — $5.25</span> · <b style="color:var(--good);">⏱ 0.003s</b><br>' +
+            '<span style="color:var(--muted);">(the index jumped straight to M — no rifling)</span>';
+          flashMaria();
+        }, 120);
+      });
+
+      filter.addEventListener("input", function () { render(filter.value); });
+      render("");
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Token — Claude Club</title>
+  <meta name="description" content="Token, explained in plain English: the chunks AI reads and writes in. With an interactive live tokenizer." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="token" data-related="context-window,prompt-caching,compaction,embedding,api">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Token</h1>
+        <p class="tldr"><b>TLDR</b>The chunks AI reads and writes in.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: live tokenizer ============ -->
+      <section class="widget" aria-label="Live tokenizer">
+        <div class="widget-bar"><span class="dot"></span> Try it — live tokenizer</div>
+        <div class="widget-body">
+          <style>
+            @keyframes tk-pop { from { transform: scale(0.85); opacity: 0.4; } to { transform: scale(1); opacity: 1; } }
+          </style>
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Type anything. Watch how an AI actually sees it — not letters, not words, but chunks.
+          </p>
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn" id="tk-tweet">🐦 a tweet</button>
+            <button class="wbtn" id="tk-email">✉️ an email</button>
+            <button class="wbtn" id="tk-doc">📄 a 10-page doc</button>
+          </div>
+          <textarea class="winput" id="tk-input" rows="3" spellcheck="false" style="resize:vertical; min-height:72px; margin-bottom:0.9rem; line-height:1.5;" placeholder="Type here — try a long word like understanding…"></textarea>
+          <div id="tk-chips" style="display:flex; flex-wrap:wrap; gap:5px; align-content:flex-start; min-height:58px; max-height:170px; overflow-y:auto; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:9px; margin-bottom:0.9rem;"></div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:0.6rem;">
+            <div style="background:var(--card); border:1px solid var(--border-soft); border-radius:10px; padding:0.6rem 0.8rem;">
+              <div style="font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">Characters</div>
+              <div style="font-size:1.15rem; font-weight:700;" id="tk-chars">0</div>
+            </div>
+            <div style="background:var(--card); border:1px solid var(--border-soft); border-radius:10px; padding:0.6rem 0.8rem;">
+              <div style="font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">Tokens (est.)</div>
+              <div style="font-size:1.15rem; font-weight:700; color:var(--accent);" id="tk-tokens">~0</div>
+            </div>
+            <div style="background:var(--card); border:1px solid var(--border-soft); border-radius:10px; padding:0.6rem 0.8rem;">
+              <div style="font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">Cost as input ($3 / M tokens)</div>
+              <div style="font-size:1.15rem; font-weight:700;" id="tk-cost">$0.00</div>
+              <div style="font-size:0.76rem; color:var(--muted);" id="tk-cost-k">×1,000 requests: $0.00</div>
+            </div>
+          </div>
+        </div>
+        <p class="widget-hint">Type your own sentence — watch long words snap into multiple bricks. Pricing, memory, and speed are all measured in these.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>Forget letters. Forget words, too.</p>
+
+        <p>
+          When you send Claude a sentence, it never sees that sentence the way you do. Before any
+          "thinking" happens, your text gets snapped apart into chunks — like a LEGO wall being
+          pulled back into bricks. A short common word like "the" is one brick. A long word like
+          "understanding" becomes three: <code>under</code> + <code>stand</code> + <code>ing</code>.
+          You just watched the tokenizer above do exactly this to your own typing.
+        </p>
+
+        <p>
+          <strong>A token is one of those chunks — the unit AI actually reads and writes in.
+          Rule of thumb: one token is about four characters, or three-quarters of a word.</strong>
+        </p>
+
+        <h2>Why chunks instead of words?</h2>
+
+        <p>
+          Because chunks are reusable. English alone has hundreds of thousands of words — then add
+          names, slang, typos, code, and emoji. No fixed list of words could ever cover all of it.
+          But a fixed menu of a few tens of thousands of well-chosen chunks can spell
+          <em>anything</em>, the same way 26 letters can spell every word you'll ever invent.
+          Bigger pieces than letters, smaller than words. That menu is the model's vocabulary,
+          and everything you type gets assembled from it.
+        </p>
+
+        <p>
+          It's also why your AI shrugs off typos and made-up product names. "Biscuitify" isn't in
+          any dictionary, but as bricks — <code>B</code> + <code>iscuit</code> + <code>ify</code> —
+          it's no problem at all.
+        </p>
+
+        <h2>Everything runs on the token meter</h2>
+
+        <p>
+          Here's why this lesson is worth ten minutes of your life: tokens are the meter the entire
+          AI world bills, measures, and throttles by.
+        </p>
+
+        <ul>
+          <li>
+            <strong>Pricing.</strong> AI <a href="api.html">APIs</a> charge per million tokens —
+            both the tokens you send in and the tokens it writes back. The cost counter in the
+            widget is real math: at $3 per million input tokens, your tweet costs a hundredth of a
+            cent. That 10-page doc, attached to 1,000 requests? Twenty dollars. Quietly.
+          </li>
+          <li>
+            <strong>Memory.</strong> The <a href="context-window.html">context window</a> — how
+            much your AI can hold in mind at once — is a token budget, not a page count.
+          </li>
+          <li>
+            <strong>Speed.</strong> Models generate one token at a time. A long answer is more
+            tokens, which is more seconds of watching text stream in.
+          </li>
+        </ul>
+
+        <p>
+          One more wrinkle: output tokens — the words the model writes — are usually priced higher
+          than input tokens. Reading is cheap; writing is premium. Worth knowing before you ask for
+          a 2,000-word answer when a table would have done the job.
+        </p>
+
+        <div class="callout">
+          Before pasting a giant document "just in case," remember: every token you send costs
+          money, eats context window space, and competes for the model's attention. Paste the page
+          you need, not the manual. And if you genuinely must send the same big document over and
+          over, that's exactly what <a href="prompt-caching.html">prompt caching</a> was invented
+          for.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <p>Once you start thinking in tokens, a lot of mysterious AI behavior turns into arithmetic:</p>
+
+        <ul>
+          <li>You can estimate cost before you build: word count × 1.33 ≈ tokens, then multiply by the price sheet</li>
+          <li>You know why an answer cut off mid-sentence — it hit a token limit, not a creativity wall</li>
+          <li>You can read any model's pricing page and actually compare apples to apples</li>
+          <li>You understand why "be concise" is a cost-saving instruction when your app serves thousands of users</li>
+        </ul>
+
+        <p>
+          Play with the presets above one more time and watch the cost line. A tweet is noise. An
+          email is pocket change. A 10-page doc, sent at scale, is a real line item on your card.
+          Same model, same price sheet — the only variable is bricks.
+        </p>
+
+        <p><strong>AI doesn't read your words — it reads your bricks, and it bills you per brick.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You paste a 6,000-word report into Claude. Roughly what does the model see?</p>
+            <div class="opts">
+              <button class="opt">6,000 tokens — one per word</button>
+              <button class="opt" data-correct>About 8,000 tokens — words get split into chunks</button>
+              <button class="opt">It sees pages, not tokens — about 12 pages</button>
+            </div>
+            <div class="why">A token is about three-quarters of a word, so 6,000 words ≈ 8,000 tokens. Every one of them costs money and desk space.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Your app sends the same 10-page doc with all 1,000 daily requests. Why is the monthly bill a shock?</p>
+            <div class="opts">
+              <button class="opt">APIs charge per request, so the doc's size doesn't matter</button>
+              <button class="opt" data-correct>Input is billed per token — a big doc × 1,000 requests × 30 days multiplies fast</button>
+              <button class="opt">Only the AI's answers cost money, not what you send</button>
+            </div>
+            <div class="why">You pay for every token going in and coming out. Same-doc-every-time is exactly the bill that prompt caching exists to shrink.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Claude handles your made-up brand name "Biscuitify" with zero trouble. How?</p>
+            <div class="opts">
+              <button class="opt">It memorized every word that could ever exist</button>
+              <button class="opt">It quietly searched the web for the name</button>
+              <button class="opt" data-correct>It snaps unknown words together from smaller reusable chunks</button>
+            </div>
+            <div class="why">The vocabulary is chunks, not words. Anything new is just bricks it already owns, clicked together in a new order.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* live tokenizer */
+    (function () {
+      var input = document.getElementById("tk-input");
+      var chipsEl = document.getElementById("tk-chips");
+      var elChars = document.getElementById("tk-chars");
+      var elTokens = document.getElementById("tk-tokens");
+      var elCost = document.getElementById("tk-cost");
+      var elCostK = document.getElementById("tk-cost-k");
+      var simExtra = 0; // simulated extra tokens (the rest of the 10-page doc)
+
+      var PALETTE = ["#f3ddd2", "#e4ecdf", "#ece5cf", "#e6e2f0", "#f4e6dc"];
+      var MAX_CHIPS = 90;
+
+      var TWEET = "Just shipped my first AI agent. It reads my inbox, drafts replies overnight, and I approve them with one tap. Built the whole thing in a weekend without writing a single line of code.";
+      var EMAIL = "Hi Sarah,\n\nQuick update on the launch. The landing page is live, payments run through Stripe, and the welcome email now goes out automatically the moment someone signs up.\n\nTwo things I still need from you: the final logo files, and a yes or no on the pricing page copy. If I have both by Thursday, we ship Friday morning.\n\nThanks!\nSam";
+      var DOC = "PROJECT BRIEF — Q3 MARKETING PLAN\n\nThis document covers goals, budget, audience research, channel strategy, content calendar, launch timeline, success metrics, and contingency planning for the third quarter…";
+
+      function tokenize(text) {
+        var out = [];
+        var bits = text.match(/[A-Za-z0-9']+|[^A-Za-z0-9'\s]/g) || [];
+        bits.forEach(function (b) {
+          if (/^[A-Za-z0-9']/.test(b)) {
+            while (b.length > 6) { out.push(b.slice(0, 5)); b = b.slice(5); }
+            if (b) out.push(b);
+          } else {
+            out.push(b);
+          }
+        });
+        return out;
+      }
+
+      function money(v) {
+        if (!v) return "$0.00";
+        if (v < 0.0001) return "$" + v.toFixed(6);
+        if (v < 0.01) return "$" + v.toFixed(5);
+        if (v < 1) return "$" + v.toFixed(3);
+        return "$" + v.toFixed(2);
+      }
+
+      function chip(text, i) {
+        var c = document.createElement("span");
+        c.style.cssText = "font-family:var(--mono); font-size:0.78rem; padding:3px 7px; border-radius:6px; border:1px solid rgba(31,30,29,0.1); animation:tk-pop .16s ease; background:" + PALETTE[i % PALETTE.length] + ";";
+        c.textContent = text;
+        return c;
+      }
+
+      function render() {
+        var text = input.value;
+        var toks = tokenize(text);
+        var chars = text.length + simExtra * 4;
+        var est = toks.length === 0 ? 0 : Math.round((toks.length + text.length / 4) / 2);
+        var total = est + simExtra;
+
+        chipsEl.innerHTML = "";
+        if (toks.length === 0 && !simExtra) {
+          chipsEl.innerHTML = '<span style="color:var(--muted); font-size:0.85rem;">tokens appear here…</span>';
+        } else {
+          var shown = Math.min(toks.length, MAX_CHIPS);
+          for (var i = 0; i < shown; i++) chipsEl.appendChild(chip(toks[i], i));
+          if (toks.length > MAX_CHIPS) {
+            var more = chip("+" + (toks.length - MAX_CHIPS) + " more", 2);
+            more.style.background = "var(--bg)";
+            chipsEl.appendChild(more);
+          }
+          if (simExtra) {
+            var sim = chip("📄 …rest of the doc ≈ " + simExtra.toLocaleString("en-US") + " tokens (simulated)", 0);
+            sim.style.background = "var(--accent-faint)";
+            sim.style.borderColor = "var(--accent-soft)";
+            chipsEl.appendChild(sim);
+          }
+        }
+
+        elChars.textContent = (simExtra ? "~" : "") + chars.toLocaleString("en-US");
+        elTokens.textContent = "~" + total.toLocaleString("en-US");
+        var c1 = total * 3 / 1e6;
+        elCost.textContent = money(c1);
+        elCostK.textContent = "×1,000 requests: " + money(c1 * 1000);
+      }
+
+      document.getElementById("tk-tweet").addEventListener("click", function () {
+        simExtra = 0; input.value = TWEET; render();
+      });
+      document.getElementById("tk-email").addEventListener("click", function () {
+        simExtra = 0; input.value = EMAIL; render();
+      });
+      document.getElementById("tk-doc").addEventListener("click", function () {
+        simExtra = 6600; input.value = DOC; render();
+      });
+      input.addEventListener("input", function () {
+        simExtra = 0; render();
+      });
+
+      input.value = "AI reads everything in chunks. Try typing something extraordinary.";
+      render();
+    })();
+  </script>
+</body>
+</html>

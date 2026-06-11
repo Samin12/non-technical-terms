@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Course Path — Claude Club</title>
+  <meta name="description" content="The step-by-step path from non-technical to technical. 7 levels, 62 lessons, one thing at a time. Your progress is saved as you go." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="course">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <header class="course-hero">
+      <div class="hero-kicker">✳ The Course Path</div>
+      <h1>One lesson at a time.</h1>
+      <p>
+        This is the order I'd teach you in if we sat down together. Seven levels,
+        62 lessons, each one building on the last. Don't binge it — do one or two
+        a day, press every button, and mark them complete. Your progress saves
+        automatically on this device.
+      </p>
+      <div class="course-progress" id="cc-course-progress"></div>
+      <p style="margin-top:1.4rem;">
+        <a class="btn btn-accent" id="cc-continue" href="api.html">Start Lesson 1 →</a>
+      </p>
+    </header>
+
+    <!-- how it works strip -->
+    <div class="wrap" style="margin-bottom:2.5rem;">
+      <section class="widget">
+        <div class="widget-bar"><span class="dot"></span> How the path works</div>
+        <div class="widget-body">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem;">
+            <div><b style="font-size:1.4rem;">1️⃣</b><br /><b>Read the analogy.</b><br /><span style="color:var(--muted); font-size:0.88rem;">Every term maps to something you already understand.</span></div>
+            <div><b style="font-size:1.4rem;">🎛️</b><br /><b>Play with the demo.</b><br /><span style="color:var(--muted); font-size:0.88rem;">Each lesson has interactive widgets. Press things. Break things.</span></div>
+            <div><b style="font-size:1.4rem;">✅</b><br /><b>Pass the 3-question check.</b><br /><span style="color:var(--muted); font-size:0.88rem;">Tiny quiz, instant feedback, zero grades.</span></div>
+            <div><b style="font-size:1.4rem;">✳</b><br /><b>Mark it complete.</b><br /><span style="color:var(--muted); font-size:0.88rem;">The path remembers where you left off.</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- levels + steps (rendered from registry by app.js) -->
+    <div id="cc-course"></div>
+
+    <!-- finish line -->
+    <div class="wrap" style="text-align:center; padding:1.5rem 1.25rem 0;">
+      <section class="widget" style="text-align:left;">
+        <div class="widget-bar"><span class="dot"></span> After the path</div>
+        <div class="widget-body">
+          <p style="font-family:var(--sans); color:var(--ink-soft);">
+            Finish all 7 levels and you'll have the vocabulary of a working builder —
+            enough to direct AI tools with confidence, read docs without panic, and ship
+            your first real project. When you're there, come tell me what you built:
+            <a href="https://x.com/saminXD" target="_blank" rel="noopener">@saminXD</a>.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

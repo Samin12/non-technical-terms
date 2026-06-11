@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Runtime — Claude Club</title>
+  <meta name="description" content="Runtime, explained in plain English: your code is not the program. With an interactive press-run demo." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="runtime" data-related="process,cli,frontend-backend,deploy">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Runtime</h1>
+        <p class="tldr"><b>TLDR</b>Your code is not the program.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: press run ============ -->
+      <section class="widget" aria-label="Runtime press-run demo">
+        <div class="widget-bar"><span class="dot"></span> Try it — press run</div>
+        <div class="widget-body" style="position:relative;">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Here's a four-line script. Right now it is a text file — exactly as alive as a
+            grocery list. Give it a player and watch it become a program.
+          </p>
+
+          <div style="border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:0.85rem; background:var(--card);">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.6rem; flex-wrap:wrap; padding:0.4rem 0.8rem; background:var(--bg-deep); border-bottom:1px solid var(--border-soft); font-size:0.78rem; font-weight:700;">
+              <span>📄 hello.js</span>
+              <span id="rt-status" style="font-weight:600; color:var(--muted); transition:color .3s ease;">status: just a text file</span>
+            </div>
+            <div style="font-family:var(--mono); font-size:0.82rem; padding:0.7rem 0.9rem; line-height:1.95;">
+              <div id="rt-l1" style="border-radius:6px; padding:0 0.4rem; transition:background .25s ease;"><span style="color:var(--muted); display:inline-block; width:1.3em;">1</span>greet("hello, club 👋")</div>
+              <div id="rt-l2" style="border-radius:6px; padding:0 0.4rem; transition:background .25s ease;"><span style="color:var(--muted); display:inline-block; width:1.3em;">2</span>count(1 → 3)</div>
+              <div id="rt-l3" style="border-radius:6px; padding:0 0.4rem; transition:background .25s ease;"><span style="color:var(--muted); display:inline-block; width:1.3em;">3</span>read_file("notes.txt")</div>
+              <div id="rt-l4" style="border-radius:6px; padding:0 0.4rem; transition:background .25s ease;"><span style="color:var(--muted); display:inline-block; width:1.3em;">4</span>popup("all done!")</div>
+            </div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.7rem;">
+            <span style="font-size:0.8rem; font-weight:600; color:var(--muted);">Pick a player:</span>
+            <button class="wbtn" id="rt-env-node">🟩 Node.js</button>
+            <button class="wbtn" id="rt-env-browser">🌐 Browser</button>
+          </div>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="rt-run">▶ Run with Node.js</button>
+            <button class="wbtn" id="rt-nothing">🪨 Run with… nothing</button>
+          </div>
+
+          <div id="rt-engine" style="display:flex; align-items:center; gap:0.6rem; border:1px dashed var(--border); border-radius:10px; padding:0.55rem 0.9rem; margin-bottom:0.9rem; font-size:0.82rem; font-weight:600; color:var(--muted); transition:all .3s ease;">
+            <span id="rt-engine-icon" style="font-size:1.1rem;">⚙️</span>
+            <span id="rt-engine-label">runtime engine: idle — no player has been asked to play</span>
+          </div>
+
+          <div class="wlog" id="rt-log"><span class="dim">hello.js is sitting there. Files don't run themselves…</span></div>
+
+          <div id="rt-popup" style="display:none; position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); z-index:5; background:var(--card-raise); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-lift); padding:1rem 1.3rem; text-align:center; min-width:210px;">
+            <div style="font-size:0.9rem; font-weight:600; margin-bottom:0.7rem;">💬 hello.js says:<br />"all done!"</div>
+            <button class="wbtn primary" id="rt-popup-ok">OK</button>
+          </div>
+        </div>
+        <p class="widget-hint">Same four lines every run. The only thing that changes is the player — and the player decides what's allowed.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          A sheet of music is not a song. You can print it, frame it, mail it to a friend — it
+          will sit there in total silence forever, because ink doesn't play. The notes only
+          become music when an orchestra picks them up and performs them.
+        </p>
+
+        <p>
+          You just watched the software version of that. Four lines of code, "run" with nothing:
+          the file sat there. The same four lines handed to Node.js: greeting, counting, action.
+          The file never changed. What changed was whether anyone was performing it.
+        </p>
+
+        <p><strong>A runtime is the player — the program that reads your code and actually performs it. Code is the sheet music; the runtime is the orchestra.</strong></p>
+
+        <h2>"Install Node.js" finally makes sense</h2>
+
+        <p>
+          JavaScript was born inside the web browser, and for years that was the only stage it
+          could play on — every browser ships with a JavaScript engine built in. Then Node.js
+          came along: the same language, but a player that runs anywhere — your laptop, a
+          server, the <a href="cli.html">terminal</a>. Overnight, a language that could only
+          decorate web pages could run shops, bots, and entire businesses.
+        </p>
+
+        <p>
+          So when a tutorial's first step says "install Node.js," it is not asking you to
+          install the project. It's saying: <em>this song needs a player, and your computer
+          doesn't have one yet.</em> Same deal when a Python project asks you to install Python.
+          You're never installing the music. You're installing the orchestra.
+        </p>
+
+        <h2>Same language, different stage, different powers</h2>
+
+        <p>
+          Here's the part the widget made unmissable: the same four lines did different things
+          depending on the player. Node read a file off the disk but could not open a popup —
+          it runs off-screen, no windows to pop. The browser opened the popup happily but
+          refused to touch your files.
+        </p>
+
+        <p>
+          That's not a bug. Each runtime decides what code is allowed to do on its stage. The
+          browser runs strangers' code all day — every site you visit ships scripts to your
+          machine — so it locks them in a padded room: no files, no system access. Node is the
+          opposite: you chose to run it, so it gets real power. (This split maps neatly onto
+          <a href="frontend-backend.html">frontend and backend</a> — browser code is your
+          frontend, Node code usually runs the back.)
+        </p>
+
+        <p>
+          This decodes a classic mystery error. Code that works in the browser dies on a server
+          with "alert is not defined" — not because the code broke, but because it asked its new
+          stage for a trick that stage doesn't have. Same script, wrong player.
+        </p>
+
+        <div class="callout">
+          Debugging instinct worth stealing: when code "works here, fails there," check the
+          stage before you blame the script. Ask Claude "which runtime does this need?" and
+          half of those errors explain themselves. Same code, different powers — it all depends
+          on the player.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>READMEs stop being scary — "requires Node 20+" just means "get the player, version 20"</li>
+          <li>You can decode works-in-browser-fails-on-server errors like a developer</li>
+          <li>You know why the machine you <a href="deploy.html">deploy</a> to must have the right runtime installed</li>
+          <li>You understand what's actually happening when your AI says "let me run this script for you"</li>
+        </ul>
+
+        <p>
+          One last breadcrumb: the moment a runtime starts performing your file, that running
+          performance gets a name of its own — a <a href="process.html">process</a>. That's the
+          very next lesson, and it's where your code starts to get a life of its own.
+        </p>
+
+        <p><strong>Your file is the sheet music. The runtime is the orchestra. No player, no music.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You download cool-script.js and double-click it. Nothing runs. What's missing?</p>
+            <div class="opts">
+              <button class="opt">The file is corrupted and needs re-downloading</button>
+              <button class="opt" data-correct>A runtime — the file is just text until a player like Node.js executes it</button>
+              <button class="opt">An internet connection</button>
+            </div>
+            <div class="why">Code files don't run themselves, ever. Something has to read and perform them — that something is the runtime.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. A script works on your laptop in the browser, but on the server it dies with "alert is not defined." Best explanation?</p>
+            <div class="opts">
+              <button class="opt">The server ran out of memory</button>
+              <button class="opt" data-correct>alert is a browser power — the Node runtime on the server has no popups</button>
+              <button class="opt">JavaScript doesn't work on servers</button>
+            </div>
+            <div class="why">Same language, different stage. Each runtime grants different powers, and popups belong to the browser's stage only.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. A tutorial's step one says "Install Node.js." What are you actually installing?</p>
+            <div class="opts">
+              <button class="opt">The tutorial's source code</button>
+              <button class="opt">A faster web browser</button>
+              <button class="opt" data-correct>A player that can run JavaScript files anywhere on your computer</button>
+            </div>
+            <div class="why">You're installing the orchestra, not the music. Once the player is on your machine, any JavaScript file can be performed outside the browser.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* press run */
+    (function () {
+      var env = "node";
+      var running = false;
+      var started = false;
+      var runBtn = document.getElementById("rt-run");
+      var nothingBtn = document.getElementById("rt-nothing");
+      var nodeBtn = document.getElementById("rt-env-node");
+      var browserBtn = document.getElementById("rt-env-browser");
+      var log = document.getElementById("rt-log");
+      var status = document.getElementById("rt-status");
+      var engine = document.getElementById("rt-engine");
+      var engineLabel = document.getElementById("rt-engine-label");
+      var engineIcon = document.getElementById("rt-engine-icon");
+      var popup = document.getElementById("rt-popup");
+      var lines = [1, 2, 3, 4].map(function (i) { return document.getElementById("rt-l" + i); });
+
+      function add(html) {
+        if (!started) { log.innerHTML = ""; started = true; }
+        else { log.innerHTML += "\n"; }
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function hl(i) {
+        lines.forEach(function (l, j) {
+          l.style.background = (j === i) ? "var(--accent-faint)" : "transparent";
+        });
+      }
+
+      function setEnv(e) {
+        if (running) { return; }
+        env = e;
+        runBtn.innerHTML = "▶ Run with " + (e === "node" ? "Node.js" : "the Browser");
+        [["node", nodeBtn], ["browser", browserBtn]].forEach(function (p) {
+          var on = p[0] === e;
+          p[1].style.borderColor = on ? "var(--accent-bright)" : "var(--border)";
+          p[1].style.background = on ? "var(--accent-faint)" : "var(--card)";
+          p[1].style.color = on ? "var(--accent)" : "var(--ink)";
+        });
+      }
+
+      var RUNS = {
+        node: {
+          cmd: "$ node hello.js",
+          engine: "🟩 Node.js engine: performing hello.js, line by line…",
+          icon: "🟩",
+          who: "Node.js",
+          steps: [
+            { out: '<span class="ok">hello, club 👋</span> <span class="dim">+2ms</span>' },
+            { out: '1… 2… 3… <span class="dim">+9ms</span>' },
+            { out: '<span class="ok">📄 notes.txt → "buy more RAM"</span> <span class="dim">+6ms — Node may read your files</span>' },
+            { out: '<span class="err">✗ popup("all done!") — there is no window here.</span> <span class="dim">Node runs off-screen. No popups, ever.</span>' }
+          ],
+          fin: '<span class="dim">finished in 0.4s. hello.js unchanged — still just text. The engine did all the performing.</span>'
+        },
+        browser: {
+          cmd: "› opening hello.js in a browser tab…",
+          engine: "🌐 Browser engine: performing hello.js, line by line…",
+          icon: "🌐",
+          who: "the browser",
+          steps: [
+            { out: '<span class="ok">hello, club 👋</span> <span class="dim">+1ms</span>' },
+            { out: '1… 2… 3… <span class="dim">+8ms</span>' },
+            { out: '<span class="err">✗ read_file("notes.txt") — blocked.</span> <span class="dim">A browser never lets a page touch your files. Imagine if any website could.</span>' },
+            { out: '<span class="ok">💬 popup("all done!") → opened ↗</span>', popup: true }
+          ],
+          fin: '<span class="dim">finished. Same four lines, different player, different powers.</span>'
+        }
+      };
+
+      function run() {
+        if (running) { return; }
+        running = true;
+        popup.style.display = "none";
+        runBtn.disabled = true;
+        nothingBtn.disabled = true;
+        var R = RUNS[env];
+        status.textContent = "status: being performed by " + R.who + "…";
+        status.style.color = "var(--accent)";
+        engine.style.borderColor = "var(--accent-bright)";
+        engine.style.borderStyle = "solid";
+        engine.style.color = "var(--ink)";
+        engineIcon.textContent = R.icon;
+        engineLabel.textContent = R.engine;
+        add('<span class="acc">' + R.cmd + "</span>");
+        R.steps.forEach(function (s, i) {
+          setTimeout(function () {
+            hl(i);
+            add(s.out);
+            if (s.popup) { popup.style.display = "block"; }
+          }, 600 * (i + 1));
+        });
+        setTimeout(function () {
+          hl(-1);
+          add(R.fin);
+          status.textContent = "status: finished ✓ (file unchanged — still just text)";
+          status.style.color = "var(--good)";
+          engine.style.borderColor = "var(--border)";
+          engine.style.borderStyle = "dashed";
+          engine.style.color = "var(--muted)";
+          engineIcon.textContent = "⚙️";
+          engineLabel.textContent = "runtime engine: idle — waiting for the next run";
+          running = false;
+          runBtn.disabled = false;
+          nothingBtn.disabled = false;
+        }, 600 * 5);
+      }
+
+      function runNothing() {
+        if (running) { return; }
+        running = true;
+        popup.style.display = "none";
+        runBtn.disabled = true;
+        nothingBtn.disabled = true;
+        engineLabel.textContent = "runtime engine: not invited. nobody asked a player to play.";
+        add('<span class="acc">$ hello.js</span> <span class="dim">(no runtime named)</span>');
+        setTimeout(function () { add('<span class="dim">…</span>'); }, 600);
+        setTimeout(function () { add('<span class="dim">……</span>'); }, 1300);
+        setTimeout(function () {
+          add('<span class="err">nothing happens.</span> <span class="dim">it\'s a text file. it\'s doing what text does: sitting there.</span>');
+          status.textContent = "status: just a text file (still)";
+          status.style.color = "var(--muted)";
+          engineLabel.textContent = "runtime engine: idle — waiting to be asked";
+          running = false;
+          runBtn.disabled = false;
+          nothingBtn.disabled = false;
+        }, 2100);
+      }
+
+      document.getElementById("rt-popup-ok").addEventListener("click", function () {
+        popup.style.display = "none";
+      });
+      nodeBtn.addEventListener("click", function () { setEnv("node"); });
+      browserBtn.addEventListener("click", function () { setEnv("browser"); });
+      runBtn.addEventListener("click", run);
+      nothingBtn.addEventListener("click", runNothing);
+      setEnv("node");
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Queue — Claude Club</title>
+  <meta name="description" content="Queue, explained in plain English: order tickets for your software. With an interactive ticket rail." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="queue" data-related="worker,job,async,server">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Queue</h1>
+        <p class="tldr"><b>TLDR</b>Order tickets for your software.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: the ticket rail ============ -->
+      <section class="widget" aria-label="Queue ticket rail simulator">
+        <div class="widget-bar"><span class="dot"></span> Try it — the ticket rail</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            You run the diner. Orders become tickets on the rail, and one cook works through
+            them in order. Then unplug the rail and see what a rush does to a kitchen with no queue.
+          </p>
+
+          <div class="wrow" style="margin-bottom:0.8rem;">
+            <button class="wbtn primary" id="qu-order">🧾 New order</button>
+            <button class="wbtn" id="qu-rush">😱 Rush hour: 8 orders at once</button>
+            <button class="wbtn danger" id="qu-toggle">🙃 Unplug the queue</button>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.8rem; gap:1rem; font-size:0.8rem; font-weight:600; color:var(--ink-soft);">
+            <span>🧾 Waiting: <b id="qu-waiting" style="color:var(--accent);">0</b></span>
+            <span>✅ Served: <b id="qu-served" style="color:var(--good);">0</b></span>
+            <span>❌ Dropped: <b id="qu-dropped" style="color:var(--bad);">0</b></span>
+          </div>
+
+          <div id="qu-rail-tag" style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:0.35rem;">The ticket rail (the queue)</div>
+          <div id="qu-rail-box" style="display:flex; flex-wrap:wrap; gap:6px; min-height:46px; background:var(--bg-deep); border:1px dashed var(--border); border-radius:10px; padding:8px; margin-bottom:0.9rem; transition:border-color .3s ease;">
+            <span id="qu-rail-empty" style="font-size:0.78rem; color:var(--muted);">rail is clear — send in an order</span>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:9px; background:var(--card); border:1px solid var(--border-soft); border-radius:9px; padding:8px 11px;">
+            <span style="font-size:1.2rem;">👨‍🍳</span>
+            <b style="font-size:0.8rem; white-space:nowrap;">The cook</b>
+            <span id="qu-cook-st" style="font-size:0.78rem; color:var(--muted); flex:1; min-width:100px;">idle — watching the rail</span>
+            <div class="wmeter" id="qu-cook-meter" style="width:130px; flex:none;"><i></i></div>
+          </div>
+        </div>
+        <p class="widget-hint">Hit rush hour with the rail plugged in, then unplug it and hit rush hour again. Count the dropped orders.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Lunch rush at a diner. Thirty orders hit the kitchen in ten minutes. The kitchen does
+          not grow thirty arms — it has a rail. That steel strip above the pass where paper
+          tickets clip on, in order, and the cook works through them one at a time.
+        </p>
+
+        <p>
+          Nobody's burger gets forgotten. Nobody's order collides with anyone else's. The rush
+          doesn't break the kitchen; it just makes the rail longer for a while.
+        </p>
+
+        <p><strong>That's a queue: a waiting line for work. New tasks clip on at the back, get handled one at a time from the front, and nothing gets dropped.</strong></p>
+
+        <h2>Spikes become lines, not crashes</h2>
+
+        <p>
+          You just ran the experiment. With the rail plugged in, rush hour was boring — eight
+          orders landed, the rail grew, the cook kept the exact same steady pace, and the line
+          melted back down. Then you unplugged the rail, hit rush hour again, and watched
+          orders bounce off a busy cook: dropped ❌.
+        </p>
+
+        <p>
+          That's the whole pitch. Your <a href="server.html">server</a> can only do so much at
+          once. When a viral moment or a Black Friday dumps ten thousand requests on it in a
+          minute, a queue turns a deadly spike into a long, survivable line. Work arrives faster
+          than it can be done — and that's fine, because <em>arriving</em> and <em>being done</em>
+          are now two separate events. The order matters too: first in, first out. Engineers say
+          FIFO. The diner just says "the rail."
+        </p>
+
+        <h2>The register never waits for the kitchen</h2>
+
+        <p>
+          The queue's second superpower is decoupling. The part of your app that takes orders —
+          the register — responds instantly: "Got it, ticket #84." It doesn't wait for the
+          kitchen, because it never promised the food <em>now</em>; it promised the food
+          <em>eventually</em>. That's why a checkout page confirms in half a second even though
+          fulfillment takes a day, and why "send to 10,000 subscribers" returns immediately
+          while the emails trickle out over an hour.
+        </p>
+
+        <p>
+          Front and back run at their own speeds, with the rail as the buffer between them.
+          It's the same start-now-finish-later instinct you'll see in
+          <a href="async.html">async</a>.
+        </p>
+
+        <h2>What "your job is queued" actually means</h2>
+
+        <p>
+          When your AI video tool says "queued — position 14," nothing is wrong. Your
+          <a href="job.html">job</a> is a ticket on the rail with thirteen tickets ahead of it,
+          and a pool of <a href="worker.html">workers</a> is eating through the line. The worst
+          thing you can do is resubmit — that just clips more tickets onto the rail. Queued
+          means: received, safe, and scheduled. It's the most reassuring word in software, once
+          you know what it means.
+        </p>
+
+        <div class="callout">
+          Warning sign: a healthy queue breathes — longer during spikes, shorter after. A queue
+          that only ever grows means the kitchen can't keep up, and no rail is long enough to
+          fix that. The answer isn't a bigger queue. It's more cooks.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>"Queued" stops feeling like an error and starts feeling like a receipt</li>
+          <li>You understand why apps confirm instantly and deliver later</li>
+          <li>When things back up, you ask the smart question: "how deep is the queue?"</li>
+          <li>You'll spot the rail everywhere — email blasts, AI renders, print shops, airport security</li>
+        </ul>
+
+        <p>
+          A queue doesn't make work faster. It makes load survivable.
+        </p>
+
+        <p><strong>The rail doesn't panic when thirty orders hit at once — and now, neither do you.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your product goes viral and 5,000 requests land in one minute — far more than your software can handle at once. With a queue in place, what happens?</p>
+            <div class="opts">
+              <button class="opt">Everything over capacity bounces back with errors</button>
+              <button class="opt" data-correct>The line gets long, work continues at a steady pace, and nothing is lost</button>
+              <button class="opt">The queue speeds up processing so it all finishes within the minute</button>
+            </div>
+            <div class="why">A queue doesn't add speed — it absorbs the spike. The rail grows, the cook keeps cooking, and the line breathes back down after the rush.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You click "Buy" and the page instantly says "Order received!" even though packing and shipping take a day. What's the design at work?</p>
+            <div class="opts">
+              <button class="opt">The site lied — the order isn't real until it ships</button>
+              <button class="opt" data-correct>Decoupling: your order became a ticket on a queue, so confirmation didn't have to wait for fulfillment</button>
+              <button class="opt">The warehouse staff are simply that fast</button>
+            </div>
+            <div class="why">The register never waits for the kitchen. Taking the order and doing the work are separate events, with the queue as the buffer between them.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. An AI video tool says "Your job is queued — position 14." What should you do?</p>
+            <div class="opts">
+              <button class="opt">Resubmit the job a few times to push it through faster</button>
+              <button class="opt" data-correct>Nothing — 13 tickets are ahead of yours, and workers will get to it</button>
+              <button class="opt">Assume the job was lost and start over tomorrow</button>
+            </div>
+            <div class="why">Queued means received, safe, and scheduled. Resubmitting just clips more tickets onto the rail — including duplicates of yours.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* the ticket rail */
+    (function () {
+      var rail = [];
+      var ticketN = 0, served = 0, dropped = 0;
+      var railOn = true;
+      var cookBusy = false;
+
+      var elRail = document.getElementById("qu-rail-box");
+      var elRailEmpty = document.getElementById("qu-rail-empty");
+      var elRailTag = document.getElementById("qu-rail-tag");
+      var elCookSt = document.getElementById("qu-cook-st");
+      var elBar = document.querySelector("#qu-cook-meter > i");
+      var elWaiting = document.getElementById("qu-waiting");
+      var elServed = document.getElementById("qu-served");
+      var elDropped = document.getElementById("qu-dropped");
+      var btnToggle = document.getElementById("qu-toggle");
+
+      function ticketChip(id) {
+        var el = document.createElement("span");
+        el.style.cssText = "font-size:0.76rem;font-weight:700;background:var(--card-raise);border:1px solid var(--border);border-top:3px solid var(--accent-bright);border-radius:6px;padding:5px 9px;transition:all .35s ease;white-space:nowrap;";
+        el.textContent = "🧾 #" + id;
+        return el;
+      }
+
+      function render() {
+        elWaiting.textContent = rail.length;
+        elServed.textContent = served;
+        elDropped.textContent = dropped;
+        elRailEmpty.style.display = rail.length ? "none" : "inline";
+        elRailEmpty.textContent = railOn
+          ? "rail is clear — send in an order"
+          : "no rail — incoming orders go straight at the cook";
+      }
+
+      function cook(id) {
+        cookBusy = true;
+        elCookSt.textContent = "cooking ticket #" + id + "…";
+        elCookSt.style.color = "var(--accent)";
+        elBar.style.transition = "none";
+        elBar.style.width = "0%";
+        void elBar.offsetWidth;
+        elBar.style.transition = "width 1200ms linear";
+        elBar.style.width = "100%";
+        setTimeout(function () {
+          served++;
+          elCookSt.textContent = "✓ served #" + id;
+          elCookSt.style.color = "var(--good)";
+          elBar.style.transition = "none";
+          elBar.style.width = "0%";
+          cookBusy = false;
+          render();
+        }, 1200);
+      }
+
+      function drop(id) {
+        dropped++;
+        var el = ticketChip(id);
+        el.style.borderColor = "var(--bad)";
+        el.style.borderTopColor = "var(--bad)";
+        el.style.color = "var(--bad)";
+        el.textContent = "🧾 #" + id + " dropped ❌";
+        elRail.appendChild(el);
+        setTimeout(function () {
+          el.style.opacity = "0";
+          el.style.transform = "translateY(16px) rotate(8deg)";
+        }, 450);
+        setTimeout(function () { el.remove(); }, 900);
+        render();
+      }
+
+      function order() {
+        ticketN++;
+        var id = ticketN;
+        if (railOn) {
+          var t = { id: id, el: ticketChip(id) };
+          rail.push(t);
+          elRail.appendChild(t.el);
+        } else {
+          if (!cookBusy) { cook(id); }
+          else { drop(id); }
+        }
+        render();
+      }
+
+      /* the cook pulls from the rail: first in, first out */
+      setInterval(function () {
+        if (railOn && !cookBusy && rail.length) {
+          var t = rail.shift();
+          t.el.style.opacity = "0";
+          t.el.style.transform = "translateY(-10px)";
+          setTimeout(function () { t.el.remove(); }, 300);
+          cook(t.id);
+          render();
+        }
+      }, 150);
+
+      document.getElementById("qu-order").addEventListener("click", order);
+      document.getElementById("qu-rush").addEventListener("click", function () {
+        for (var i = 0; i < 8; i++) order();
+      });
+      btnToggle.addEventListener("click", function () {
+        railOn = !railOn;
+        btnToggle.textContent = railOn ? "🙃 Unplug the queue" : "🧾 Plug the queue back in";
+        elRailTag.textContent = railOn
+          ? "The ticket rail (the queue)"
+          : "World without a queue — rail unplugged";
+        elRail.style.borderColor = railOn ? "var(--border)" : "var(--bad)";
+        rail.forEach(function (t) { t.el.style.opacity = railOn ? "1" : "0.35"; });
+        render();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

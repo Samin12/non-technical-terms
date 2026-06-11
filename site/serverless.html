@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Serverless — Claude Club</title>
+  <meta name="description" content="Serverless, explained in plain English: rent computing by the moment. With an interactive pay-per-request meter." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="serverless" data-related="server,edge,deploy,worker">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Serverless</h1>
+        <p class="tldr"><b>TLDR</b>Rent computing by the moment.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: pay-per-request meter ============ -->
+      <section class="widget" aria-label="Serverless pay-per-request meter">
+        <div class="widget-bar"><span class="dot"></span> Try it — pay-per-request meter</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            You run a little app. Below are two ways to pay for the computing behind it.
+            Drag the traffic up and down — and watch both bills, and both status lights.
+          </p>
+
+          <div style="font-family:var(--sans); font-size:0.8rem; font-weight:600; color:var(--ink-soft); display:flex; justify-content:space-between; margin-bottom:0.35rem;">
+            <span>Traffic: <b id="sv-rate">0 req/min</b></span>
+            <span id="sv-mood">😴 quiet</span>
+          </div>
+          <input type="range" class="wrange" id="sv-slider" min="0" max="100" step="1" value="0" />
+          <div style="display:flex; justify-content:space-between; font-family:var(--sans); font-size:0.72rem; font-weight:600; color:var(--muted); margin:0.3rem 0 0.95rem;">
+            <span>😴 quiet · 0</span><span>busy · 500</span><span>🦠 VIRAL · 10,000</span>
+          </div>
+
+          <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+            <div id="sv-srv-panel" style="flex:1 1 250px; border:1px solid var(--border); border-radius:10px; padding:0.75rem 0.85rem; background:var(--card); transition:border-color 0.3s ease;">
+              <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.45rem;">🖥️ Your own server<span id="sv-srv-count" style="color:var(--muted); font-weight:600;"> · 1 machine</span></div>
+              <div style="font-size:0.74rem; color:var(--muted); margin-bottom:0.25rem;">CPU <b id="sv-cpu-label">0%</b></div>
+              <div class="wmeter" id="sv-cpu" style="margin-bottom:0.55rem;"><i></i></div>
+              <div id="sv-srv-status" style="font-size:0.8rem; font-weight:600; color:var(--good); margin-bottom:0.55rem;">🟢 up — and still billing you</div>
+              <div style="font-size:0.8rem; color:var(--ink-soft); margin-bottom:0.65rem;">Bill: <b id="sv-srv-bill">$40/mo</b> <span style="color:var(--muted);">— fixed, even at zero traffic</span></div>
+              <button class="wbtn" id="sv-prepay" style="font-size:0.78rem;">💸 Pre-pay 5 servers — $200/mo</button>
+            </div>
+            <div style="flex:1 1 250px; border:1px solid var(--border); border-radius:10px; padding:0.75rem 0.85rem; background:var(--card);">
+              <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.45rem;">✳ Serverless</div>
+              <div style="font-size:0.74rem; color:var(--muted); margin-bottom:0.25rem;">Function instances: <b id="sv-inst-count">0</b></div>
+              <div id="sv-instances" style="display:flex; flex-wrap:wrap; gap:4px; align-content:flex-start; min-height:56px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:8px; padding:6px; margin-bottom:0.55rem;"><span id="sv-idle-note" style="color:var(--muted); font-size:0.74rem;">asleep — nothing running, nothing billed</span></div>
+              <div id="sv-sls-status" style="font-size:0.8rem; font-weight:600; color:var(--good); margin-bottom:0.55rem;">😴 idle — $0.00</div>
+              <div style="font-size:0.8rem; color:var(--ink-soft);">This session: <b id="sv-bill-live">$0.000000</b><br />At this rate: <b id="sv-bill-mo">$0.00/mo</b></div>
+            </div>
+          </div>
+        </div>
+        <p class="widget-hint">Make three stops: zero (compare bills), 500 (compare again), then slam it to viral and see which side stays up — and what pre-paying costs.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Owning a car means paying for it while it sleeps. Loan payment, insurance,
+          parking — the meter runs whether you drive or not. Rideshare flips the deal:
+          you pay only for the miles you actually ride, and when the concert lets out,
+          fifty cars appear out of nowhere to soak up the crowd.
+        </p>
+
+        <p>
+          That's exactly what the slider just showed you. The fixed server billed $40
+          while doing absolutely nothing, then fell over the moment things went viral.
+          Serverless sat at $0.00 all morning — and quietly multiplied into twenty
+          instances the second the crowd arrived.
+        </p>
+
+        <p>
+          <strong>Serverless means renting computing by the moment: your code runs when
+          someone calls it, you pay per request, and idle time costs you nothing.</strong>
+        </p>
+
+        <h2>Yes, there are still servers</h2>
+
+        <p>
+          The name is marketing. Somewhere, massive data centers full of
+          <a href="server.html">servers</a> are doing the work — you just never babysit
+          them. No setup, no security patches, no 2 a.m. capacity panic. You hand the
+          platform a <em>function</em> — one small job, like a <a href="worker.html">worker</a> —
+          and it wakes on demand: a request comes in, an instance spins up, runs your code,
+          returns the answer, and vanishes. You watched those ✳ chips do exactly that.
+        </p>
+
+        <p>
+          One honest footnote: the first request after a long nap takes an extra beat,
+          because the function has to wake up first. That's called a <em>cold start</em>,
+          and it's the small tax you pay for all that free idle time.
+        </p>
+
+        <h2>The two bills you just compared</h2>
+
+        <p>
+          At zero traffic, the fixed server still cost $40 — the car asleep in the garage.
+          Serverless cost $0.00, which is why every hobby project and side bet starts there.
+        </p>
+
+        <p>
+          At viral, the single server maxed its CPU and went down. Your options were ugly:
+          stay down, or pre-pay $200 for five machines you won't need next week. Serverless
+          just spawned more instances and charged fractions of a cent per request — the
+          fifty rideshare cars outside the concert.
+        </p>
+
+        <p>
+          But look at the "at this rate" number when the slider is pinned at viral: the
+          projected monthly bill climbs <em>past</em> the flat $40. That's the flip side.
+          If your traffic is a constant, heavy firehose all month, owning the car wins.
+          Commute every day? Buy the car. Ride twice a month? Hail the ride.
+        </p>
+
+        <div class="callout">
+          Pay-per-request cuts both ways. A bug that calls your function in an endless loop
+          isn't a crash — it's a bill. Every serverless platform lets you set a spending
+          alert; do it the day you <a href="deploy.html">deploy</a>, before you need it.
+          Two minutes of setup has saved people from four-figure surprise invoices.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Side projects that cost $0/month until someone actually uses them</li>
+          <li>Launch-day spikes absorbed automatically — no panicked upgrades mid-spike</li>
+          <li>Zero server maintenance: no patching, no restarting, no babysitting</li>
+          <li>Shipping is simple: deploying a function is basically "upload one job"</li>
+          <li>A clean path to <a href="edge.html">edge</a> computing — the same idea, pushed close to your users</li>
+        </ul>
+
+        <p>
+          This is also why AI-built apps and serverless are best friends. When Claude
+          writes you a tiny tool — a form handler, a webhook receiver, an image resizer —
+          you don't want to rent a whole machine for it. You want it to exist for 200
+          milliseconds, do its job, and disappear.
+        </p>
+
+        <p><strong>Own the car if you drive every day. For everything else, hail the ride.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Your weekend side project gets about ten visits a day. Why do builders host things like this serverless?</p>
+            <div class="opts">
+              <button class="opt">Serverless machines are faster than normal servers</button>
+              <button class="opt" data-correct>You pay per request — so an app that's idle almost all day costs almost nothing</button>
+              <button class="opt">Because serverless apps don't need to be deployed</button>
+            </div>
+            <div class="why">Ten visits a day is a few cents a month. A fixed server would bill you the full $40 to sit there doing nothing — the car asleep in the garage.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Your launch video goes viral and traffic jumps from 50 to 10,000 requests a minute. What does the serverless platform do?</p>
+            <div class="opts">
+              <button class="opt">Emails you and waits for approval to add capacity</button>
+              <button class="opt" data-correct>Automatically spins up more function instances to match the traffic, then winds them down after</button>
+              <button class="opt">Queues everyone until traffic drops back down</button>
+            </div>
+            <div class="why">That's the ✳ chips multiplying in the widget. Scaling is the platform's job, not yours — the fifty rideshare cars appearing when the concert ends.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your app now serves heavy, constant traffic 24/7, every single day. What's likely the cheapest setup?</p>
+            <div class="opts">
+              <button class="opt">Serverless — it's always the cheapest option</button>
+              <button class="opt" data-correct>Fixed servers — at constant heavy load, per-request charges can total more than a flat monthly machine</button>
+              <button class="opt">Turning the app off at night to save money</button>
+            </div>
+            <div class="why">You saw the projected bill pass $40/mo at full viral throttle. Pay-per-mile beats owning a car — until you're driving every minute of every day.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* pay-per-request meter */
+    (function () {
+      var PER_SERVER = 2000;        // req/min one machine handles
+      var COST_PER_REQ = 0.0000002; // $0.20 per million requests
+      var MIN_MONTH = 43200;        // minutes in 30 days
+
+      var rate = 0, prepaid = false, sessionBill = 0;
+      var chips = [];
+
+      var elSlider = document.getElementById("sv-slider");
+      var elRate = document.getElementById("sv-rate");
+      var elMood = document.getElementById("sv-mood");
+      var elSrvPanel = document.getElementById("sv-srv-panel");
+      var elSrvCount = document.getElementById("sv-srv-count");
+      var elCpuLabel = document.getElementById("sv-cpu-label");
+      var elCpuBox = document.getElementById("sv-cpu");
+      var elCpuBar = document.querySelector("#sv-cpu > i");
+      var elSrvStatus = document.getElementById("sv-srv-status");
+      var elSrvBill = document.getElementById("sv-srv-bill");
+      var elPrepay = document.getElementById("sv-prepay");
+      var elInstances = document.getElementById("sv-instances");
+      var elInstCount = document.getElementById("sv-inst-count");
+      var elIdleNote = document.getElementById("sv-idle-note");
+      var elSlsStatus = document.getElementById("sv-sls-status");
+      var elBillLive = document.getElementById("sv-bill-live");
+      var elBillMo = document.getElementById("sv-bill-mo");
+
+      function calcRate(v) {
+        return Math.round(10000 * Math.pow(v / 100, 4.32));
+      }
+      function mood(r) {
+        if (r === 0) return "😴 quiet";
+        if (r < 1500) return "🙂 busy";
+        if (r < 6000) return "😅 very busy";
+        return "🦠 VIRAL";
+      }
+
+      function syncChips(want) {
+        while (chips.length < want) {
+          var c = document.createElement("span");
+          c.textContent = "✳";
+          c.style.cssText = "font-size:0.8rem; color:var(--accent-bright); background:var(--accent-faint); border:1px solid var(--accent-soft); border-radius:6px; padding:1px 7px; opacity:0; transform:scale(0.5); transition:all 0.25s ease;";
+          elInstances.appendChild(c);
+          (function (n) { setTimeout(function () { n.style.opacity = "1"; n.style.transform = "scale(1)"; }, 20); })(c);
+          chips.push(c);
+        }
+        while (chips.length > want) {
+          var old = chips.pop();
+          old.style.opacity = "0";
+          old.style.transform = "scale(0.4)";
+          setTimeout(function (n) { return function () { n.remove(); }; }(old), 260);
+        }
+      }
+
+      function update() {
+        rate = calcRate(parseInt(elSlider.value, 10));
+        elRate.textContent = rate.toLocaleString() + " req/min";
+        elMood.textContent = mood(rate);
+
+        // your own server
+        var capacity = prepaid ? PER_SERVER * 5 : PER_SERVER;
+        var cpu = Math.min(100, Math.round((rate / capacity) * 100));
+        var down = rate > capacity;
+        elCpuLabel.textContent = cpu + "%";
+        elCpuBar.style.width = cpu + "%";
+        elCpuBox.classList.toggle("full", down || cpu >= 100);
+        if (down) {
+          elSrvStatus.textContent = "🔴 DOWN — capacity exceeded";
+          elSrvStatus.style.color = "var(--bad)";
+          elSrvStatus.style.animation = "pulse 0.7s ease-in-out infinite";
+          elSrvPanel.style.borderColor = "var(--bad)";
+        } else {
+          elSrvStatus.textContent = rate === 0 ? "🟢 up — and still billing you" : (cpu >= 85 ? "🟠 up — CPU screaming" : "🟢 up — handling it");
+          elSrvStatus.style.color = cpu >= 85 ? "var(--accent)" : "var(--good)";
+          elSrvStatus.style.animation = "";
+          elSrvPanel.style.borderColor = "var(--border)";
+        }
+        elSrvBill.textContent = prepaid ? "$200/mo" : "$40/mo";
+        elSrvCount.textContent = prepaid ? " · 5 machines" : " · 1 machine";
+
+        // serverless
+        var want = rate === 0 ? 0 : Math.min(20, Math.ceil(rate / 500));
+        elInstCount.textContent = String(want);
+        elIdleNote.style.display = want === 0 ? "" : "none";
+        syncChips(want);
+        elSlsStatus.textContent = rate === 0 ? "😴 idle — $0.00" : "🟢 up — auto-scaled in seconds";
+        elBillMo.textContent = "$" + (rate * MIN_MONTH * COST_PER_REQ).toFixed(2) + "/mo";
+      }
+
+      // live per-request ticker
+      setInterval(function () {
+        if (rate > 0) {
+          sessionBill += (rate / 60) * 0.25 * COST_PER_REQ;
+          elBillLive.textContent = "$" + sessionBill.toFixed(6);
+        }
+      }, 250);
+
+      elSlider.addEventListener("input", update);
+      elPrepay.addEventListener("click", function () {
+        prepaid = !prepaid;
+        elPrepay.textContent = prepaid ? "Scale back to 1 server — $40/mo" : "💸 Pre-pay 5 servers — $200/mo";
+        update();
+      });
+
+      update();
+    })();
+  </script>
+</body>
+</html>

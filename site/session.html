@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session — Claude Club</title>
+  <meta name="description" content="Session, explained in plain English: one continuous conversation with your AI. With an interactive memory wipe demo." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="session" data-related="context-window,compaction,claude-md,token">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Session</h1>
+        <p class="tldr"><b>TLDR</b>One continuous conversation with your AI.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: memory wipe demo ============ -->
+      <section class="widget" aria-label="Session memory wipe demo">
+        <div class="widget-bar"><span class="dot"></span> Try it — memory wipe demo</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Run the conversation in order. Then start a new session and watch what survives.
+          </p>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="ss-b1">① Tell Claude: my dog is named Biscuit 🐶</button>
+            <button class="wbtn" id="ss-b2" disabled>② Ask: what's my dog's name?</button>
+            <button class="wbtn danger" id="ss-b3" disabled>③ 🧹 Start a NEW session</button>
+            <button class="wbtn" id="ss-b4" style="display:none;">④ Ask again: what's my dog's name?</button>
+          </div>
+          <div id="ss-chat" style="background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:12px; min-height:160px; display:flex; flex-direction:column; gap:8px;"></div>
+          <div style="font-family:var(--sans); font-size:0.85rem; color:var(--muted); margin-top:0.8rem; display:flex; justify-content:space-between; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+            <span>🧠 Things Claude knows in this session: <b id="ss-known" style="color:var(--bad);">0</b></span>
+            <button class="wbtn" id="ss-reset" style="display:none; font-size:0.78rem; padding:0.3rem 0.7rem;">↺ Replay the demo</button>
+          </div>
+        </div>
+        <p class="widget-hint">Same Claude, seconds apart — but session #2 starts from zero. Nothing carries over on its own.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>Picture a dinner party.</p>
+
+        <p>
+          At your table, you tell the story of how your dog ate an entire birthday cake. Big
+          laughs. For the rest of the night, that table keeps riffing on it — someone toasts the
+          dog, someone asks for a photo. Then you switch tables. At the new one, you mention "the
+          cake incident" and get blank stares. They're not being rude. They just weren't there.
+        </p>
+
+        <p>
+          <strong>A session is one continuous conversation with your AI — one table. Everything it
+          "remembers," it remembers only inside that conversation.</strong>
+        </p>
+
+        <p>
+          That's the whole demo above. Session #1 knew Biscuit. Session #2 had never heard of him.
+          Same Claude, same you, three seconds apart — but the table changed, so the memory was
+          gone.
+        </p>
+
+        <h2>Where the "memory" actually lives</h2>
+
+        <p>
+          Here's the part most people get wrong: the model doesn't learn anything from talking to
+          you. Its brain is frozen — chatting doesn't update it. What feels like memory is just the
+          running transcript of your conversation, which the AI re-reads every single time it
+          replies. That transcript sits in the <a href="context-window.html">context window</a>,
+          the AI's working desk.
+        </p>
+
+        <p>
+          Start a new session and the transcript starts blank. Biscuit wasn't "deleted" — he was
+          never stored anywhere except the conversation itself.
+        </p>
+
+        <p>
+          What counts as "new"? Closing the chat and opening another. Hitting <code>/clear</code>
+          in Claude Code. Opening a second conversation in another tab — that's a different table
+          too, even while the first one is still going. The boundary is the conversation, not the
+          day, the app, or your account.
+        </p>
+
+        <h2>Fresh sessions are a feature, not a bug</h2>
+
+        <p>
+          It's tempting to keep one giant chat running forever so the AI "knows everything."
+          Builders do the opposite. Long sessions fill up with clutter — old tangents, dead ends,
+          three abandoned versions of the plan — and answers get noticeably worse, until
+          <a href="compaction.html">compaction</a> has to squeeze it all down. A fresh session is a
+          clean desk: the AI's full attention on the one thing you're asking right now.
+        </p>
+
+        <p>The working rhythm: one task, one session. New task? New table.</p>
+
+        <h2>So how do builders give AI a memory?</h2>
+
+        <p>
+          They don't make the model remember. They make the <em>briefing</em> automatic. Durable
+          facts — your stack, your style, your dog's name if it matters — go into files the AI
+          reads at the start of every session. In Claude's world that's
+          <a href="claude-md.html">CLAUDE.md</a> and memory files: a one-page "previously on…" card
+          handed to every new table before you say a word.
+        </p>
+
+        <div class="callout">
+          If you catch yourself re-explaining the same three things in every new chat — who you
+          are, what the project is, how you like your answers — stop typing and write them into a
+          CLAUDE.md once. Every future session starts already briefed. Five minutes of setup buys
+          you months of skipped intros.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>The AI "forgetting" stops feeling random — you know exactly where memory starts and ends</li>
+          <li>You stop nursing one giant immortal chat — and start clean, sharp, per-task sessions</li>
+          <li>Repeat context moves into files instead of being re-typed every morning</li>
+          <li>You learn the escape hatch: when a long session gets confused, starting fresh usually beats arguing with it</li>
+        </ul>
+
+        <p>
+          Run the widget one more time and watch the counter: one thing known, then zero. That
+          little number is the most honest description of AI memory you'll ever see.
+        </p>
+
+        <p><strong>Your AI isn't forgetful — it just sat down at a new table. Your job is to hand that table its briefing.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Yesterday you told Claude your audience is non-technical founders. Today, in a fresh chat, it writes deeply technical copy. What happened?</p>
+            <div class="opts">
+              <button class="opt">It decided your audience had changed</button>
+              <button class="opt" data-correct>A new session started from a blank transcript — yesterday's instruction never carried over</button>
+              <button class="opt">The model was retrained overnight and lost your data</button>
+            </div>
+            <div class="why">Memory lives in the conversation, not in the model. New session, blank slate — exactly the Biscuit demo.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Where does the "memory" inside a session actually live?</p>
+            <div class="opts">
+              <button class="opt">The model's brain updates a little with every message</button>
+              <button class="opt" data-correct>In the running transcript the AI re-reads every time it replies</button>
+              <button class="opt">In a permanent profile saved to your account</button>
+            </div>
+            <div class="why">The model is frozen — chatting doesn't change it. It just keeps re-reading the transcript sitting on its desk, the context window.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. You're re-explaining your project from scratch in every new session. The builder's fix?</p>
+            <div class="opts">
+              <button class="opt">Keep one giant chat open forever so nothing is lost</button>
+              <button class="opt">Repeat it often — the model will eventually learn it permanently</button>
+              <button class="opt" data-correct>Put the durable facts in a file like CLAUDE.md that's read at the start of every session</button>
+            </div>
+            <div class="why">Models never "eventually learn" from chats, and immortal chats just overflow the window. Files make the briefing automatic.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* memory wipe demo */
+    (function () {
+      var chat = document.getElementById("ss-chat");
+      var b1 = document.getElementById("ss-b1");
+      var b2 = document.getElementById("ss-b2");
+      var b3 = document.getElementById("ss-b3");
+      var b4 = document.getElementById("ss-b4");
+      var resetBtn = document.getElementById("ss-reset");
+      var elKnown = document.getElementById("ss-known");
+
+      function setKnown(n) {
+        elKnown.textContent = n;
+        elKnown.style.color = n > 0 ? "var(--good)" : "var(--bad)";
+      }
+
+      function divider(text) {
+        var d = document.createElement("div");
+        d.style.cssText = "text-align:center; color:var(--muted); font-family:var(--sans); font-size:0.78rem; padding:2px 0; transition:all .35s ease;";
+        d.textContent = text;
+        chat.appendChild(d);
+        return d;
+      }
+
+      function bubble(who, html, tone) {
+        var b = document.createElement("div");
+        var isYou = who === "you";
+        b.style.cssText =
+          "max-width:84%; padding:0.5rem 0.85rem; border-radius:12px; font-size:0.9rem; line-height:1.45; opacity:0; transform:translateY(8px); transition:all .35s ease;" +
+          (isYou
+            ? "align-self:flex-end; background:var(--ink); color:var(--bg); border-bottom-right-radius:4px;"
+            : "align-self:flex-start; background:var(--card-raise); border:1px solid var(--border); border-bottom-left-radius:4px;");
+        if (tone === "ok") b.style.borderColor = "var(--good)";
+        if (tone === "err") b.style.borderColor = "var(--bad)";
+        b.innerHTML = (isYou ? "" : '<span style="color:var(--accent-bright);">✳</span> ') + html;
+        chat.appendChild(b);
+        setTimeout(function () {
+          b.style.opacity = "1";
+          b.style.transform = "translateY(0)";
+        }, 30);
+        chat.scrollTop = chat.scrollHeight;
+        return b;
+      }
+
+      function start() {
+        chat.innerHTML = "";
+        divider("— session #1 started —");
+        setKnown(0);
+        b1.disabled = false;
+        b2.disabled = true;
+        b3.disabled = true;
+        b4.style.display = "none";
+        b4.disabled = false;
+        resetBtn.style.display = "none";
+      }
+
+      b1.addEventListener("click", function () {
+        b1.disabled = true;
+        bubble("you", "My dog is named Biscuit 🐶");
+        setTimeout(function () {
+          bubble("ai", "Got it — <b>Biscuit</b>. Excellent name. 🐶");
+          setKnown(1);
+          b2.disabled = false;
+        }, 500);
+      });
+
+      b2.addEventListener("click", function () {
+        b2.disabled = true;
+        bubble("you", "What's my dog's name?");
+        setTimeout(function () {
+          bubble("ai", "<b>Biscuit!</b> 🐶 <span style=\"color:var(--muted); font-size:0.78rem;\">(it's right here in our conversation)</span>", "ok");
+          b3.disabled = false;
+        }, 550);
+      });
+
+      b3.addEventListener("click", function () {
+        b3.disabled = true;
+        var kids = [].slice.call(chat.children);
+        kids.forEach(function (k, i) {
+          setTimeout(function () {
+            k.style.opacity = "0";
+            k.style.transform = "translateY(-10px)";
+          }, i * 70);
+        });
+        setTimeout(function () {
+          chat.innerHTML = "";
+          divider("— 🧹 new session #2 started · memory: empty —");
+          setKnown(0);
+          b4.style.display = "";
+        }, kids.length * 70 + 420);
+      });
+
+      b4.addEventListener("click", function () {
+        b4.disabled = true;
+        bubble("you", "What's my dog's name?");
+        setTimeout(function () {
+          bubble("ai", "Hmm — I don't have that in this conversation. Want to tell me about your dog? <span style=\"color:var(--muted); font-size:0.78rem;\">(session #2 never met Biscuit)</span>", "err");
+          resetBtn.style.display = "";
+        }, 600);
+      });
+
+      resetBtn.addEventListener("click", start);
+
+      start();
+    })();
+  </script>
+</body>
+</html>

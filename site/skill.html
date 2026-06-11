@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skill — Claude Club</title>
+  <meta name="description" content="Skill, explained in plain English: a saved SOP your AI follows on demand. With an interactive SOP runner." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="skill" data-related="claude-md,slash-command,agent,mcp">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Skill</h1>
+        <p class="tldr"><b>TLDR</b>A saved SOP your AI follows on demand.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: run the SOP ============ -->
+      <section class="widget" aria-label="Skill SOP runner">
+        <div class="widget-bar"><span class="dot"></span> Try it — run the SOP</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Here’s a saved skill — a recipe card for one recurring task. Ask for the report with
+            the card in hand, then try the same request without it.
+          </p>
+
+          <div id="sk-card" style="font-family:var(--mono); font-size:0.8rem; background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:0.9rem; transition:opacity .3s ease;">
+            <div style="background:var(--bg-deep); border-bottom:1px solid var(--border-soft); padding:0.45rem 0.9rem; font-weight:700;">📋 weekly-report/SKILL.md <span style="color:var(--muted); font-weight:400;">— the laminated card</span></div>
+            <div style="padding:0.7rem 0.9rem; display:grid; gap:0.4rem;">
+              <div><span id="sk-st-0" style="color:var(--muted); display:inline-block; width:1.2em;">☐</span> 1. Fetch this week’s numbers</div>
+              <div><span id="sk-st-1" style="color:var(--muted); display:inline-block; width:1.2em;">☐</span> 2. Build the chart</div>
+              <div><span id="sk-st-2" style="color:var(--muted); display:inline-block; width:1.2em;">☐</span> 3. Write a 3-line summary</div>
+              <div><span id="sk-st-3" style="color:var(--muted); display:inline-block; width:1.2em;">☐</span> 4. Email it to the team</div>
+            </div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem; justify-content:space-between;">
+            <button class="wbtn primary" id="sk-run">▶ Ask: “do the weekly report”</button>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.84rem; font-weight:600; cursor:pointer;">
+              <input type="checkbox" id="sk-no" /> Run WITHOUT the skill
+            </label>
+          </div>
+
+          <div class="wlog" id="sk-log"><span class="dim">Same four words either way: “do the weekly report.” The card makes the difference.</span></div>
+        </div>
+        <p class="widget-hint">Run it both ways. With the card: four steps, done. Without it: your afternoon disappears into clarifying questions.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Walk into any serious restaurant kitchen and you’ll find them: laminated recipe cards.
+          The Tuesday cook and the Saturday cook plate the same carbonara, because neither one is
+          improvising — they’re following the card.
+        </p>
+
+        <p>
+          Now look at what you just ran. “Do the weekly report” with the skill loaded: four steps,
+          executed in order, report delivered. Without it: four clarifying questions and zero
+          output. Same AI, same request. The difference was the card.
+        </p>
+
+        <p><strong>A skill is a saved procedure — steps, examples, even scripts — that your AI loads and follows whenever a matching task shows up.</strong></p>
+
+        <h2>Write the recipe once</h2>
+
+        <p>
+          The first time you want Claude to do your weekly report, you’ll explain everything: which
+          numbers, what kind of chart, how long the summary, who gets the email. That conversation
+          is real work — so don’t throw it away. Capture it as a skill: a folder holding a
+          <code>SKILL.md</code> file that describes the procedure, plus any examples or scripts the
+          job needs.
+        </p>
+
+        <p>
+          Next Friday you say “do the weekly report” and the whole briefing is already there. The
+          week after, same thing. The version of the morning where the AI asks “which numbers did
+          you mean?” never happens again, because the answer is on the card.
+        </p>
+
+        <h2>On demand — not always-on</h2>
+
+        <p>
+          Here’s what separates a skill from house rules like <a href="claude-md.html">CLAUDE.md</a>.
+          House rules apply to everything, all the time: never push to main, always use TypeScript.
+          A skill is task-shaped, and it loads only when the task shows up.
+        </p>
+
+        <p>
+          Each skill carries a name and a short description of when to use it. When your request
+          comes in, the AI scans its rack of cards, sees “weekly-report: build and email the Friday
+          numbers,” and pulls that one. Ask about something unrelated, and the card stays on the
+          rack — costing nothing, cluttering nothing. That’s why skills scale so well: you can keep
+          fifty of them without slowing anything down, because only the relevant recipe gets read.
+          You can also fire one explicitly with a <a href="slash-command.html">slash command</a> —
+          that’s the next lesson.
+        </p>
+
+        <h2>Skills are how teams bottle judgment</h2>
+
+        <p>
+          A great skill holds more than steps. It carries your standards: the example of what a
+          good summary looks like, the script that pulls the numbers the right way, the warning
+          about the metric that always trips people up. That’s judgment, written down — and it’s
+          what turns a generic <a href="agent.html">agent</a> into one that works the way
+          <em>you</em> work.
+        </p>
+
+        <p>
+          Which means skills are shareable. Drop the folder in a shared repo, and your whole team’s
+          AI now runs reports your way. The new hire’s agent cooks like your best operator on day
+          one. Kitchens figured this out a century ago — the recipe book <em>is</em> the restaurant.
+        </p>
+
+        <div class="callout">
+          The moment you catch yourself explaining the same workflow to your AI for the second
+          time — stop. That explanation is a skill begging to be saved. Ten minutes of writing it
+          down buys you every future repetition for free.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>“Do the invoices” becomes a one-line request that runs your exact process</li>
+          <li>Output quality stops depending on how well you prompted today</li>
+          <li>Your best workflows survive — in files, not in your head</li>
+          <li>Teammates’ agents inherit your standards by copying a folder</li>
+        </ul>
+
+        <p><strong>Stop being the only one who knows how it’s done. Laminate the card.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. Every Friday you re-explain your invoice workflow to Claude from scratch. What’s the smart move?</p>
+            <div class="opts">
+              <button class="opt">Keep re-explaining — practice makes perfect</button>
+              <button class="opt" data-correct>Save the workflow as a skill, so “do the invoices” runs the same SOP every time</button>
+              <button class="opt">Paste last week’s entire chat into the new session</button>
+            </div>
+            <div class="why">A skill captures the briefing once. From then on the four-word request loads the full procedure — no re-explaining, no drift.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. What’s the real difference between CLAUDE.md and a skill?</p>
+            <div class="opts">
+              <button class="opt">Nothing — they’re two names for the same file</button>
+              <button class="opt" data-correct>CLAUDE.md is always-on house rules; a skill is a procedure pulled in only when the task matches</button>
+              <button class="opt">Skills are a paid feature, CLAUDE.md is free</button>
+            </div>
+            <div class="why">House rules shape everything, all the time. A skill waits on the rack until its task shows up — that’s why you can have fifty without clutter.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. A new teammate runs “do the weekly report” using your team’s shared skill. What should you expect?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The same steps and the same format as when you run it</button>
+              <button class="opt">A completely different report — skills adapt to each person’s vibe</button>
+              <button class="opt">An error — skills only work for whoever wrote them</button>
+            </div>
+            <div class="why">That’s the recipe-card promise: any cook, same dish. Shared skills are how a team gets consistent output from different people’s agents.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* run the SOP */
+    (function () {
+      var runBtn = document.getElementById("sk-run");
+      var noSkill = document.getElementById("sk-no");
+      var card = document.getElementById("sk-card");
+      var log = document.getElementById("sk-log");
+      var st = [0, 1, 2, 3].map(function (i) { return document.getElementById("sk-st-" + i); });
+      var timers = [];
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+      function reset() {
+        timers.forEach(clearTimeout);
+        timers = [];
+        log.innerHTML = "";
+        log.dataset.started = "";
+        st.forEach(function (s) {
+          s.textContent = "☐";
+          s.style.color = "var(--muted)";
+        });
+      }
+
+      var WITH = [
+        { i: 0, t: 'fetching this week’s numbers… <span class="ok">✓</span> <span class="dim">($4,210 revenue · 312 signups)</span>' },
+        { i: 1, t: 'building the chart… <span class="ok">✓</span> <span class="dim">(8-week bar chart)</span>' },
+        { i: 2, t: 'writing the 3-line summary… <span class="ok">✓</span>' },
+        { i: 3, t: 'emailing team@yourco.com… <span class="ok">✓ sent</span>' }
+      ];
+      var WITHOUT = [
+        '<span class="err">?</span> Which numbers — revenue, signups, churn… all of them?',
+        '<span class="err">?</span> What format — chart, table, slides, a doc?',
+        '<span class="err">?</span> Who exactly is “the team”? Which addresses?',
+        '<span class="err">?</span> Should I send it, or draft it for your review?'
+      ];
+
+      noSkill.addEventListener("change", function () {
+        card.style.opacity = noSkill.checked ? "0.35" : "1";
+      });
+
+      runBtn.addEventListener("click", function () {
+        reset();
+        runBtn.disabled = true;
+        add('<span class="acc">→ YOU:</span> “do the weekly report”');
+
+        if (noSkill.checked) {
+          card.style.opacity = "0.35";
+          at(450, function () { add('<span class="dim">🤔 no skill matched… improvising.</span>'); });
+          WITHOUT.forEach(function (q, i) {
+            at(950 + i * 620, function () { add(q); });
+          });
+          at(950 + WITHOUT.length * 620 + 200, function () {
+            add('<span class="err">⏸ Stalled.</span> 4 questions, 0 output. <span class="dim">You’re doing the work anyway. Untick the box and re-run.</span>');
+            runBtn.disabled = false;
+          });
+        } else {
+          card.style.opacity = "1";
+          at(450, function () { add('<span class="dim">✳ matched skill: weekly-report — following the card, step by step.</span>'); });
+          WITH.forEach(function (s, i) {
+            at(950 + i * 700 - 280, function () {
+              st[s.i].textContent = "⏳";
+              st[s.i].style.color = "var(--accent)";
+            });
+            at(950 + i * 700, function () {
+              st[s.i].textContent = "✓";
+              st[s.i].style.color = "var(--good)";
+              add(s.t);
+            });
+          });
+          at(950 + WITH.length * 700 + 200, function () {
+            add('<span class="ok">✓ Report delivered.</span> <span class="dim">Same four steps next Friday. And the Friday after. No briefing required.</span>');
+            runBtn.disabled = false;
+          });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

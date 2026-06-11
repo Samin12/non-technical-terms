@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Git &amp; Version Control — Claude Club</title>
+  <meta name="description" content="Git &amp; version control, explained in plain English: save points for your project. With an interactive save point timeline." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="git-version-control" data-related="commit,branch,github,vibe-coding">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Git &amp; Version Control</h1>
+        <p class="tldr"><b>TLDR</b>Save points for your project.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: save point timeline ============ -->
+      <section class="widget" aria-label="Git save point timeline">
+        <div class="widget-bar"><span class="dot"></span> Try it — the save point timeline</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            This poem is your project. Edit it, drop save points along the timeline, then cause a
+            disaster and walk it back. You cannot lose.
+          </p>
+
+          <div id="git-proj" style="background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px; padding:1rem 1.1rem; font-family:var(--serif); font-style:italic; white-space:pre-wrap; min-height:120px; outline:2px solid transparent; transition:outline-color .35s ease;"></div>
+
+          <div id="git-count" style="font-family:var(--sans); font-size:0.8rem; font-weight:600; margin:0.55rem 0 0.8rem;"></div>
+
+          <div class="wrow" style="margin-bottom:0.6rem;">
+            <button class="wbtn" id="git-e1">✏️ Improve line 2</button>
+            <button class="wbtn" id="git-e2">✨ Add a title</button>
+            <button class="wbtn" id="git-e3">🪄 Rewrite ending</button>
+          </div>
+          <div class="wrow" style="margin-bottom:1rem;">
+            <button class="wbtn primary" id="git-save">💾 Save point</button>
+            <button class="wbtn danger" id="git-doom">😱 Disaster</button>
+          </div>
+
+          <div style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.45rem;">Timeline — click any node to restore</div>
+          <div id="git-line" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; background:var(--card); border:1px solid var(--border-soft); border-radius:10px; padding:0.7rem;"></div>
+
+          <div id="git-status" style="font-family:var(--sans); font-size:0.85rem; color:var(--ink-soft); margin-top:0.7rem; min-height:1.3em;">Make an edit, then hit 💾 Save point.</div>
+        </div>
+        <p class="widget-hint">Pro run: edit → save → edit twice more → 😱 Disaster → click any node. That panic you didn't feel? That's Git.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          You know save points from video games. Right before the boss door, you hit save. Then
+          you try the fight a hundred different ways — rush in swinging, sneak around the back,
+          test the weird fire sword — because no matter how badly it goes, you respawn at the
+          door and go again.
+        </p>
+
+        <p>
+          Now imagine the thing you're building — your site, your app, your content system —
+          had that exact mechanic. It does. It's called Git.
+        </p>
+
+        <p><strong>Git is a save system for your project: every version you save is kept forever, and you can restore any of them in seconds.</strong></p>
+
+        <p>
+          It's a small program that lives on your computer and watches one folder. No cloud, no
+          internet required, and it doesn't care what's in the folder — code, essays, cookie
+          recipes. When you say "save point," it photographs everything and files it away.
+          Nearly every piece of software you've ever used was built on top of this one tool.
+        </p>
+
+        <h2>Why Cmd+Z was never enough</h2>
+
+        <p>
+          Undo walks backward one keystroke at a time, and it dies the moment you close the
+          file. So people invent folders: <em>final</em>, <em>final-v2</em>,
+          <em>FINAL-real-this-time</em>. That's version control by hand, and it collapses the
+          first time you need to know which "final" actually worked. Git replaces all of it
+          with one clean idea: one project folder, with a labeled timeline of save points
+          behind it. Each save point remembers the entire project, what changed, and when.
+        </p>
+
+        <h2>You just felt the magic</h2>
+
+        <p>
+          In the widget above, you edited the poem, dropped a save point, kept editing, then hit
+          Disaster and watched the whole thing mangle. Then — one click on the timeline — every
+          word came back. No panic, no archaeology, no "wait, what did line two say?" That calm
+          is the entire product. Each save point you dropped is called a
+          <a href="commit.html">commit</a>, and it gets its own lesson next.
+        </p>
+
+        <p>
+          Notice the counter nagging you when unsaved edits piled up. Real builders save
+          constantly — small save points, made often. Git can also run parallel timelines
+          called <a href="branch.html">branches</a>, so you experiment on a copy while the
+          original stays safe. And when you want your timeline backed up and shared with other
+          people, that's what <a href="github.html">GitHub</a> is for.
+        </p>
+
+        <div class="callout">
+          Make this your first habit: save before you let the AI loose. One commit before every
+          big Claude request. If the AI rewrites half your project and you hate it, you restore
+          in one click and try a different prompt — same boss fight, new strategy. This single
+          habit is what makes <a href="vibe-coding.html">vibe coding</a> safe instead of scary.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <p>Once save points exist, a whole way of working opens up:</p>
+
+        <ul>
+          <li><strong>Fearless experiments</strong> — try the scary change; the worst case is a one-click restore</li>
+          <li><strong>A safety net under AI</strong> — let Claude refactor boldly, knowing nothing is ever truly lost</li>
+          <li><strong>Time travel for debugging</strong> — walk back through saves to find the exact moment something broke</li>
+          <li><strong>The foundation of teamwork</strong> — branches, pull requests, GitHub: all of it stands on these save points</li>
+        </ul>
+
+        <p>
+          Builders aren't braver than you. They've just always got a save point waiting outside
+          the boss door.
+        </p>
+
+        <p><strong>Save early, save often, fear nothing.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You're about to ask Claude to redesign your entire homepage. What's the smart move first?</p>
+            <div class="opts">
+              <button class="opt">Copy the whole folder to your desktop and name it homepage-backup-final</button>
+              <button class="opt" data-correct>Drop a save point (a commit) so you can restore in one click if the redesign flops</button>
+              <button class="opt">Nothing — AI changes can always be undone with Cmd+Z</button>
+            </div>
+            <div class="why">Commit before the boss fight. If the AI's version is worse, restore and re-prompt. Undo can't rescue you across many files and sessions — save points can.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. You made a dozen quick edits, everything broke, and you restore your last save point. What do you get?</p>
+            <div class="opts">
+              <button class="opt" data-correct>The project exactly as it was at that save — the edits made after it are gone</button>
+              <button class="opt">A smart mix of the save point and your newest edits</button>
+              <button class="opt">Just the one file you broke; everything else stays as-is</button>
+            </div>
+            <div class="why">A restore is exact: the whole project rewinds to that photograph. That guarantee is what makes disasters boring instead of devastating.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. How is Git different from keeping folders like website-final-v2-REAL?</p>
+            <div class="opts">
+              <button class="opt">It's the same idea, just with a more intimidating name</button>
+              <button class="opt">Git autosaves every keystroke to the cloud</button>
+              <button class="opt" data-correct>One folder, with a full labeled timeline behind it — any version restorable in seconds</button>
+            </div>
+            <div class="why">No duplicate folders, no guessing which "final" is final. The whole history lives behind one folder, labeled and instantly restorable.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* save point timeline */
+    (function () {
+      var L1 = "Roses are red,";
+      var L2 = ["violets are blu,", "violets are blue,", "violets glow softly blue,", "violets hum in perfect blue,"];
+      var L3 = "I build with my AI,";
+      var L4 = ["and hope it all works out.", "and ship it anyway.", "and the demo gods smile on me.", "and nothing can stop me now."];
+      var TITLES = [null, "Ode to the Save Point", "The Save Point Song", "Ballad of the Backup"];
+      var MANGLED = "�#!? OOPS ?!#�\nr0s3s_4r3_r3d&&&&\nERROR: line 2 not found\n▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n[ file corrupted ]";
+
+      var state = { t: 0, l2: 0, l4: 0, bad: false };
+      var saves = [];
+      var edits = 0;
+      var active = 0;
+
+      var proj = document.getElementById("git-proj");
+      var count = document.getElementById("git-count");
+      var line = document.getElementById("git-line");
+      var statusEl = document.getElementById("git-status");
+      var e1 = document.getElementById("git-e1");
+      var e2 = document.getElementById("git-e2");
+      var e3 = document.getElementById("git-e3");
+      var saveB = document.getElementById("git-save");
+      var doomB = document.getElementById("git-doom");
+
+      function text(s) {
+        if (s.bad) return MANGLED;
+        return (TITLES[s.t] ? TITLES[s.t] + "\n\n" : "") + L1 + "\n" + L2[s.l2] + "\n" + L3 + "\n" + L4[s.l4];
+      }
+      function renderProj() { proj.textContent = text(state); }
+      function renderCount() {
+        if (state.bad) { count.innerHTML = '<span style="color:var(--bad);">😱 Project mangled — click a save point below to restore.</span>'; return; }
+        if (edits === 0) { count.innerHTML = '<span style="color:var(--good);">0 edits since last save point ✓</span>'; return; }
+        if (edits <= 3) { count.innerHTML = '<span style="color:var(--ink-soft);">' + edits + " edit" + (edits > 1 ? "s" : "") + " since last save point</span>"; return; }
+        count.innerHTML = '<span style="color:var(--bad);">😬 ' + edits + " edits unsaved — a save point costs nothing</span>";
+      }
+      function renderLine() {
+        line.innerHTML = "";
+        saves.forEach(function (s, i) {
+          if (i > 0) {
+            var seg = document.createElement("span");
+            seg.style.cssText = "width:14px;height:2px;background:var(--border);flex:none;";
+            line.appendChild(seg);
+          }
+          var b = document.createElement("button");
+          b.className = "wbtn";
+          b.style.cssText = "font-size:0.76rem;padding:0.3rem 0.65rem;border-radius:999px;flex:none;";
+          b.textContent = (i === 0 ? "🏁 " : "💾 ") + s.label;
+          if (i === active) {
+            b.style.borderColor = "var(--accent-bright)";
+            b.style.color = "var(--accent)";
+            b.style.background = "var(--accent-faint)";
+          }
+          (function (idx) { b.addEventListener("click", function () { restore(idx); }); })(i);
+          line.appendChild(b);
+        });
+      }
+      function say(html) { statusEl.innerHTML = html; }
+      function lock(on) {
+        e1.disabled = on; e2.disabled = on; e3.disabled = on;
+        saveB.disabled = on; doomB.disabled = on;
+      }
+      function edited() { edits++; renderProj(); renderCount(); }
+
+      e1.addEventListener("click", function () {
+        state.l2 = (state.l2 % 3) + 1; edited();
+        say(state.l2 === 1 ? "✏️ Fixed the typo in line 2." : "✏️ Line 2 upgraded again.");
+      });
+      e2.addEventListener("click", function () {
+        state.t = (state.t % 3) + 1; edited();
+        say(state.t === 1 ? "✨ Title added." : "✨ Title reworded.");
+      });
+      e3.addEventListener("click", function () {
+        state.l4 = (state.l4 % 3) + 1; edited();
+        say("🪄 New ending: “" + L4[state.l4] + "”");
+      });
+      saveB.addEventListener("click", function () {
+        saves.push({ label: "Save " + saves.length, snap: JSON.stringify(state) });
+        edits = 0; active = saves.length - 1;
+        renderLine(); renderCount();
+        say("💾 <b>" + saves[active].label + "</b> locked in. This exact version now exists forever.");
+      });
+      doomB.addEventListener("click", function () {
+        state.bad = true;
+        renderProj(); renderCount();
+        lock(true);
+        say('😱 <b style="color:var(--bad);">Disaster.</b> Without save points this is a very bad day. With them: click any node on the timeline.');
+      });
+
+      function restore(i) {
+        var wasBad = state.bad;
+        state = JSON.parse(saves[i].snap);
+        edits = 0; active = i;
+        lock(false);
+        renderProj(); renderLine(); renderCount();
+        proj.style.outlineColor = "var(--good)";
+        setTimeout(function () { proj.style.outlineColor = "transparent"; }, 700);
+        say(wasBad
+          ? "😮‍💨 Crisis over. Restored <b>" + saves[i].label + "</b> — word for word, like the disaster never happened."
+          : "⏪ Restored <b>" + saves[i].label + "</b>. The project is exactly as it was at that moment.");
+      }
+
+      saves.push({ label: "Start", snap: JSON.stringify(state) });
+      renderProj(); renderLine(); renderCount();
+    })();
+  </script>
+</body>
+</html>

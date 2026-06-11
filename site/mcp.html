@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MCP — Claude Club</title>
+  <meta name="description" content="MCP, explained in plain English: a universal port for your AI's tools. With an interactive plug-it-in hub." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="mcp" data-related="api,agent,sdk,oauth-agent-identity,agents-sdk">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>MCP</h1>
+        <p class="tldr"><b>TLDR</b>A universal port for your AI's tools.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: plug things in ============ -->
+      <section class="widget" aria-label="MCP plug-it-in hub">
+        <div class="widget-bar"><span class="dot"></span> Try it — plug things in</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Claude sits in the middle. Four tools sit around it, unplugged. Click a tool to plug
+            it in, then ask what Claude can do.
+          </p>
+
+          <div id="mcp-stage" style="position:relative; height:300px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:12px; margin-bottom:0.9rem; overflow:hidden;">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%;" aria-hidden="true">
+              <line id="mcp-w-0" x1="50" y1="50" x2="17" y2="22" pathLength="1" style="stroke:var(--accent-bright); stroke-width:2.5; vector-effect:non-scaling-stroke; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .45s ease;" />
+              <line id="mcp-w-1" x1="50" y1="50" x2="17" y2="78" pathLength="1" style="stroke:var(--accent-bright); stroke-width:2.5; vector-effect:non-scaling-stroke; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .45s ease;" />
+              <line id="mcp-w-2" x1="50" y1="50" x2="83" y2="22" pathLength="1" style="stroke:var(--accent-bright); stroke-width:2.5; vector-effect:non-scaling-stroke; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .45s ease;" />
+              <line id="mcp-w-3" x1="50" y1="50" x2="83" y2="78" pathLength="1" style="stroke:var(--accent-bright); stroke-width:2.5; vector-effect:non-scaling-stroke; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .45s ease;" />
+            </svg>
+            <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:2; background:var(--ink); color:var(--bg); border-radius:14px; padding:0.6rem 1rem; font-family:var(--sans); font-weight:800; box-shadow:var(--shadow-lift); white-space:nowrap;"><span style="color:var(--accent-bright);">✳</span> Claude</div>
+            <button class="mcp-tool" data-i="0" style="position:absolute; left:17%; top:22%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.45rem 0.7rem; font-family:var(--sans); font-size:0.8rem; display:grid; gap:2px; text-align:left; cursor:pointer; transition:all .2s ease;"><b>💬 Slack</b><span class="mcp-st" style="font-size:0.7rem; font-weight:600; color:var(--muted);">unplugged</span></button>
+            <button class="mcp-tool" data-i="1" style="position:absolute; left:17%; top:78%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.45rem 0.7rem; font-family:var(--sans); font-size:0.8rem; display:grid; gap:2px; text-align:left; cursor:pointer; transition:all .2s ease;"><b>🐙 GitHub</b><span class="mcp-st" style="font-size:0.7rem; font-weight:600; color:var(--muted);">unplugged</span></button>
+            <button class="mcp-tool" data-i="2" style="position:absolute; left:83%; top:22%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.45rem 0.7rem; font-family:var(--sans); font-size:0.8rem; display:grid; gap:2px; text-align:left; cursor:pointer; transition:all .2s ease;"><b>📅 Calendar</b><span class="mcp-st" style="font-size:0.7rem; font-weight:600; color:var(--muted);">unplugged</span></button>
+            <button class="mcp-tool" data-i="3" style="position:absolute; left:83%; top:78%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0.45rem 0.7rem; font-family:var(--sans); font-size:0.8rem; display:grid; gap:2px; text-align:left; cursor:pointer; transition:all .2s ease;"><b>💳 Stripe</b><span class="mcp-st" style="font-size:0.7rem; font-weight:600; color:var(--muted);">unplugged</span></button>
+          </div>
+
+          <div id="mcp-before" style="display:none; position:relative; height:300px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:12px; margin-bottom:0.9rem; overflow:hidden;">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%;" aria-hidden="true">
+              <line x1="16" y1="30" x2="84" y2="24" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="30" x2="84" y2="44" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="30" x2="84" y2="64" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="30" x2="84" y2="84" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="55" x2="84" y2="24" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="55" x2="84" y2="44" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="55" x2="84" y2="64" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="55" x2="84" y2="84" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="80" x2="84" y2="24" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="80" x2="84" y2="44" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="80" x2="84" y2="64" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+              <line x1="16" y1="80" x2="84" y2="84" style="stroke:var(--bad); stroke-width:1.5; vector-effect:non-scaling-stroke; opacity:0.55;" />
+            </svg>
+            <div style="position:absolute; left:50%; top:4%; transform:translateX(-50%); z-index:2; font-family:var(--sans); font-size:0.74rem; font-weight:700; color:var(--bad); background:var(--bad-soft); border-radius:999px; padding:0.25rem 0.8rem; white-space:nowrap;">3 AIs × 4 tools = 12 custom adapters</div>
+            <div style="position:absolute; left:16%; top:30%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:0.3rem 0.55rem; font-family:var(--sans); font-size:0.74rem; font-weight:700; white-space:nowrap;">✳ Claude</div>
+            <div style="position:absolute; left:16%; top:55%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:0.3rem 0.55rem; font-family:var(--sans); font-size:0.74rem; font-weight:700; white-space:nowrap;">🤖 GPT</div>
+            <div style="position:absolute; left:16%; top:80%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:0.3rem 0.55rem; font-family:var(--sans); font-size:0.74rem; font-weight:700; white-space:nowrap;">✦ Gemini</div>
+            <div style="position:absolute; left:84%; top:24%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:0.3rem 0.55rem; font-family:var(--sans); font-size:0.74rem; font-weight:700; white-space:nowrap;">💬 Slack</div>
+            <div style="position:absolute; left:84%; top:44%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:0.3rem 0.55rem; font-family:var(--sans); font-size:0.74rem; font-weight:700; white-space:nowrap;">🐙 GitHub</div>
+            <div style="position:absolute; left:84%; top:64%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:0.3rem 0.55rem; font-family:var(--sans); font-size:0.74rem; font-weight:700; white-space:nowrap;">📅 Calendar</div>
+            <div style="position:absolute; left:84%; top:84%; transform:translate(-50%,-50%); z-index:2; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:0.3rem 0.55rem; font-family:var(--sans); font-size:0.74rem; font-weight:700; white-space:nowrap;">💳 Stripe</div>
+          </div>
+
+          <div class="wrow" style="margin-bottom:0.9rem; justify-content:space-between;">
+            <button class="wbtn primary" id="mcp-what">🔍 What can Claude do now?</button>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.84rem; font-weight:600; cursor:pointer;">
+              <input type="checkbox" id="mcp-toggle" /> Show the world before MCP
+            </label>
+          </div>
+
+          <div class="wlog" id="mcp-log"><span class="dim">Everything is unplugged. Click a tool above to connect it…</span></div>
+        </div>
+        <p class="widget-hint">Plug all four in, ask what Claude can do — then flip on the “before” view and appreciate the tangle we escaped.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Remember the drawer? Every gadget with its own proprietary charger — the Nokia pin, the
+          Sony barrel, that one weird camera cable you could never find. Then USB-C happened: one
+          port, one plug, everything fits.
+        </p>
+
+        <p>
+          You just lived both eras in the widget. The “before” view is the drawer: every AI times
+          every app, each pair needing its own custom-built adapter. Twelve integrations for three
+          AIs and four tools — and adding one more tool means building three more adapters. The hub
+          view is USB-C: each tool plugs into one standard port, once, and any AI can use it.
+        </p>
+
+        <p><strong>MCP — Model Context Protocol — is an open standard that lets any tool plug into any AI. One port, everything fits.</strong></p>
+
+        <h2>How the plug works</h2>
+
+        <p>
+          Two sides, like any port. On one side, an <strong>MCP server</strong>: a small program
+          wrapping something useful — Slack, GitHub, your database — and exposing a menu of tools:
+          “post a message,” “read PRs,” “issue a refund.” Under the hood it’s usually a thin
+          wrapper around the app’s existing <a href="api.html">API</a> — the same order windows
+          you already know, dressed in a standard uniform.
+        </p>
+
+        <p>
+          On the other side, the AI. When Claude connects to a server, it asks one question:
+          <em>what can you do?</em> The server describes its own tools — names, what each one does,
+          what it needs. That’s the move that makes MCP special: <strong>discovery</strong>. You
+          clicked “connect” in the widget, and Claude immediately knew what Slack offered. Nobody
+          wrote custom Claude-to-Slack code. The plug described itself, the way a USB device
+          announces “keyboard” or “hard drive” the moment it’s inserted.
+        </p>
+
+        <h2>Why this exploded the agent ecosystem</h2>
+
+        <p>
+          An <a href="agent.html">agent</a> is only as useful as its hands. The loop — think, act,
+          observe — is generic; the tools are the job. Before MCP, giving an agent hands meant
+          custom engineering per tool, so most agents shipped with three or four and stalled there.
+        </p>
+
+        <p>
+          MCP turned the drawer of chargers into an open ecosystem. Anthropic published the
+          standard, anyone could implement it, and thousands of servers appeared — Slack, GitHub,
+          Stripe, Figma, databases, browsers, smart-home gear. Your agent inherits all of it by
+          plugging in. And if you have an internal tool nobody has wrapped yet, you build the
+          server once — there’s an <a href="sdk.html">SDK</a> for exactly that — and every
+          MCP-speaking AI on earth can use it, not just Claude.
+        </p>
+
+        <p>
+          And the port is two-way. Servers don’t just offer actions — they can hand Claude context:
+          your docs, your database rows, your design files. Tools and knowledge, arriving through
+          the same plug. That’s why it’s called the Model <em>Context</em> Protocol.
+        </p>
+
+        <p>
+          That’s the quiet shift worth noticing: tools stopped being built <em>for a specific AI</em>.
+          They’re built for the port.
+        </p>
+
+        <div class="callout">
+          An MCP server doesn’t just inform your AI — it acts as you. A calendar server can book
+          real meetings; a Stripe server can move real money. Only plug in servers you trust,
+          prefer read-only versions where offered, and keep approvals on for anything irreversible.
+          Same rules as hiring: references first, keys later.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li>Claude reads your actual calendar and posts in your actual Slack — no copy-paste relay</li>
+          <li>One new server in your config = a whole new capability, zero code written</li>
+          <li>Your internal tools become AI-usable by wrapping them once</li>
+          <li>You stop waiting for “official integrations” — the ecosystem builds them first</li>
+        </ul>
+
+        <p><strong>Stop building adapters. Plug into the port.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You want Claude to file tickets in Jira, but Anthropic never built “Jira support.” What’s the MCP-era move?</p>
+            <div class="opts">
+              <button class="opt">Wait for Anthropic to ship an official Jira feature</button>
+              <button class="opt" data-correct>Plug in a Jira MCP server — Claude discovers its tools the moment it connects</button>
+              <button class="opt">Paste the entire Jira manual into every conversation</button>
+            </div>
+            <div class="why">That’s the port at work: the server describes its own tools on connect, so nobody has to build Claude-specific Jira code.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Why do people call MCP “USB-C for AI”?</p>
+            <div class="opts">
+              <button class="opt">Because it physically charges the servers faster</button>
+              <button class="opt" data-correct>One open standard: any tool that speaks it works with any AI that speaks it — no custom adapter per pair</button>
+              <button class="opt">Because Anthropic also manufactures cables</button>
+            </div>
+            <div class="why">Before: N AIs × M tools = N×M custom integrations. After: everyone implements one standard, and everything fits everything.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Your team built an internal inventory tool and wants every AI assistant — not just Claude — to use it. Best move?</p>
+            <div class="opts">
+              <button class="opt" data-correct>Build one MCP server around it — every MCP-speaking AI can then plug in</button>
+              <button class="opt">Build a separate custom integration for each AI app</button>
+              <button class="opt">Export the inventory to a spreadsheet every week</button>
+            </div>
+            <div class="why">Wrap it once, serve everyone — that’s the whole economic argument for a standard. Per-AI integrations are the old drawer of chargers.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* plug things in */
+    (function () {
+      var TOOLS = [
+        { name: "Slack", can: "post a message · read #general" },
+        { name: "GitHub", can: "read open PRs · file an issue" },
+        { name: "Calendar", can: "book a meeting · check your week" },
+        { name: "Stripe", can: "look up a charge · issue a refund" }
+      ];
+      var connected = [false, false, false, false];
+      var tools = [].slice.call(document.querySelectorAll(".mcp-tool"));
+      var log = document.getElementById("mcp-log");
+      var whatBtn = document.getElementById("mcp-what");
+      var toggle = document.getElementById("mcp-toggle");
+      var stage = document.getElementById("mcp-stage");
+      var before = document.getElementById("mcp-before");
+      var timers = [];
+
+      function add(html) {
+        log.innerHTML += (log.dataset.started ? "\n" : "");
+        log.dataset.started = "1";
+        log.innerHTML += html;
+        log.scrollTop = log.scrollHeight;
+      }
+      function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+
+      tools.forEach(function (tl) {
+        tl.addEventListener("click", function () {
+          var i = parseInt(tl.getAttribute("data-i"), 10);
+          connected[i] = !connected[i];
+          var wire = document.getElementById("mcp-w-" + i);
+          wire.style.strokeDashoffset = connected[i] ? "0" : "1";
+          var st = tl.querySelector(".mcp-st");
+          st.textContent = connected[i] ? "connected ✓" : "unplugged";
+          st.style.color = connected[i] ? "var(--good)" : "var(--muted)";
+          tl.style.borderColor = connected[i] ? "var(--good)" : "var(--border)";
+          add(connected[i]
+            ? '<span class="ok">🔌 ' + TOOLS[i].name + " plugged in.</span> <span class=\"dim\">Server announced its tools on connect — no custom wiring.</span>"
+            : '<span class="dim">⏏ ' + TOOLS[i].name + " unplugged. Its tools vanish from the menu.</span>");
+        });
+      });
+
+      whatBtn.addEventListener("click", function () {
+        timers.forEach(clearTimeout);
+        timers = [];
+        add('<span class="acc">→ YOU:</span> “What can you do now?”');
+        var hits = [];
+        TOOLS.forEach(function (t, i) { if (connected[i]) hits.push(t); });
+        if (!hits.length) {
+          at(400, function () {
+            add('<span class="err">Nothing new.</span> I can talk <i>about</i> Slack — I can’t post to it. Plug something in.');
+          });
+          return;
+        }
+        hits.forEach(function (t, i) {
+          at(400 + i * 380, function () {
+            add('<span class="ok">' + t.name + " ✓</span> → " + t.can);
+          });
+        });
+        at(400 + hits.length * 380 + 250, function () {
+          add('<span class="dim">No custom code was written. Each server described its own menu; Claude discovered it.</span>');
+        });
+      });
+
+      toggle.addEventListener("change", function () {
+        var b = toggle.checked;
+        stage.style.display = b ? "none" : "block";
+        before.style.display = b ? "block" : "none";
+        whatBtn.disabled = b;
+        add(b
+          ? '<span class="err">🕰 Before MCP:</span> <span class="dim">every AI × every app = its own bespoke adapter. Add a 5th tool → build 3 more.</span>'
+          : '<span class="ok">✳ Back to the MCP era.</span> <span class="dim">One port. Each tool wrapped once, usable by any AI.</span>');
+      });
+    })();
+  </script>
+</body>
+</html>

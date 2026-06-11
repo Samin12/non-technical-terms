@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Commit — Claude Club</title>
+  <meta name="description" content="Commit, explained in plain English: a labeled snapshot you can return to. With an interactive snapshot camera." />
+  <meta name="theme-color" content="#f2eee3" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88" fill="%23d97757">✳</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-slug="commit" data-related="git-version-control,branch,pull-request,github">
+  <nav id="cc-nav"></nav>
+
+  <main>
+    <div class="wrap">
+
+      <header class="lesson-head">
+        <div class="topic-label" id="cc-topic-label"></div>
+        <h1>Commit</h1>
+        <p class="tldr"><b>TLDR</b>A labeled snapshot you can return to.</p>
+      </header>
+
+      <!-- ============ HERO WIDGET: snapshot camera ============ -->
+      <section class="widget" aria-label="Commit snapshot camera">
+        <div class="widget-bar"><span class="dot"></span> Try it — the snapshot camera</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Edits are piling up in your project. Tick the ones that belong in this snapshot,
+            give it a label future-you will understand, and commit. Do it two or three times —
+            watch the album build.
+          </p>
+
+          <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+            <div style="flex:1 1 250px; min-width:240px;">
+              <div style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.45rem;">🧺 Staging tray — pick what's in the photo</div>
+              <div id="cm-tray" style="display:grid; gap:6px;"></div>
+              <input class="winput" id="cm-label" placeholder="Fix homepage typo" maxlength="60" style="margin-top:0.7rem;" />
+              <button class="wbtn primary" id="cm-go" style="margin-top:0.6rem; width:100%;">📸 Commit</button>
+              <div id="cm-note" style="font-family:var(--sans); font-size:0.82rem; min-height:1.3em; margin-top:0.55rem; color:var(--ink-soft);">Tick a change, write a label, snap the photo.</div>
+            </div>
+            <div style="flex:1 1 250px; min-width:240px;">
+              <div style="font-family:var(--sans); font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.45rem;">📚 History — <span id="cm-count" style="text-transform:none; letter-spacing:0;">0 commits</span></div>
+              <div id="cm-hist" style="display:grid; gap:8px; min-height:120px; align-content:start;"></div>
+            </div>
+          </div>
+        </div>
+        <p class="widget-hint">Try committing with the label "stuff" once. Feel the shame. Then write a real one.</p>
+      </section>
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          Open your camera roll. The photos that still mean something years later are the ones
+          with context — a caption, a date, a reason. Now imagine your project kept an album
+          like that: every important moment photographed, labeled, and stored forever.
+        </p>
+
+        <p>
+          That's what you were doing in the widget. Each press of the button photographed the
+          whole project at that instant and slid it into the album.
+        </p>
+
+        <p><strong>A commit is a labeled snapshot of your entire project at one moment in time.</strong></p>
+
+        <p>
+          Commits are the save points from the <a href="git-version-control.html">Git</a>
+          lesson — this is just their real name. Every commit you make becomes a node on the
+          timeline you can return to, compare against, or build a
+          <a href="branch.html">branch</a> from.
+        </p>
+
+        <h2>First, you choose what's in the frame</h2>
+
+        <p>
+          Notice you didn't have to photograph everything at once. The checkboxes were the
+          <em>staging</em> step: out of all your recent edits, you pick the ones that belong
+          together in this snapshot. Fixed a typo <em>and</em> redesigned the pricing page?
+          That's two different stories — so it should be two commits. Small commits, each about
+          one thing, are the mark of someone who knows what they're doing. Each one can be
+          understood, shared, or undone on its own.
+        </p>
+
+        <h2>The hash is for computers. The label is for humans.</h2>
+
+        <p>
+          Every snapshot card got a code like <code>a1b2c3d</code>. That's the hash — a unique
+          fingerprint machines use to point at that exact version. You'll almost never type it.
+          The label is the part that matters to people. "Fix homepage typo" tells future-you,
+          your teammate, and your AI exactly what happened here. "stuff" tells them nothing —
+          which is why the widget gave you side-eye for it.
+        </p>
+
+        <p>
+          This isn't just politeness. When Claude works on your project, it reads the commit
+          history to understand how the project evolved and why. Clear labels literally make
+          your AI smarter about your code. And when a change needs review before it lands,
+          those commits travel together as a <a href="pull-request.html">pull request</a> —
+          readable labels make the reviewer's job easy.
+        </p>
+
+        <div class="callout">
+          Rule of thumb: if you can't describe the commit in one short line, it's too big —
+          split it. And write the label for a stranger reading it in six months. "Fix: annual
+          price showed $0" beats "fixed bug" every single time. The stranger is usually you.
+        </div>
+
+        <h2>What this unlocks for you</h2>
+
+        <ul>
+          <li><strong>Pinpoint when a bug appeared</strong> — every snapshot is a moment you can inspect and test</li>
+          <li><strong>Undo one change without losing the rest</strong> — small commits rewind surgically</li>
+          <li><strong>A readable diary of the project</strong> — what changed, when, and why, with zero extra effort</li>
+          <li><strong>A safety net before AI edits</strong> — commit, then let Claude go wild; you can always step back</li>
+          <li><strong>A backed-up album</strong> — push your commits to <a href="github.html">GitHub</a> and they outlive your laptop</li>
+        </ul>
+
+        <p>
+          The album builds itself one photo at a time. All you have to do is keep snapping and
+          keep captioning.
+        </p>
+
+        <p><strong>Commits turn "what did I even change?" into a question with an answer.</strong></p>
+      </article>
+
+      <!-- ============ QUIZ ============ -->
+      <section class="quiz-wrap">
+        <div class="quiz" data-quiz>
+          <div class="quiz-bar"><span>✓ Check yourself</span><span class="quiz-score"></span></div>
+
+          <div class="q">
+            <p class="q-text">1. You fixed a footer typo and also redesigned the whole pricing page. How should this become commits?</p>
+            <div class="opts">
+              <button class="opt">One commit labeled "updates"</button>
+              <button class="opt" data-correct>Two commits — "Fix footer typo" and "Redesign pricing page"</button>
+              <button class="opt">No commits until the end of the week, then one big one</button>
+            </div>
+            <div class="why">Two different stories, two snapshots. Now each can be found, understood, or undone on its own — without dragging the other along.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">2. Every snapshot in the widget got a code like a1b2c3d. What is that?</p>
+            <div class="opts">
+              <button class="opt" data-correct>A unique fingerprint computers use to point at that exact snapshot</button>
+              <button class="opt">A password that protects the commit</button>
+              <button class="opt">A measure of how big the change was</button>
+            </div>
+            <div class="why">The hash is the machine's name for the snapshot; the label is the human's. You write the label, Git generates the hash.</div>
+          </div>
+
+          <div class="q">
+            <p class="q-text">3. Six months from now, the price bug is back. Which history saves your evening?</p>
+            <div class="opts">
+              <button class="opt">One giant commit labeled "changes"</button>
+              <button class="opt" data-correct>Small commits with labels like "Fix: annual price showed $0"</button>
+              <button class="opt">A folder of zip files named by date</button>
+            </div>
+            <div class="why">With small, well-labeled commits you can jump straight to the moment the price logic changed — and see exactly what it looked like before and after.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="complete-bar" id="cc-complete-bar"></section>
+
+      <section class="related">
+        <h3>Related lessons</h3>
+        <div class="chips" id="cc-related"></div>
+      </section>
+
+      <nav class="pager" id="cc-pager"></nav>
+    </div>
+  </main>
+
+  <footer id="cc-footer"></footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* snapshot camera */
+    (function () {
+      var POOL = [
+        { icon: "✏️", text: "Changed the headline" },
+        { icon: "🐛", text: "Fixed typo in the footer" },
+        { icon: "➕", text: "Added a line to the FAQ" },
+        { icon: "🎨", text: "Updated the button color" },
+        { icon: "📷", text: "Swapped the hero image" },
+        { icon: "🔗", text: "Fixed the broken pricing link" },
+        { icon: "🧹", text: "Removed the old banner" },
+        { icon: "📝", text: "Rewrote the About intro" }
+      ];
+      var LAZY = ["stuff", "changes", "change", "asdf", "asdfasdf", "wip", "fix", "fixes", "fixed", "update", "updates", "updated", "misc", "things", "final", "edit", "edits", "test", "testing", "aaa", "idk", "lol", "temp", "blah", "foo", "bar"];
+
+      var trayEl = document.getElementById("cm-tray");
+      var histEl = document.getElementById("cm-hist");
+      var noteEl = document.getElementById("cm-note");
+      var countEl = document.getElementById("cm-count");
+      var input = document.getElementById("cm-label");
+      var goBtn = document.getElementById("cm-go");
+
+      var tray = [];
+      var poolIdx = 0;
+      var commits = 0;
+
+      function esc(s) {
+        return String(s).replace(/[&<>"]/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+        });
+      }
+      function note(msg, color) {
+        noteEl.innerHTML = msg;
+        noteEl.style.color = color || "var(--ink-soft)";
+      }
+      function isLazy(s) {
+        var k = s.toLowerCase().replace(/[^a-z]/g, "");
+        return LAZY.indexOf(k) !== -1 || k.length < 3;
+      }
+      function trayItem(ch) {
+        var lab = document.createElement("label");
+        lab.style.cssText = "display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:0.5rem 0.7rem;font-size:0.88rem;cursor:pointer;";
+        var cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.style.cssText = "accent-color:var(--accent-bright);width:16px;height:16px;flex:none;";
+        var sp = document.createElement("span");
+        sp.textContent = ch.icon + " " + ch.text;
+        lab.appendChild(cb);
+        lab.appendChild(sp);
+        ch.cb = cb;
+        ch.el = lab;
+        return lab;
+      }
+      function refill() {
+        while (tray.length < 3 && poolIdx < POOL.length) {
+          var ch = { icon: POOL[poolIdx].icon, text: POOL[poolIdx].text };
+          poolIdx++;
+          tray.push(ch);
+          trayEl.appendChild(trayItem(ch));
+        }
+        if (!tray.length) {
+          trayEl.innerHTML = '<div style="font-size:0.82rem;color:var(--muted);padding:0.4rem 0;">No edits left to stage — your working day is done. 🎉</div>';
+          goBtn.disabled = true;
+          input.disabled = true;
+        }
+      }
+
+      goBtn.addEventListener("click", function () {
+        var staged = tray.filter(function (c) { return c.cb.checked; });
+        if (!staged.length) {
+          note("🧺 Nothing staged — tick at least one change to put in the snapshot.", "var(--bad)");
+          return;
+        }
+        var label = input.value.trim();
+        if (!label) {
+          note("🏷️ No label, no commit. The label is the whole point — it's for the humans.", "var(--bad)");
+          return;
+        }
+        var lazy = isLazy(label);
+        var hash = (Math.random().toString(16).slice(2) + "0000000").slice(0, 7);
+        var time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+        var card = document.createElement("div");
+        card.style.cssText = "background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.65rem 0.8rem;opacity:0;transform:translateY(-10px);transition:all .4s ease;";
+        card.innerHTML =
+          '<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;">' +
+          '<b style="font-size:0.9rem;">' + esc(label) + "</b>" +
+          (lazy ? '<span style="font-size:0.7rem;color:var(--bad);font-weight:700;">🤨 future-you has questions</span>' : "") +
+          "</div>" +
+          '<div style="font-family:var(--mono);font-size:0.72rem;color:var(--muted);margin:2px 0 6px;">' + hash + " · " + time + "</div>" +
+          '<div style="font-size:0.8rem;color:var(--ink-soft);line-height:1.5;">' +
+          staged.map(function (c) { return c.icon + " " + esc(c.text); }).join("<br>") +
+          "</div>";
+        histEl.insertBefore(card, histEl.firstChild);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            card.style.opacity = "1";
+            card.style.transform = "none";
+          });
+        });
+
+        staged.forEach(function (c) { c.el.remove(); });
+        tray = tray.filter(function (c) { return !c.cb.checked; });
+        refill();
+
+        commits++;
+        countEl.textContent = commits + (commits === 1 ? " commit" : " commits");
+        input.value = "";
+
+        if (lazy) {
+          note('📸 Committed… but "' + esc(label) + '"? <b>Future-you has questions.</b> A label should answer: what changed, and why.', "var(--accent)");
+        } else {
+          note("📸 Snapped. " + staged.length + (staged.length === 1 ? " change" : " changes") + " sealed into <b>" + hash + "</b>. The album grows.", "var(--good)");
+        }
+      });
+
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") goBtn.click();
+      });
+
+      refill();
+    })();
+  </script>
+</body>
+</html>
