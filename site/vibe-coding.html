@@ -25,28 +25,6 @@
       </header>
 
       <!-- ============ HERO WIDGET: prompt-to-app ============ -->
-      <section class="widget" aria-label="Vibe coding prompt-to-app builder">
-        <div class="widget-bar"><span class="dot"></span> Try it — prompt-to-app</div>
-        <div class="widget-body">
-          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
-            Describe the app. Don't write a line of code. Build it, click around in it,
-            then send it back to the kitchen with the refine chips.
-          </p>
-          <textarea class="winput" id="vc-prompt" rows="2" style="margin-bottom:0.6rem; resize:vertical; font-family:var(--sans);">A pomodoro timer, orange theme</textarea>
-          <div class="wrow" style="margin-bottom:0.9rem;">
-            <button class="wbtn primary" id="vc-build">🔨 Build it ▶</button>
-            <button class="wbtn vc-refine" data-refine="break" disabled>＋ "Add a break button"</button>
-            <button class="wbtn vc-refine" data-refine="huge" disabled>🔍 "Make the numbers huge"</button>
-          </div>
-          <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:stretch;">
-            <div class="wlog" id="vc-log" style="flex:1 1 230px; min-width:230px; max-height:260px;"><span class="dim">The kitchen is open. Describe your dish…</span></div>
-            <div id="vc-preview" style="flex:1 1 230px; min-width:230px; background:var(--card); border:1px solid var(--border); border-radius:10px; display:flex; align-items:center; justify-content:center; min-height:190px; padding:1rem;">
-              <span style="color:var(--muted); font-size:0.85rem;">your app appears here</span>
-            </div>
-          </div>
-        </div>
-        <p class="widget-hint">That timer is real — start it. Then refine it twice. You just ran the whole loop: describe → generate → refine. Zero syntax.</p>
-      </section>
 
       <!-- ============ PROSE ============ -->
       <article class="prose">
@@ -68,10 +46,33 @@
         </p>
 
         <p>
-          You just did it. The pomodoro timer in the widget is a real, running app. You ordered
+          You're about to do it. The pomodoro timer in the widget below is a real, running app. You ordered
           it, the kitchen built it, and when you wanted a break button and bigger numbers, you
           didn't open the code. You said so.
         </p>
+
+        <section class="widget" aria-label="Vibe coding prompt-to-app builder">
+        <div class="widget-bar"><span class="dot"></span> Try it — prompt-to-app</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            Describe the app. Don't write a line of code. Build it, click around in it,
+            then send it back to the kitchen with the refine chips.
+          </p>
+          <textarea class="winput" id="vc-prompt" rows="2" style="margin-bottom:0.6rem; resize:vertical; font-family:var(--sans);">A pomodoro timer, orange theme</textarea>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn primary" id="vc-build">🔨 Build it ▶</button>
+            <button class="wbtn vc-refine" data-refine="break" disabled>＋ "Add a break button"</button>
+            <button class="wbtn vc-refine" data-refine="huge" disabled>🔍 "Make the numbers huge"</button>
+          </div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:stretch;">
+            <div class="wlog" id="vc-log" style="flex:1 1 230px; min-width:230px; max-height:260px;"><span class="dim">The kitchen is open. Describe your dish…</span></div>
+            <div id="vc-preview" style="flex:1 1 230px; min-width:230px; background:var(--card); border:1px solid var(--border); border-radius:10px; display:flex; align-items:center; justify-content:center; min-height:190px; padding:1rem;">
+              <span style="color:var(--muted); font-size:0.85rem;">your app appears here</span>
+            </div>
+          </div>
+        </div>
+        <p class="widget-hint">That timer is real — start it. Then refine it twice. You just ran the whole loop: describe → generate → refine. Zero syntax.</p>
+      </section>
 
         <h2>The loop: describe → generate → refine</h2>
 

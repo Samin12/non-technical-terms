@@ -25,26 +25,6 @@
       </header>
 
       <!-- ============ HERO WIDGET: drive-thru simulator ============ -->
-      <section class="widget" aria-label="API drive-thru simulator">
-        <div class="widget-bar"><span class="dot"></span> Try it — the API drive-thru</div>
-        <div class="widget-body">
-          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
-            You're the AI. The window below is another app's API. Order something off the menu —
-            but you'll need your key first.
-          </p>
-          <div class="wrow" style="margin-bottom:0.7rem;">
-            <button class="wbtn" id="api-key-btn">🔑 API key: <b>missing</b></button>
-          </div>
-          <div class="wrow" style="margin-bottom:0.9rem;">
-            <button class="wbtn api-order" data-name="fetch my Shopify orders" data-res='3 orders found. Total: $432.50. Top product: "Focus Journal".'>📦 Fetch my orders</button>
-            <button class="wbtn api-order" data-name="send the weekly email" data-res="Email queued to 1,204 subscribers. Send time: 9:00 AM.">✉️ Send an email</button>
-            <button class="wbtn api-order" data-name="post update to Slack" data-res='Posted to #general: "Site is live ✳". 3 reactions already.'>💬 Post to Slack</button>
-            <button class="wbtn danger api-order" data-name="delete every customer" data-danger="1">🗑️ Delete every customer</button>
-          </div>
-          <div class="wlog" id="api-log"><span class="dim">The window is open. Place an order…</span></div>
-        </div>
-        <p class="widget-hint">Notice: no key → rejected. Not on the menu → rejected. That's the entire security model of the modern internet.</p>
-      </section>
 
       <!-- ============ PROSE ============ -->
       <article class="prose">
@@ -67,6 +47,27 @@
         </p>
 
         <p><strong>That's an API: the window between your AI and somebody else's software.</strong></p>
+
+        <section class="widget" aria-label="API drive-thru simulator">
+        <div class="widget-bar"><span class="dot"></span> Try it — the API drive-thru</div>
+        <div class="widget-body">
+          <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
+            You're the AI. The window below is another app's API. Order something off the menu —
+            but you'll need your key first.
+          </p>
+          <div class="wrow" style="margin-bottom:0.7rem;">
+            <button class="wbtn" id="api-key-btn">🔑 API key: <b>missing</b></button>
+          </div>
+          <div class="wrow" style="margin-bottom:0.9rem;">
+            <button class="wbtn api-order" data-name="fetch my Shopify orders" data-res='3 orders found. Total: $432.50. Top product: "Focus Journal".'>📦 Fetch my orders</button>
+            <button class="wbtn api-order" data-name="send the weekly email" data-res="Email queued to 1,204 subscribers. Send time: 9:00 AM.">✉️ Send an email</button>
+            <button class="wbtn api-order" data-name="post update to Slack" data-res='Posted to #general: "Site is live ✳". 3 reactions already.'>💬 Post to Slack</button>
+            <button class="wbtn danger api-order" data-name="delete every customer" data-danger="1">🗑️ Delete every customer</button>
+          </div>
+          <div class="wlog" id="api-log"><span class="dim">The window is open. Place an order…</span></div>
+        </div>
+        <p class="widget-hint">Notice: no key → rejected. Not on the menu → rejected. That's the entire security model of the modern internet.</p>
+      </section>
 
         <h2>The menu is the whole point — and the safety</h2>
 

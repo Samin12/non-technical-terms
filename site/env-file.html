@@ -25,7 +25,24 @@
       </header>
 
       <!-- ============ HERO WIDGET: leak simulator ============ -->
-      <section class="widget" aria-label="Env file leak simulator">
+
+      <!-- ============ PROSE ============ -->
+      <article class="prose">
+        <p>
+          You would never tape your house key to your front door. But that's exactly what
+          hard-coding an API key is — and in the widget below you'll watch a scanner bot find it in 0.8
+          seconds and start spending your money.
+        </p>
+
+        <p>
+          The fix isn't to hide the key more cleverly inside the code. It's to take it
+          <em>out</em> of the code entirely: key in your pocket, and a note on the door that
+          just says "use the key from my pocket."
+        </p>
+
+        <p><strong>A .env file is a hidden file on your machine where your secrets live — the code refers to them by name and never contains them.</strong></p>
+
+        <section class="widget" aria-label="Env file leak simulator">
         <div class="widget-bar"><span class="dot"></span> Try it — the leak simulator</div>
         <div class="widget-body">
           <p style="margin-bottom:0.9rem; color:var(--ink-soft);">
@@ -60,22 +77,6 @@
         </div>
         <p class="widget-hint">0.8 seconds to get robbed is barely an exaggeration — bots scan every fresh public commit, around the clock.</p>
       </section>
-
-      <!-- ============ PROSE ============ -->
-      <article class="prose">
-        <p>
-          You would never tape your house key to your front door. But that's exactly what
-          hard-coding an API key is — and you just watched a scanner bot find it in 0.8
-          seconds and start spending your money.
-        </p>
-
-        <p>
-          The fix isn't to hide the key more cleverly inside the code. It's to take it
-          <em>out</em> of the code entirely: key in your pocket, and a note on the door that
-          just says "use the key from my pocket."
-        </p>
-
-        <p><strong>A .env file is a hidden file on your machine where your secrets live — the code refers to them by name and never contains them.</strong></p>
 
         <h2>What goes in it</h2>
 
