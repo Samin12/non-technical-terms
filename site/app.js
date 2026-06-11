@@ -159,6 +159,8 @@
 
   /* ---------- nav + footer ---------- */
 
+  var COMMUNITY = "https://www.skool.com/claude";
+
   function renderNav(active) {
     var host = document.getElementById("cc-nav");
     if (!host) return;
@@ -170,6 +172,7 @@
       '<div class="nav-links">' +
       '<a href="index.html"' + (active === "home" ? ' class="active"' : "") + ">Dictionary</a>" +
       '<a href="course.html"' + (active === "course" ? ' class="active"' : "") + ">Course Path</a>" +
+      '<a href="' + COMMUNITY + '" target="_blank" rel="noopener">Community ↗</a>' +
       '<span class="nav-pill" id="cc-nav-pill">' + done + " / " + TERMS.length + " done</span>" +
       "</div></div>";
   }
@@ -181,7 +184,10 @@
     host.innerHTML =
       '<span class="f-spark">✳</span>' +
       "<div><b>Claude Club</b> — tech terms for non-technical people. Learn by playing, not memorizing.</div>" +
+      '<div style="margin:0.9rem 0 0.2rem;"><a class="btn btn-accent" href="' + COMMUNITY + '" target="_blank" rel="noopener">Join the Claude Club community →</a></div>' +
+      '<div class="f-note" style="margin-bottom:0.6rem;">Questions? Stuck on a lesson? Join the calls, ask anything, build with people on the same path.</div>' +
       '<div class="f-links">' +
+      '<a href="' + COMMUNITY + '" target="_blank" rel="noopener">Claude Club</a>' +
       '<a href="https://www.youtube.com/@saminyasar_" target="_blank" rel="noopener">YouTube</a>' +
       '<a href="https://x.com/saminXD" target="_blank" rel="noopener">X / Twitter</a>' +
       '<a href="course.html">Course Path</a>' +
@@ -287,7 +293,8 @@
     if (bar) {
       var next2 = TERMS[term.n];
       bar.innerHTML =
-        '<div class="cb-text"><b>Got it?</b>Mark this lesson complete to track your path.</div>' +
+        '<div class="cb-text"><b>Got it?</b>Mark this lesson complete to track your path.<br>' +
+        '<a href="' + COMMUNITY + '" target="_blank" rel="noopener" style="font-weight:600;">Still fuzzy? Ask in Claude Club — join the calls →</a></div>' +
         '<div class="cb-actions">' +
         '<button class="btn-complete" id="cc-complete-btn"></button>' +
         (next2 ? '<a class="btn btn-ghost" href="' + next2.s + '.html">Next: ' + esc(next2.t) + " →</a>" : '<a class="btn btn-ghost" href="course.html">See your path →</a>') +
